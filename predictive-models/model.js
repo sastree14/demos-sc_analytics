@@ -112,7 +112,7 @@ function trainingCases(){
     const backlog=round(10+random()*95),distance=round(30+random()*1100);
     const reliability=round(70+random()*29),priority=random()>.67;
     const input={backlog,distance,reliability,priority},x=riskFeatures(input);
-    const p=sigmoid(-1.05+.88*x[1]+.52*x[2]+1.06*x[3]+.40*x[4]);
+    const p=sigmoid(-1.30+1.40*x[1]+1.00*x[2]+1.75*x[3]+.65*x[4]);
     const delayed=random()<p?1:0;
     return {input,x,delayed};
   });

@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#182e38">
+  <meta name="description" content="Working forecasting and classification models with interactive business assumptions, honest backtesting and exportable planning outputs.">
+  <title>Predictive intelligence | SC-Analytics Decision Studio</title>
+  <link rel="stylesheet" href="./styles.css">
+  <script type="module" src="./app.js"></script>
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar" aria-label="Decision Studio navigation">
+      <a class="brand" href="../"><span class="brand-emblem">SC</span><span><strong>SC–ANALYTICS</strong><small>DECISION STUDIO</small></span></a>
+      <div class="side-divider"></div>
+      <div class="side-section">WORKSPACE</div>
+      <nav class="side-nav" aria-label="Demonstration modules">
+        <button type="button" data-view="forecast" class="nav-link active"><span class="nav-symbol">01</span><span>Demand forecasting</span><b>↗</b></button>
+        <button type="button" data-view="risk" class="nav-link"><span class="nav-symbol">02</span><span>Risk classification</span><b>↗</b></button>
+        <button type="button" data-view="method" class="nav-link"><span class="nav-symbol">03</span><span>Model notes</span><b>↗</b></button>
+      </nav>
+      <div class="side-section second">RELATED CAPABILITIES</div>
+      <div class="side-copy">Forecasting, machine learning, scenario analysis and decision support.</div>
+      <div class="side-bottom"><div class="line-icon">↗</div><strong>From analysis to action.</strong><p>Explore what a custom decision system could look like for your business.</p><a href="https://www.sc-analytics.io/" target="_blank" rel="noopener">Visit SC-Analytics <span>↗</span></a></div>
+    </aside>
+    <div class="workspace">
+      <header class="topbar"><div class="top-path"><a href="../">Solutions lab</a><span>/</span><strong>Predictive intelligence</strong></div><div class="top-meta"><span class="status-dot"></span> EXAMPLE ENVIRONMENT <span class="top-sep"></span> EN</div></header>
+      <main>
+        <div class="intro">
+          <div class="eyebrow"><span class="square"></span> PREDICTIVE MODELS / WORKING DEMONSTRATION</div>
+          <div class="intro-main"><div><h1>Make the next move <em>with evidence.</em></h1><p>Explore how forward-looking models turn historical signals into clearer plans. Adjust the assumptions, run the analysis and see what changes.</p></div><div class="dataset-note"><span>DATA CONTEXT</span><strong>Illustrative operating data</strong><small>42 historical months · reproducible synthetic records</small></div></div>
+        </div>
+        <div class="tabs" role="tablist" aria-label="Predictive modules"><button role="tab" aria-selected="true" class="tab active" data-view="forecast">01 &nbsp; Demand outlook</button><button role="tab" aria-selected="false" class="tab" data-view="risk">02 &nbsp; Delivery risk</button><button role="tab" aria-selected="false" class="tab" data-view="method">03 &nbsp; How it works</button></div>
+
+        <section data-panel="forecast">
+          <div class="section-kicker"><span>ANALYSIS 01</span><span>TIME-SERIES FORECASTING</span></div>
+          <div class="section-heading"><div><h2>Demand outlook</h2><p>Forecast orders, explore alternative futures and test how well each method predicts unseen months.</p></div><div class="section-index">MODEL / F01</div></div>
+          <div class="layout">
+            <aside class="controls">
+              <div class="panel-title"><span>01</span><h3>Planning inputs</h3></div>
+              <p class="muted short">Set the commercial assumptions for this run.</p>
+              <label for="segment">Business profile</label>
+              <select id="segment"><option value="distribution">Wholesale & distribution</option><option value="retail">Multi-site retail</option><option value="manufacturing">Manufacturing</option></select>
+              <label for="horizon">Forecast horizon</label>
+              <div class="segmented" id="horizon-buttons" role="group" aria-label="Forecast horizon"><button class="chosen" data-horizon="3">3 months</button><button data-horizon="6">6 months</button><button data-horizon="12">12 months</button></div>
+              <label for="forecast-model">Forecasting method</label>
+              <select id="forecast-model"><option value="ensemble">Weighted ensemble</option><option value="seasonalTrend">Seasonal + trend</option><option value="seasonal">Seasonal baseline</option></select>
+              <div class="control-separator"></div>
+              <div class="range-head"><label for="growth">Demand adjustment</label><output id="growth-display">+0%</output></div>
+              <input id="growth" type="range" min="-20" max="20" value="0" step="1"><div class="range-captions"><span>−20%</span><span>+20%</span></div>
+              <div class="range-head"><label for="volatility">Uncertainty adjustment</label><output id="volatility-display">+0%</output></div>
+              <input id="volatility" type="range" min="0" max="80" value="0" step="10"><div class="range-captions"><span>Historical</span><span>+80% wider</span></div>
+              <p class="control-hint">Adjustments are explicit planning assumptions, not changes to the trained method or its measured accuracy.</p>
+              <button id="run-forecast" class="button primary" type="button"><span class="play-triangle">▶</span> Run forecast</button>
+              <button id="reset-forecast" class="button light" type="button">Reset assumptions</button>
+              <p class="update-note" id="forecast-note" aria-live="polite">Ready to explore.</p>
+            </aside>
+            <div class="output">
+              <div class="kpis">
+                <article class="kpi"><span>VALIDATED ACCURACY <button class="info-trigger" type="button" title="100 minus WAPE on the eight-month holdout. Higher is better; not a guarantee.">ⓘ</button></span><strong id="kpi-accuracy">—</strong><small>100 − WAPE · 8 unseen months</small></article>
+                <article class="kpi"><span>PLANNED DEMAND</span><strong id="kpi-demand">—</strong><small id="kpi-demand-sub">Units across selected horizon</small></article>
+                <article class="kpi"><span>VERSUS SEASONAL BASELINE</span><strong id="kpi-benchmark">—</strong><small>Accuracy difference · percentage points</small></article>
+                <article class="kpi"><span>SCENARIO EFFECT</span><strong id="kpi-impact">—</strong><small>Volume change vs unadjusted forecast</small></article>
+              </div>
+              <section class="graph-card">
+                <div class="graph-head"><div><span class="mini-label">FORWARD VIEW</span><h3>Historical demand and expected outlook</h3><p>Compare observed activity with the selected forecasting method.</p></div><div class="chart-actions"><button id="export-csv" class="text-button" type="button">↓ Export forecast</button></div></div>
+                <div class="chart-key"><span><i class="swatch actual"></i> Actual demand</span><span><i class="swatch projected"></i> Selected outlook</span><span><i class="swatch muted-line"></i> Unadjusted forecast</span><label><input id="toggle-band" type="checkbox" checked> Show uncertainty range</label></div>
+                <div class="graph-area"><svg id="demand-chart" viewBox="0 0 980 348" preserveAspectRatio="xMidYMid meet" aria-label="Historical demand and forecast chart" role="img"></svg></div>
+                <div class="graph-foot"><span>Historical period to Oct 2026</span><span id="graph-horizon">Next 6 months</span></div>
+              </section>
+              <div class="twocol">
+                <section class="panel compare"><div class="panel-top"><div><span class="mini-label">MODEL EVIDENCE</span><h3>Which approach held up?</h3></div><span class="pill neutral">8-month holdout</span></div><p class="muted">Each method is tested against the same unseen period, rather than judged by how closely it fits training data.</p><div class="table-scroller"><table><thead><tr><th>Method</th><th>Accuracy</th><th>MAE</th><th>Bias</th></tr></thead><tbody id="model-table"></tbody></table></div></section>
+                <section class="panel practical"><div class="panel-top"><div><span class="mini-label">PLANNING INTERPRETATION</span><h3>What does this tell us?</h3></div></div><div id="insights" class="insights"></div><div class="footnote">Illustrative interpretation of the current scenario, not a recommendation based on real client data.</div></section>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section data-panel="risk" hidden>
+          <div class="section-kicker"><span>ANALYSIS 02</span><span>SUPERVISED CLASSIFICATION</span></div>
+          <div class="section-heading"><div><h2>Delivery risk</h2><p>Identify shipments that may need attention before a delay becomes a customer issue.</p></div><div class="section-index">MODEL / C01</div></div>
+          <div class="layout">
+            <aside class="controls">
+              <div class="panel-title"><span>02</span><h3>Shipment profile</h3></div>
+              <p class="muted short">Adjust the operating context of a fictional order.</p>
+              <div class="range-head"><label for="backlog">Open orders in queue</label><output id="backlog-display">62</output></div><input id="backlog" type="range" min="10" max="105" value="62" step="1"><div class="range-captions"><span>10</span><span>105</span></div>
+              <div class="range-head"><label for="distance">Delivery distance</label><output id="distance-display">600 km</output></div><input id="distance" type="range" min="30" max="1130" value="600" step="10"><div class="range-captions"><span>30 km</span><span>1,130 km</span></div>
+              <div class="range-head"><label for="reliability">Carrier on-time performance</label><output id="reliability-display">88%</output></div><input id="reliability" type="range" min="70" max="99" value="88" step="1"><div class="range-captions"><span>70%</span><span>99%</span></div>
+              <label class="check-row"><input id="priority" type="checkbox"><span>Priority / expedited shipment</span></label>
+              <button id="run-risk" class="button primary" type="button"><span class="play-triangle">▶</span> Evaluate shipment</button><button id="reset-risk" class="button light" type="button">Reset inputs</button><p class="update-note" id="risk-note" aria-live="polite">Ready to evaluate.</p>
+            </aside>
+            <div class="output">
+              <div class="risk-summary">
+                <div class="risk-hero"><span class="mini-label">ESTIMATED LIKELIHOOD</span><div class="risk-number"><strong id="risk-percent">—</strong><span>probability of late delivery</span></div><div class="risk-scale"><span></span></div><div class="risk-scale-ends"><span>LOWER RISK</span><span>HIGHER RISK</span></div></div>
+                <div class="risk-explain"><span class="mini-label">OPERATIONAL INTERPRETATION</span><h3 id="risk-heading">Evaluate this shipment</h3><p id="risk-description">Set the operating assumptions to see a predicted risk estimate.</p><div class="risk-note"><span class="dot"></span><span id="risk-band">Awaiting model evaluation</span></div></div>
+              </div>
+              <section class="panel risk-validation"><div class="panel-top"><div><span class="mini-label">OUT-OF-SAMPLE PERFORMANCE</span><h3>Validation of the classification method</h3></div><span class="pill neutral">100 held-out orders</span></div><div class="validation-kpis"><div><span>ACCURACY</span><strong id="risk-accuracy">—</strong><small>Correct classifications</small></div><div><span>PRECISION</span><strong id="risk-precision">—</strong><small>Correct among flagged</small></div><div><span>RECALL</span><strong id="risk-recall">—</strong><small>Delayed orders identified</small></div><div><span>F1 SCORE</span><strong id="risk-f1">—</strong><small>Balance of precision and recall</small></div></div><p class="subtle">Threshold: 50%. Logistic regression fitted to 380 synthetic training observations; evaluated on 100 held-out observations. The figures change only when the training data or model changes, not when one shipment's inputs change.</p></section>
+              <section class="panel risk-actions"><span class="mini-label">FROM SIGNAL TO ACTION</span><h3>Where this could fit in operations</h3><div class="action-list"><div><span class="action-no">01</span><div><strong>Score incoming orders</strong><p>Apply the fitted classification model to new shipments.</p></div></div><div><span class="action-no">02</span><div><strong>Prioritise attention</strong><p>Send higher-risk cases to an operations review queue.</p></div></div><div><span class="action-no">03</span><div><strong>Measure outcomes</strong><p>Revalidate performance against actual deliveries and retrain when necessary.</p></div></div></div></section>
+            </div>
+          </div>
+        </section>
+
+        <section data-panel="method" hidden>
+          <div class="section-kicker"><span>REFERENCE NOTES</span><span>METHODOLOGY & LIMITATIONS</span></div><div class="section-heading"><div><h2>Behind the numbers</h2><p>What the working example calculates, what it does not claim, and what an actual engagement would include.</p></div></div>
+          <div class="method-grid"><article class="panel method-card"><span class="mini-label">01 / SOURCE DATA</span><h3>Reproducible examples</h3><p>Historical demand and shipment outcomes are mathematically generated. Real engagements start with data discovery, source-quality checks, target definitions and leakage controls.</p></article><article class="panel method-card"><span class="mini-label">02 / FORECASTING</span><h3>Three actual methods</h3><p>The seasonal baseline repeats the same month from the previous year. Seasonal + trend fits a linear trend and monthly residual effects. The weighted ensemble combines both with fixed weights.</p></article><article class="panel method-card"><span class="mini-label">03 / VALIDATION</span><h3>Evidence before projection</h3><p>The final eight historical months are held out. WAPE, MAE and signed bias are computed against the actual synthetic observations. Accuracy is displayed as 100 − WAPE and should not be interpreted as a universal success rate.</p></article><article class="panel method-card"><span class="mini-label">04 / RISK CLASSIFICATION</span><h3>Fitted logistic regression</h3><p>The risk example fits model coefficients with gradient descent on synthetic training cases. Held-out precision, recall and F1 are calculated using a 50% classification threshold.</p></article><article class="panel method-card"><span class="mini-label">05 / UNCERTAINTY</span><h3>Indicative, not guaranteed</h3><p>The future chart uses historical absolute holdout errors to create an illustrative range. It is not a calibrated probabilistic prediction interval, and no reliability promise is implied.</p></article><article class="panel method-card"><span class="mini-label">06 / MODEL SELECTION</span><h3>Appropriate to the problem</h3><p>Other client problems may call for tree ensembles, neural networks, classification, anomaly detection or reinforcement learning for sequential decisions. Those methods are not falsely presented as running in this example.</p></article></div>
+          <div class="method-banner"><div><span class="mini-label">A CUSTOM PROJECT WOULD INVOLVE</span><h3>From raw business data to a decision-ready system</h3><p>Data audit · Problem framing · Model comparison · Robust validation · Deployment · Governance · Monitoring.</p></div><a href="https://www.sc-analytics.io/" target="_blank" rel="noopener">Discuss your use case ↗</a></div>
+        </section>
+
+        <section class="runbook" aria-label="Analysis workflow"><div class="runbook-header"><div><span class="mini-label">EXECUTION LOG</span><h3>Analysis workflow</h3></div><span id="runbook-status" class="pill neutral" aria-live="polite">Ready</span></div><div class="run-steps"><div class="step" data-step="0"><span class="step-icon">1</span><div><strong>Prepare inputs</strong><small>Read reproducible records and scenario assumptions</small></div></div><div class="step" data-step="1"><span class="step-icon">2</span><div><strong>Validate data</strong><small>Check sample structure and chronology</small></div></div><div class="step" data-step="2"><span class="step-icon">3</span><div><strong>Fit & backtest</strong><small>Calculate genuine out-of-sample metrics</small></div></div><div class="step" data-step="3"><span class="step-icon">4</span><div><strong>Build decision view</strong><small>Update charts and outcome interpretation</small></div></div></div><p class="workflow-disclaimer">Local analytical calculations. Progress steps are deliberately paced for clarity; they do not represent remote processing or a live production workflow.</p></section>
+      </main>
+      <footer class="footer"><span>© 2026 SC-Analytics · Working demonstration with fictional data</span><a href="https://www.sc-analytics.io/" target="_blank" rel="noopener">sc-analytics.io ↗</a></footer>
+    </div>
+  </div>
+</body>
+</html>

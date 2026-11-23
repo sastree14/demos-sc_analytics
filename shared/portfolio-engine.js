@@ -30,10 +30,10 @@ export const modules=[
   {id:"invoice-flow",label:"Invoice processing",short:"Automatically route valid invoices while keeping exceptions under human review.",category:"FINANCE OPERATIONS",categoryShort:"WORKFLOW",
    seed:123,
    inputs:[spec("count","Incoming invoices",100,900,50),spec("limit","Automatic approval ceiling",500,12000,500," €"),spec("tolerance","Price discrepancy tolerance",0,8,1,"%"),spec("time","Manual minutes avoided",3,18,1," min"),spec("hourRate","Processing cost per hour",18,65,1," €"),spec("subscription","Monthly platform allowance",0,2500,100," €")],
-   defaults:{count:400,limit:5000,tolerance:3,time:9,hourRate:34,subscription:500}},
+   defaults:{count:400,limit:11000,tolerance:7,time:9,hourRate:34,subscription:500}},
   {id:"order-exceptions",label:"Order exceptions",short:"Route delays, stock gaps and credit checks without losing exception traceability.",category:"ORDER MANAGEMENT",categoryShort:"WORKFLOW",
    seed:204,inputs:[spec("count","Orders per period",100,1000,50),spec("late","Escalation after",1,7,1," days"),spec("inventory","Safety stock buffer",0,30,5,"%"),spec("threshold","Automated approval ceiling",500,9000,500," €"),spec("time","Minutes saved per routine order",2,15,1," min"),spec("hourRate","Hourly operating cost",18,65,1," €")],
-   defaults:{count:450,late:3,inventory:10,threshold:4000,time:8,hourRate:32}},
+   defaults:{count:450,late:6,inventory:5,threshold:8500,time:8,hourRate:32}},
   {id:"service-routing",label:"Assisted service routing",short:"Score sample requests and send uncertain or sensitive cases to a human.",category:"CUSTOMER OPERATIONS",categoryShort:"AI-ASSISTED PROTOTYPE",
    seed:399,inputs:[spec("count","Incoming service requests",100,800,50),spec("confidence","Auto-routing score threshold",60,95,5,"%"),spec("critical","Critical cases reviewed",90,100,5,"%"),spec("handling","Minutes avoided on routine cases",3,17,1," min"),spec("hourRate","Hourly support cost",18,75,1," €"),spec("fee","Illustrative operating overhead",0,2200,100," €")],
    defaults:{count:400,confidence:80,critical:100,handling:7,hourRate:33,fee:350}}
@@ -58,7 +58,7 @@ export const modules=[
    defaults:{arrivals:32,agents:6,handling:9,sla:12,cost:145}},
   {id:"delivery-risk",label:"Project delivery uncertainty",short:"Estimate deadline confidence and contingency cost before committing.",category:"PROJECT DELIVERY",categoryShort:"MONTE CARLO",
    seed:918,inputs:[spec("planned","Base project duration",30,160,5," days"),spec("uncertainty","Task duration uncertainty",10,60,5,"%"),spec("deadline","Contractual deadline",35,240,5," days"),spec("cost","Daily team expense",300,2500,100," €"),spec("budget","Approved cost budget",25000,230000,5000," €"),spec("contingency","Cost contingency allowance",0,35,5,"%")],
-   defaults:{planned:85,uncertainty:25,deadline:105,cost:900,budget:95000,contingency:10}}
+   defaults:{planned:85,uncertainty:25,deadline:86,cost:900,budget:76000,contingency:5}}
  ]},
  {id:"bi-reporting",label:"Business Intelligence & Reporting",tag:"DASHBOARDS / EXECUTIVE CONTROL",headline:"One version of performance. Clear next decisions.",intro:"Explore management reporting with consistent KPIs, segment filters, reconciled summaries and driver analysis.",focus:"Commercial performance and operational visibility",cases:[
   {id:"sales-bi",label:"Revenue performance",short:"Compare periods, regions and targets using reconciled synthetic transactions.",category:"COMMERCIAL INTELLIGENCE",categoryShort:"EXECUTIVE DASHBOARD",
@@ -77,10 +77,10 @@ export const modules=[
    defaults:{segment:"All",coverage:3,uplift:5,stale:28,target:300000}},
   {id:"purchase-approvals",label:"Purchase approvals",short:"Apply spending limits, identify exceptions and produce an auditable queue.",category:"ERP / PROCUREMENT",categoryShort:"APPROVAL ENGINE",
    seed:698,inputs:[spec("count","Pending purchase requests",100,500,25),spec("threshold","Manager approval limit",500,12000,500," €"),spec("budget","Available approved budget",50000,400000,10000," €"),spec("compliance","Required policy confidence",70,100,5,"%"),spec("reviewCost","Manual review cost",4,35,1," €")],
-   defaults:{count:200,threshold:3500,budget:180000,compliance:90,reviewCost:14}},
+   defaults:{count:200,threshold:7000,budget:180000,compliance:80,reviewCost:14}},
   {id:"service-workspace",label:"Service operations workspace",short:"Prioritise ticket backlog, assign owners and check incoming SLA risk.",category:"OPERATIONS / SERVICE",categoryShort:"CASE MANAGEMENT",
    seed:432,inputs:[spec("count","Open cases",50,500,25),spec("staff","Available specialist owners",2,18,1),spec("sla","Resolution target",8,72,4," hours"),spec("load","Cases per specialist each day",3,15,1),spec("critical","High-priority escalation after",4,48,4," hours"),spec("cost","Cost per overdue case",30,400,10," €")],
-   defaults:{count:250,staff:8,sla:32,load:7,critical:16,cost:130}}
+   defaults:{count:250,staff:8,sla:56,load:7,critical:16,cost:130}}
  ]}
 ];
 export const moduleById=id=>modules.find(m=>m.id===id)||modules[0];
@@ -208,7 +208,7 @@ function modellingRecurring(p){
 }
 function gaussian(random){const a=Math.max(1e-10,random()),b=random();return Math.sqrt(-2*Math.log(a))*Math.cos(2*Math.PI*b)}
 function simulateStock(p){
- const random=rnd(808),n=1100,results=[],leadFactor=clamp(p.lead/4,.25,1.5);
+ const random=rnd(808),n=1100,results=[],leadFactor=.65+p.lead/6;
  for(let i=0;i<n;i++){
   const need=Math.max(0,p.demand*leadFactor*(1+gaussian(random)*p.volatility/100));
   const available=p.stock+p.order,shortage=Math.max(0,need-available),left=Math.max(0,available-need);
@@ -362,7 +362,7 @@ const stageNames=["Discovery","Qualified","Proposal","Negotiation","Won"];
 const stageWeights=[.1,.25,.46,.7,1];
 function crmSource(){
  return seedData(190,671,(i,r)=>{
-  const stage=Math.floor(r()*5),value=2500+Math.round(r()*55000),age=Math.floor(r()*82);
+  const stage=Math.floor(r()*5),value=2500+Math.round(r()*12000),age=Math.floor(r()*82);
   return {id:"OPP-"+(5000+i),firm:["Calma Works","Logis Norte","Atlas Trade","Punto Sur","Roca Systems"][i%5],segment:["Industry","Logistics","Services"][i%3],stage,value,age,month:1+Math.floor(r()*6)};
  });
 }
@@ -386,7 +386,7 @@ function appCRM(p){
 }
 function appPurchase(p){
  const items=seedData(p.count,698,(i,r)=>{
-  const value=150+Math.round(r()*11500),policy=round(r()*100),duplicate=r()<.06,missing=r()<.075;
+  const value=150+Math.round(r()*11500),policy=round(65+r()*35),duplicate=r()<.06,missing=r()<.075;
   const valid=policy>=p.compliance&&!duplicate&&!missing;
   return {id:"REQ-"+(7000+i),party:["Ops","Finance","Facilities","IT"][i%4],value,policy,valid,duplicate,missing,auto:valid&&value<=p.threshold};
  });
@@ -407,7 +407,7 @@ function appPurchase(p){
 }
 function appService(p){
  const records=seedData(p.count,432,(i,r)=>{
-  const priority=r()<.20?"Critical":r()<.47?"High":"Standard",age=Math.round(r()*90),hours=8+r()*55;
+  const priority=r()<.20?"Critical":r()<.47?"High":"Standard",age=Math.round(r()*48),hours=4+r()*38;
   const atRisk=age+hours>p.sla;
   return {id:"CASE-"+(6000+i),subject:["Integration","Billing","Access","Data quality"][i%4],priority,age,hours,atRisk};
  });

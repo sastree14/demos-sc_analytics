@@ -190,6 +190,8 @@ export function answerGuide(query,context){
  if(/scenario|compare|compar|alternative|alternativ/.test(q))return alternatives.length?alternatives.map(a=>a.label+": "+a.decision.status+"; "+a.result.metrics[0]?.label+" "+a.result.metrics[0]?.value).join(" | ")+". Use Compare to inspect all metrics.":"Save Alternative A or B first using the scenario controls, then compare results.";
  if(/cost|€|eur|saving|ahorro|profit|value|impact|benefit|valor/.test(q))return (r.impact?.label||"Illustrative impact")+": "+(r.impact?.value||"not available")+". "+(r.impact?.formula||"See report")+" "+(r.impact?.note||"No verified customer savings.");
  if(/risk|riesgo|warn|warning|error|limitation|l[ií]mite/.test(q))return d.status+". "+d.why+" Limit: "+d.limits+" "+(r.methodology||"");
+ const requestedMetric=(r.metrics||[]).find(m=>q.includes(m.label.toLowerCase())||q.includes(m.label.toLowerCase().replaceAll(" ","")));
+ if(requestedMetric)return requestedMetric.label+" = "+requestedMetric.value+". "+requestedMetric.hint+" This metric is computed for the active synthetic scenario.";
  if(/chart|gr[aá]fic|graph|report|informe|pdf|metric|indicador/.test(q))return "The active analysis is "+(r.chart?.title||r.case?.name||"the selected scenario")+". "+(r.chart?.subtitle||r.decision?.summary||"")+" Open the full report for evidence and actions.";
  const control=controls.find(c=>q.includes(c.key.toLowerCase())||c.label.toLowerCase().split(" ").some(x=>x.length>4&&q.includes(x)));
  if(control)return explainControl(control,params[control.key]);

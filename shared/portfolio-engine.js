@@ -555,7 +555,8 @@ function fleetAssets(p){
  });
  const renew=cars.filter(x=>x.recommendation==="Consider renewal"),prepare=cars.filter(x=>x.recommendation==="Prepare replacement"),
  saved=sum(renew.map(x=>Math.max(0,x.delta))),baseline=sum(cars.map(x=>x.retain)),proposed=baseline-saved;
- const groups=["Continue operating","Prepare replacement","Consider renewal"].map(name=>row(name,cars.filter(x=>x.recommendation===name).length));
+ const eligibleAge=cars.filter(x=>x.years>=p.age).length;
+ const groups=[...["Continue operating","Prepare replacement","Consider renewal"].map(name=>row(name,cars.filter(x=>x.recommendation===name).length)),row("Above age threshold",eligibleAge)];
  return result({
   metrics:[measure("ASSETS MONITORED",num(cars.length),"fictional vehicles"),measure("RENEWAL CANDIDATES",num(renew.length),"age and lifecycle-cost rule"),measure("PREPARE TO REPLACE",num(prepare.length),"cost warning but limited evidence"),measure("MODELLED COST DIFFERENCE",money(saved),"if all flagged renewals were justified")],
   chart:chartBar(groups,"Fleet renewal decision queue","Age, estimated maintenance and downtime determine the indicative status."),

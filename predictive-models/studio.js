@@ -7,9 +7,10 @@ const pct=n=>(n*100).toFixed(1)+"%";
 const delay=ms=>new Promise(resolve=>setTimeout(resolve,ms));
 const ns="http://www.w3.org/2000/svg";
 let active="demand",inputs={...initial.demand},result=null,running=false;
+let lastExecutedInputs={...inputs};
 const experience=installDecisionExperience({
  family:"predictive-models",
- read:()=>({id:active,label:byId(active).name,question:byId(active).short,result,params:{...inputs},controls:controlDescriptor(byId(active).kind)}),
+ read:()=>({id:active,label:byId(active).name,question:byId(active).short,result,params:{...lastExecutedInputs},controls:controlDescriptor(byId(active).kind)}),
  apply:async values=>{inputs={...values};controlsForCase();dirty();},
  run:()=>execute()
 });
@@ -228,6 +229,7 @@ function renderMetrics(r){
 }
 function renderCase(r){
  result=r;
+ lastExecutedInputs={...inputs};
  renderMetrics(r);
  if(r.kind==="forecast"){
   forecastMain(r);forecastValidation(r);put("third-chart-title","Different futures, one plan");put("third-chart-description","A conservative, current and accelerated demand outlook.");scenarioBars(r,"forecast");

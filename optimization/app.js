@@ -1,7 +1,19 @@
 import {catalogue,cases,settings,runOptimisation,comparisonPolicy,optimise,evaluate,scoreProduct,validateResult,money,integer,percent} from "./model.js";
+import {installDecisionExperience} from "../shared/experience.js";
 
 const $=id=>document.getElementById(id);
 let period=4,report=null,busy=false;
+const experience=installDecisionExperience({
+ family:"optimization",
+ read:()=>({id:"inventory-allocation",label:"Advanced inventory replenishment",question:"What allocation creates the best expected contribution within budget and storage limits?",result:report?legacyResult(report):null,params:report?{...report.settings}:readInputs(),controls:[
+ {key:"budget",label:"Purchasing budget",kind:"range",min:15000,max:70000,step:1000,unit:" €"},
+ {key:"capacity",label:"Available storage",kind:"range",min:200,max:800,step:50,unit:" slots"},
+ {key:"uncertainty",label:"Demand uncertainty",kind:"range",min:60,max:160,step:10,unit:"%"},
+ {key:"service",label:"Service emphasis",kind:"range",min:50,max:200,step:10,unit:"%"}
+ ]}),
+ apply:async values=>{for(const key of inputs)if(key in values)$(key).value=values[key];if("period" in values)period=Number(values.period);showReadouts();changed();},
+ run:()=>run()
+});
 const pause=ms=>new Promise(resolve=>setTimeout(resolve,ms));
 const changeStamp={};
 const inputs=["budget","capacity","market","uncertainty","service"];
@@ -40,9 +52,9 @@ document.querySelectorAll("[data-view]").forEach(el=>el.addEventListener("click"
 function step(index,state){
   const el=document.querySelector('.step[data-step="'+index+'"]');
   if(!el)return;
-  el.classList.remove("active","complete");
+  el.classList.remove("active","complete","warning");
   if(state)el.classList.add(state);
-  el.querySelector(".step-icon").textContent=state==="complete"?"✓":String(index+1);
+  el.querySelector(".step-icon").textContent=state==="complete"?"✓":state==="warning"?"!":String(index+1);
 }
 function status(text,tone="neutral"){
   const el=$("run-status");el.textContent=text;el.className="pill "+tone;
@@ -78,8 +90,8 @@ async function run(){
         const result=buildOutput(s,baseline,solver,scenarios);validateResult(result);
         report=result;renderResult(result);
       }
-      await pause(240);
-      step(i,"complete");
+      await pause(document.getElementById("sc-fast-mode")?.checked?100:1900);
+      step(i,i===3&&solver?.evaluation?.fill<.80?"warning":"complete");
     }
     status("Analysis complete","good");
     $("update-note").textContent="Allocation calculated · all constraints verified.";
@@ -112,7 +124,7 @@ function renderResult(r){
   text("comparison-fill",percent(b.fill));text("optimal-fill",percent(o.fill));
   text("comparison-spend",money(b.spend));text("optimal-spend",money(o.spend));
   text("comparison-lost",integer(b.lost));text("optimal-lost",integer(o.lost));
-  renderBars(r);renderTable(r);renderScenarios(r);renderInsights(r);renderExecutiveBrief(r);
+  renderBars(r);renderTable(r);renderScenarios(r);renderInsights(r);renderExecutiveBrief(r);experience.refresh();
 }
 function el(tag,cls,value){
   const node=document.createElement(tag);if(cls)node.className=cls;if(value!==undefined)node.textContent=String(value);return node;
@@ -195,6 +207,23 @@ $("export-plan").addEventListener("click",()=>{
   setTimeout(()=>URL.revokeObjectURL(url),500);
 });
 
+function legacyResult(r){
+ const s=r.settings,o=r.optimised.evaluation,b=r.comparison.evaluation;
+ return {
+  metrics:[
+   {label:"OPTIMAL CONTRIBUTION",value:money(o.contribution),hint:"computed expected objective"},
+   {label:"IMPROVEMENT VS REFERENCE",value:money(r.delta),hint:"exact solver less reference policy"},
+   {label:"DEMAND FULFILMENT",value:percent(o.fill),hint:"synthetic demand covered"},
+   {label:"PURCHASING SPEND",value:money(o.spend),hint:"of "+money(s.budget)+" budget"}
+  ],
+  impact:{value:money(r.delta),label:"Illustrative contribution improvement",formula:"Optimised expected contribution − reference allocation expected contribution.",note:"No realised customer benefit, supplier approvals or connected ERP system."},
+  decision:{title:"Consider the best feasible replenishment plan",summary:"The exact allocation yields "+money(r.delta)+" higher modelled contribution than the disclosed comparison rule.",actions:["Validate the model against observed SKU demand.","Review lead times, unit economics and financial approvals.","Check expected service and capacity before purchasing."]},
+  chart:{title:"SKU purchasing allocation",subtitle:"The exact solution uses budget and warehouse capacity constraints."},
+  table:{columns:["SKU","On-hand stock","Reference quantity","Optimised quantity"],rows:r.diagnostics.map(x=>[x.name,integer(x.stock),integer(x.baseline),integer(x.optimised)])},
+  quality:[["Method","Exact discrete dynamic programming"],["Budget used",money(o.spend)],["Storage used",integer(o.storage)+" / "+integer(s.capacity)],["Expected fill",percent(o.fill)]],
+  methodology:"Exact two-constraint discrete dynamic programme over 10-unit SKU batches. A disclosed reference heuristic provides the baseline, using fictional demand, margins, penalties and holding costs."
+ };
+}
 function renderExecutiveBrief(r){
   const s=r.settings,o=r.optimised.evaluation,b=r.comparison.evaluation;
   const metrics=[

@@ -162,7 +162,7 @@ export function evaluateDecision({id,result,params={}}){
  }
  case "service-workspace":{
   const risk=get(result,"PROJECTED SLA RISK")/100;
-  d=risk>.3?make("act","Projected SLA risk is "+percent(risk)+".","Act if risk > 30%.","Rebalance workload and prioritise ageing cases.","Before the next SLA breach.")
+  d=risk>.3?make("act","Projected SLA risk is "+percent(risk)+".","Review case assignments when projected SLA risk exceeds the chosen 30% boundary.","Rebalance workload and prioritise ageing cases.","Before the next SLA breach.")
    :make("wait","Current modelled SLA risk is "+percent(risk)+".","Monitor while risk ≤ 30%.","Continue assigning clear case owners.","At the next service meeting.");break;
  }
  default:d=make("prepare",result.decision?.summary||"A working model has been calculated, but business sign-off still matters.","Compare current results with relevant operational constraints.","Review the model's evidence and approval rules.","When business assumptions change.");

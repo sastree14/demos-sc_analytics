@@ -62,7 +62,7 @@ function forecastMain(r){
  const observed=r.chart.history,projection=r.chart.future;
  const all=[...observed.map(d=>d.value),...projection.flatMap(d=>[d.low,d.high])];
  const low=Math.floor(Math.min(...all)*.84),high=Math.ceil(Math.max(...all)*1.13);
- const {yy}=axes(root,{w:W,h:H,left,right,top,bottom,min:low,max:high,formatter:v=>r.case.id==="revenue"?"£"+fmt(v)+"k":fmt(v)});
+ const {yy}=axes(root,{w:W,h:H,left,right,top,bottom,min:low,max:high,formatter:v=>r.case.id==="revenue"?"€"+fmt(v)+"k":fmt(v)});
  const length=observed.length+projection.length,x=i=>left+i/(length-1)*(W-left-right);
  const boundary=(x(observed.length-1)+x(observed.length))/2;
  root.append(svg("rect",{x:boundary,y:top,width:W-right-boundary,height:H-top-bottom,fill:"#f4faf5"}));
@@ -251,7 +251,7 @@ function renderReport(r){
 function controlDescriptor(kind){return controlSpecs[(kind==="classification"||kind==="regression")?active:kind]||controlSpecs.forecast;}
 function displayControl(value,spec){
  if(spec.key==="sensitivity")return Number(value).toFixed(1)+"σ";
- if(spec.key==="unitCost"||spec.key==="cost")return "£"+fmt(Number(value));
+ if(spec.key==="unitCost"||spec.key==="cost")return "€"+fmt(Number(value));
  if(spec.key==="budget")return currency(Number(value));
  const n=Number(value);const sign=spec.key==="outlook"&&n>0?"+":"";
  return sign+fmt(n)+(spec.unit||"");
@@ -344,7 +344,7 @@ $("download-data").addEventListener("click",()=>{
   rows.push(["Validation record","Actual event","Predicted probability","Predicted flag","Threshold"]);
   r.rows.forEach((row,i)=>rows.push([i+1,row.y,row.prob,row.prob>=r.threshold?1:0,r.threshold]));
  }else if(r.kind==="regression"){
-  rows.push(["Job volume","Observed cost GBP","Predicted cost GBP"]);
+  rows.push(["Job volume","Observed cost EUR","Predicted cost EUR"]);
   r.chart.points.forEach(row=>rows.push([row.x,row.actual,row.predicted]));
  }else{
   rows.push(["Observation","Sensor reading","Known injected event","Detector flag","Robust score"]);

@@ -85,7 +85,7 @@ export function evaluateDecision({id,result,params={}}){
  }
  case "pricing":{
   const increase=number(result.impact?.value),current=result.comparison?.series?.[0]?.a||0;
-  d=increase>current*.05?make("prepare","The modelled pricing alternative improves contribution by "+money(increase)+".","Pilot changes only if estimated uplift exceeds 5% of baseline contribution.","Run a limited commercial experiment before changing all prices.","After observing customer conversion.")
+  d=increase>Math.abs(current)*.05?make("prepare","The modelled pricing alternative improves contribution by "+money(increase)+".","Pilot changes only if estimated uplift exceeds 5% of baseline contribution.","Run a limited commercial experiment before changing all prices.","After observing customer conversion.")
    :make("wait","Modelled pricing alternatives do not show material improvement.","Wait while uplift ≤ 5% of baseline contribution.","Keep current pricing and monitor volume.","At the next pricing review.");break;
  }
  case "investment":{
@@ -113,7 +113,7 @@ export function evaluateDecision({id,result,params={}}){
  }
  case "executive-bi":{
   const revenue=get(result,"TARGET VARIANCE"),service=get(result,"ON-TIME SERVICE")/100,goal=Number(params.service)/100||.92;
-  d=revenue<0||service<goal?make("review","The selected reporting scope has a revenue shortfall of "+money(Math.max(0,-revenue))+" or service performance "+percent(service)+" below its "+percent(goal)+" target.","Escalate if revenue variance < €0 OR on-time service falls below "+percent(goal)+".","Assign owners to the failing commercial or operational measures.","At the next executive management review.")
+  d=revenue<0||service<goal?make("review",[revenue<0?"Revenue is "+money(-revenue)+" below target.":"",service<goal?"On-time service is "+percent(service)+" against a "+percent(goal)+" target.":""].filter(Boolean).join(" "),"Escalate if revenue variance < €0 OR on-time service falls below "+percent(goal)+".","Assign owners to the failing commercial or operational measures.","At the next executive management review.")
    :make("wait","Commercial and operational example targets are both met.","Monitor while revenue variance ≥ €0 and service ≥ "+percent(goal)+".","Check underlying margin and capacity signals.","At the next executive reporting refresh.");break;
  }
  case "fleet-assets":{
@@ -183,18 +183,20 @@ export function answerGuide(query,context){
  const q=String(query||"").trim().toLowerCase(),{result,decision,controls=[],params={},alternatives=[]}=context;
  const d=decision||evaluateDecision(context),r=result||{};
  if(!q)return "Choose a question or ask about the current decision.";
+ if(q.startsWith("explain ")||q.startsWith("explica ")){
+  const chosen=controls.find(c=>q.slice(8)===c.label.toLowerCase()||q.slice(8)===c.key.toLowerCase());
+  if(chosen)return explainControl(chosen,params[chosen.key]);
+  const chosenMetric=(r.metrics||[]).find(m=>q.includes(m.label.toLowerCase()));
+  if(chosenMetric)return chosenMetric.label+": "+chosenMetric.value+". "+chosenMetric.hint+" (synthetic scenario).";
+ }
+ if(/what.*(change|reverse).*decision|when.*action/.test(q))return d.threshold+" "+d.review;
+ if(/management|happening|right now/.test(q))return context.label+". "+r.metrics.map(m=>m.label+": "+m.value).join(" · ")+". "+d.status+". "+d.next;
  if(/who are|what can|how can|hello|hola|help/.test(q))return "I am the SC-Analytics Decision Guide: a transparent, rules-based explanation assistant for the current synthetic analysis. I can explain metrics, assumptions, decision thresholds and saved scenarios. I am not a remote LLM.";
  if(/why|por qu|recommend|recomiend|reason|decisi[oó]n/.test(q))return d.status+". "+d.why+" "+d.threshold+" This is advisory, not an automatic business action.";
  if(/wait|esper|do nothing/.test(q))return "Waiting can be valid. "+d.threshold+" "+d.review;
  if(/threshold|umbral|when|cu[aá]ndo|trigger|switch/.test(q))return d.threshold+" "+d.next+" Review: "+d.review;
  if(/scenario|compare|compar|alternative|alternativ/.test(q))return alternatives.length?alternatives.map(a=>a.label+": "+a.decision.status+"; "+a.result.metrics[0]?.label+" "+a.result.metrics[0]?.value).join(" | ")+". Use Compare to inspect all metrics.":"Save Alternative A or B first using the scenario controls, then compare results.";
- if(q.startsWith("explain ")||q.startsWith("explica ")){
-  const chosen=controls.find(c=>q.includes(c.key.toLowerCase())||q.includes(c.label.toLowerCase()));
-  if(chosen)return explainControl(chosen,params[chosen.key]);
-  const chosenMetric=(r.metrics||[]).find(m=>q.includes(m.label.toLowerCase()));
-  if(chosenMetric)return chosenMetric.label+": "+chosenMetric.value+". "+chosenMetric.hint+" (synthetic scenario).";
- }
- if(/cost|€|eur|saving|ahorro|profit|value|impact|benefit|valor/.test(q))return (r.impact?.label||"Illustrative impact")+": "+(r.impact?.value||"not available")+". "+(r.impact?.formula||"See report")+" "+(r.impact?.note||"No verified customer savings.");
+ if(/cost|€|eur|saving|ahorro|profit|value|impact|benefit|valor/.test(q))return (r.impact?.label||"Illustrative impact")+": "+(r.impact?.value||"not available")+". "+(r.impact?.formula||r.impact?.subtitle||"See report")+" "+(r.impact?.note||"No verified customer savings.");
  if(/risk|riesgo|warn|warning|error|limitation|l[ií]mite/.test(q))return d.status+". "+d.why+" Limit: "+d.limits+" "+(r.methodology||"");
  const requestedMetric=(r.metrics||[]).find(m=>q.includes(m.label.toLowerCase())||q.includes(m.label.toLowerCase().replaceAll(" ","")));
  if(requestedMetric)return requestedMetric.label+" = "+requestedMetric.value+". "+requestedMetric.hint+" This metric is computed for the active synthetic scenario.";

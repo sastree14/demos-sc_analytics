@@ -30,7 +30,7 @@ function paintCases(){
  });
 }
 function displayValue(value,c){
- if(c.unit.includes("€"))return number(value)+" €";
+ if(c.unit?.includes("€"))return number(value)+" €";
  if(c.unit==="%")return number(value)+"%";
  if(c.unit==="")return number(value);
  return number(value)+c.unit;
@@ -60,13 +60,13 @@ function paintControls(){
 function dirty(){set("input-status","Scenario modified · run analysis to update results.");$("input-status").classList.add("dirty");}
 function choose(id,scroll=false){
  if(busy)return;
- active=caseById(module.id,id).id;inputs=getInitial(active);reviewed=new Set();
+ active=getCase(id).id;inputs=getInitial(active);reviewed=new Set();
  paintCases();paintControls();
  const c=getCase(active);
  const deep=document.getElementById("optimization-advanced-link");if(deep)deep.hidden=c.id!=="inventory-allocation";
  set("current-category",c.category+" / "+c.categoryShort);
  set("current-case",c.label);set("current-copy",c.short);
- resetWorkflow();
+ resetSteps();
  try{paint(runModule(active,inputs));set("input-status","Example calculated from synthetic records. Change assumptions to experiment.");$("input-status").classList.remove("dirty");}
  catch(e){set("input-status","Unable to calculate this case: "+e.message);}
  if(scroll)document.querySelector("#workbench").scrollIntoView({behavior:"smooth",block:"start"});
@@ -170,25 +170,26 @@ function paint(out){
  experience.refresh();
 }
 function resetSteps(){
- document.querySelectorAll(".workflow-step").forEach((element,i)=>{element.classList.remove("done","running");element.querySelector("i").textContent=String(i+1).padStart(2,"0")});
+ document.querySelectorAll(".workflow-step").forEach((element,i)=>{element.classList.remove("done","running","warning");element.querySelector("i").textContent=String(i+1).padStart(2,"0")});
  set("workflow-status","Ready to calculate a new scenario.");
 }
 function delay(n){return new Promise(r=>setTimeout(r,n))}
 async function execute(){
  if(busy)return;busy=true;$("calculate").disabled=true;resetSteps();const params={...inputs},c=active;
+ let computed;
  try{
   const messages=["Preparing synthetic business records","Checking assumptions and input constraints","Calculating models and operational rules","Summarising implications for decision-makers","Verifying the current reporting output"];
   for(let i=0;i<5;i++){
    const step=document.querySelector('[data-step="'+i+'"]');step.classList.add("running");set("workflow-status",messages[i]);await delay(document.getElementById("sc-fast-mode")?.checked?110:1900);
-   if(i===2){const computed=run(module.id,c,params);if(computed.metrics.length!==4)throw Error("Model did not return a complete result");snapshot=computed;}
-   if(i===3)paint(snapshot);
+   if(i===2){computed=runModule(c,params);if(computed.metrics.length!==4)throw Error("Model did not return a complete result");}
+   if(i===3){reviewed.clear();paint(computed)};
    step.classList.remove("running");
    const warn=i===3&&experience.getDecision()?.level==="review";
    step.classList.add(warn?"warning":"done");step.querySelector("i").textContent=warn?"!":"✓";
   }
   set("workflow-status","✓ Calculation complete · report and sample register refreshed");set("input-status","Scenario updated successfully.");$("input-status").classList.remove("dirty");
  }catch(error){set("workflow-status","Unable to calculate: "+error.message);set("input-status","Check your inputs: "+error.message);$("input-status").classList.add("dirty")}
- finally{busy=false;$("calculate").disabled=false}
+ finally{busy=false;$("calculate").disabled=false;if(JSON.stringify(inputs)!==JSON.stringify(params))dirty()}
 }
 function csvCell(x){return '"'+String(x??"").replaceAll('"','""')+'"'}
 function download(filename,body,type){
@@ -199,7 +200,7 @@ $("download-csv").addEventListener("click",()=>{
  if(!snapshot)return;const rows=[["SC-Analytics / Synthetic operating example"],["Module",module.label],["Use case",snapshot.case.label],[],["Metric","Value","Meaning"],...snapshot.metrics.map(m=>[m.label,m.value,m.hint]),[],[...snapshot.table.columns,...(isWorkflow?["Locally reviewed"] :[])],...snapshot.table.rows.map((row,i)=>[...row,...(isWorkflow?[reviewed.has(i)?"yes":"no"]:[])])];
  download("SC-Analytics-"+active+"-sample.csv",rows.map(r=>r.map(csvCell).join(",")).join("\r\n"),"text/csv;charset=utf-8");
 });
-$("reset").addEventListener("click",()=>{inputs=getInitial(active);reviewed=new Set();paintControls();execute()});
+$("reset").addEventListener("click",()=>{if(busy)return;inputs=getInitial(active);reviewed=new Set();paintControls();execute()});
 $("calculate").addEventListener("click",()=>{reviewed=new Set();execute()});
 $("print").addEventListener("click",()=>{if(snapshot)window.print()});
 $("download-report").addEventListener("click",()=>{

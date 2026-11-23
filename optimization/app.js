@@ -11,11 +11,11 @@ const experience=installDecisionExperience({
  {key:"uncertainty",label:"Demand uncertainty",kind:"range",min:60,max:160,step:10,unit:"%"},
  {key:"service",label:"Service emphasis",kind:"range",min:50,max:200,step:10,unit:"%"}
  ]}),
- apply:async values=>{for(const key of inputs)if(key in values)$(key).value=values[key];if("period" in values)period=Number(values.period);showReadouts();changed();},
+ apply:async values=>{for(const key of inputs)if(key in values)$(key).value=values[key];if("period" in values)period=Number(values.period);document.querySelectorAll("[data-period]").forEach(b=>b.classList.toggle("chosen",Number(b.dataset.period)===period));showReadouts();changed();},
  run:()=>run()
 });
 const pause=ms=>new Promise(resolve=>setTimeout(resolve,ms));
-const changeStamp={};
+
 const inputs=["budget","capacity","market","uncertainty","service"];
 function readInputs(){return settings({
   budget:Number($("budget").value),capacity:Number($("capacity").value),
@@ -100,10 +100,11 @@ async function run(){
     status("Review inputs","working");
     $("update-note").textContent="Calculation failed: "+(err?.message||"Unknown error");
     $("update-note").classList.add("changed");
-  }finally{btn.disabled=false;busy=false;}
+  }finally{btn.disabled=false;busy=false;if(JSON.stringify(readInputs())!==JSON.stringify(s))changed();}
 }
 $("run-optimisation").addEventListener("click",run);
 $("reset").addEventListener("click",()=>{
+  if(busy)return;
   $("budget").value="33000";$("capacity").value="450";$("market").value="base";
   $("uncertainty").value="100";$("service").value="100";period=4;
   document.querySelectorAll("[data-period]").forEach(b=>b.classList.toggle("chosen",Number(b.dataset.period)===4));
@@ -212,7 +213,7 @@ function legacyResult(r){
  return {
   metrics:[
    {label:"OPTIMAL CONTRIBUTION",value:money(o.contribution),hint:"computed expected objective"},
-   {label:"IMPROVEMENT VS REFERENCE",value:money(r.delta),hint:"exact solver less reference policy"},
+   {label:"CONTRIBUTION IMPROVEMENT",value:money(r.delta),hint:"exact solver less reference policy"},
    {label:"DEMAND FULFILMENT",value:percent(o.fill),hint:"synthetic demand covered"},
    {label:"PURCHASING SPEND",value:money(o.spend),hint:"of "+money(s.budget)+" budget"}
   ],

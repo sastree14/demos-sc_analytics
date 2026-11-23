@@ -150,3 +150,23 @@ body[data-family] .logo .monogram,body[data-family] .brand-monogram{letter-spaci
 .workflow-step.running .workflow-icon,.workflow-step.running i,.step.active .step-icon{position:relative}
 .workflow-step.running .workflow-icon::after,.workflow-step.running i::after,.step.active .step-icon::after{content:"";position:absolute;inset:-7px;border:2px solid transparent;border-top-color:var(--sc-accent);border-right-color:var(--sc-accent);border-radius:50%;animation:sc-progress-spin 1.05s linear infinite;pointer-events:none}
 @media(prefers-reduced-motion:reduce){.workflow-step.running .workflow-icon::after,.workflow-step.running i::after,.step.active .step-icon::after{animation:none}}
+
+@media(max-width:780px){
+ .sc-report-head{flex-wrap:wrap}
+ .sc-report-pagination{flex-wrap:wrap;padding:6px}
+ .sc-report-page{min-width:0}
+ .sc-report-table{table-layout:fixed;overflow-wrap:anywhere}
+ .sc-report-table td,.sc-report-table th{padding:5px}
+}
+@media print{
+ html:has(.sc-report-print),body.sc-report-print{display:block!important;overflow:visible!important;height:auto!important}
+ body.sc-report-print .sc-report-dialog{height:auto!important;max-width:none!important;margin:0!important;inset:auto!important}
+ body.sc-report-print .sc-report-page{box-sizing:border-box;gap:5px;min-height:0!important;padding:3mm!important;display:block!important}
+ body.sc-report-print .sc-report-page p,body.sc-report-print .sc-report-page li{font-size:10pt;line-height:1.35}
+ body.sc-report-print .sc-report-table{margin:6px 0}
+ body.sc-report-print .sc-report-table td,body.sc-report-print .sc-report-table th{padding:4px}
+ body.sc-report-print .sc-report-figure svg{max-height:175px}
+ body.sc-report-print .sc-report-page h2{font-size:24pt}
+ body.sc-report-print .sc-report-page h3{font-size:15pt}
+ body.sc-report-print .sc-report-dialog::backdrop{display:none}
+}

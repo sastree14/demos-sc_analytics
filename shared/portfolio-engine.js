@@ -182,6 +182,7 @@ function modellingPricing(p){
  const demand=price=>baseQ*Math.pow(price/base,-elas)*lift;
  const outcome=price=>{const d=demand(price),sold=Math.min(d,cap);return {price,demand:d,sold,revenue:sold*price,profit:sold*(price-c)}};
  const trials=range(31,i=>outcome(Math.max(c*1.03,base*(.60+i*.028))));
+ trials.push(outcome(base));trials.sort((a,b)=>a.price-b.price);
  const best=trials.reduce((a,b)=>a.profit>b.profit?a:b);
  const current=outcome(base),delta=best.profit-current.profit,missed=Math.max(0,current.demand-cap);
  return result({metrics:[measure("CURRENT CONTRIBUTION",money(current.profit),"monthly after variable cost"),measure("MODEL OPTIMAL PRICE",money(best.price),"best candidate in tested price grid"),measure("UPSIDE VS CURRENT",money(Math.max(0,delta)),"assumption-based contribution difference"),measure("UNMET BASE DEMAND",num(missed),"units above stated capacity")],
@@ -342,7 +343,7 @@ function biSales(p){
 }
 function logisticsSource(){
  return seedData(700,557,(i,r)=>{
-  const region=regionNames[i%4],carrier=["Atlas","Faro","Nexa"][i%3],month=i%12;
+  const region=regionNames[i%4],carrier=["Atlas","Faro","Nexa"][i%3],month=Math.floor(i/12)%12;
   const delay=r()<(.105+.023*(i%4)+.016*(i%3)),cost=35+r()*110+12*(i%3),exception=delay||r()<.07;
   return {id:"SHIP-"+(10001+i),region,carrier,month,delay,cost,exception};
  });
@@ -356,7 +357,7 @@ function biLogistics(p){
   chart:chartLine(months,"Service level by operating month","Observed synthetic share on time compared with the selected target.",["On-time %","Target %"]),
   comparison:chartBar(carrierRows,"On-time delivery by carrier","Performance is recalculated after the selected filters."),
   table:{columns:["Shipment","Region","Carrier","Operational status"],rows:shipments.slice(0,10).map(x=>[x.id,x.region,x.carrier,x.delay?"Late":"On time"])},
-  impact:{value:money(late*p.lateCost),label:"Illustrative service exposure",formula:"Late shipments in the filtered set × the assumed commercial cost per late order.",note:"Synthetic service records; exposure is not an actual penalty, lost revenue or validated contractual damages. Priority-share control is an exploratory assumption, not a carrier change."},
+  impact:{value:money(late*p.lateCost),label:"Illustrative service exposure",formula:"Late shipments in the filtered set × the assumed commercial cost per late order.",note:"Synthetic service records; exposure is not an actual penalty, lost revenue or validated contractual damages."},
   decision:{title:ontime<p.goal/100?"Service is below the selected target":"Service exceeds the selected target",summary:"On-time rate is "+percent(ontime)+" across "+num(total)+" selected shipments.",actions:["Investigate lanes, causes and carriers with high delay concentrations.","Validate promised delivery windows and consistent timestamp definitions.","Link service exceptions to claims or remedial processes in an integrated system."]},
   quality:[["Full register","700 synthetic shipment rows"],["Applied region",p.region],["Applied carrier",p.carrier],["On-time denominator",num(total)]],
   scope:"Shipment log → canonical service metrics → segment filters → exception actions",

@@ -26,7 +26,7 @@ export const optimizationModule={
  defaults:{staff:14,rate:17,wage:145,penalty:38,budget:2400,growth:0}},
  {id:"fleet-allocation",label:"Fleet & delivery allocation",short:"Compare vehicle allocation across service zones while respecting fleet and cost limits.",category:"LOGISTICS / FLEET",categoryShort:"EXACT FLEET ALLOCATION",
  inputs:[spec("fleet","Vehicles available",3,18,1),spec("capacity","Deliveries per vehicle",7,20,1),spec("demand","Demand adjustment",-25,40,5,"%"),spec("vehicleCost","Daily operating cost per vehicle",200,950,50," €"),spec("missedCost","Penalty per unserved order",30,170,10," €"),spec("budget","Daily fleet budget",2000,14000,500," €")],
- defaults:{fleet:12,capacity:13,demand:5,vehicleCost:470,missedCost:85,budget:6200}},
+ defaults:{fleet:12,capacity:13,demand:5,vehicleCost:450,missedCost:80,budget:6200}},
  {id:"production-mix",label:"Production & product mix",short:"Prioritise profitable product combinations with limited machine time and materials.",category:"INDUSTRIAL / PRODUCTION",categoryShort:"INTEGER PROGRAMMING",
  inputs:[spec("hours","Available machine hours",70,300,10," h"),spec("material","Raw material units",350,2200,50),spec("demand","Market demand factor",70,140,10,"%"),spec("margin","Sales margin factor",75,150,5,"%")],
  defaults:{hours:160,material:1250,demand:100,margin:100}},

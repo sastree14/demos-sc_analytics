@@ -229,7 +229,7 @@ function renderMetrics(r){
 }
 function renderCase(r){
  result=r;
- lastExecutedInputs={...inputs};
+ lastExecutedInputs={...r.params};
  renderMetrics(r);
  if(r.kind==="forecast"){
   forecastMain(r);forecastValidation(r);put("third-chart-title","Different futures, one plan");put("third-chart-description","A conservative, current and accelerated demand outlook.");scenarioBars(r,"forecast");
@@ -294,7 +294,7 @@ function controlsForCase(){
 }
 function dirty(){put("update-status","Assumptions changed · run the analysis to update the results.");$("update-status").classList.add("dirty");}
 function resetWorkflow(){
- document.querySelectorAll(".workflow-step").forEach((step,i)=>{step.classList.remove("running","done");step.querySelector(".workflow-icon").textContent=String(i+1).padStart(2,"0");});
+ document.querySelectorAll(".workflow-step").forEach((step,i)=>{step.classList.remove("running","done","warning");step.querySelector(".workflow-icon").textContent=String(i+1).padStart(2,"0");});
  put("workflow-status","● Example analysis ready");
 }
 function selectCase(id){
@@ -322,13 +322,13 @@ async function execute(){
  if(running)return;running=true;const button=$("run-analysis");button.disabled=true;
  resetWorkflow();put("workflow-status","● Checking example inputs");
  try{
-  const chosen=active,parameters={...inputs};
+  const chosen=active,parameters={...inputs};let computed;
   for(let i=0;i<5;i++){
    const step=document.querySelector('.workflow-step[data-step="'+i+'"]');step.classList.add("running");
    put("workflow-status",["● Preparing illustrative records","● Checking structure and valid ranges","● Computing model outputs","● Constructing decision view","● Reconciling metrics and report"][i]);
    await delay(document.getElementById("sc-fast-mode")?.checked?100:1900);
-   if(i===2){result=runCase(chosen,parameters);if(!result?.metrics?.length)throw Error("No model output");}
-   if(i===3)renderCase(result);
+   if(i===2){computed=runCase(chosen,parameters);if(!computed?.metrics?.length)throw Error("No model output");}
+   if(i===3)renderCase(computed);
    step.classList.remove("running");
    const warn=i===3&&experience.getDecision()?.level==="review";
    step.classList.add(warn?"warning":"done");step.querySelector(".workflow-icon").textContent=warn?"!":"✓";
@@ -336,10 +336,10 @@ async function execute(){
   put("workflow-status","✓ Example analysis complete · results calculated locally");
   put("update-status","Updated · model metrics and executive report are current.");$("update-status").classList.remove("dirty");
  }catch(error){put("workflow-status","! Review example inputs");put("update-status","Unable to complete analysis: "+error.message);$("update-status").classList.add("dirty");}
- finally{button.disabled=false;running=false;}
+ finally{button.disabled=false;running=false;if(JSON.stringify(inputs)!==JSON.stringify(lastExecutedInputs))dirty();}
 }
 $("run-analysis").addEventListener("click",execute);
-$("reset-analysis").addEventListener("click",()=>{inputs={...initial[active]};controlsForCase();execute();});
+$("reset-analysis").addEventListener("click",()=>{if(running)return;inputs={...initial[active]};controlsForCase();execute();});
 function csvCell(x){return '"'+String(x??"").replaceAll('"','""')+'"'}
 function download(name,text,mime){
  const url=URL.createObjectURL(new Blob([text],{type:mime})),a=dom("a");

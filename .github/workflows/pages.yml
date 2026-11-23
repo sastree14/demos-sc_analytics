@@ -39,6 +39,20 @@ jobs:
           name: solutions-lab-visual-qa
           path: qa-evidence/
           retention-days: 7
+      - name: Assemble the verified site
+        if: github.ref == 'refs/heads/main'
+        run: |
+          mkdir -p dist
+          cp index.html .nojekyll dist/
+          cp -R predictive-models optimization automation-ai modelling-scenarios simulations bi-reporting custom-apps shared dist/
+      - name: Upload Pages release
+        if: github.ref == 'refs/heads/main'
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: dist/
+          name: pages-${{ github.run_id }}-${{ github.run_attempt }}
+    outputs:
+      artifact: pages-${{ github.run_id }}-${{ github.run_attempt }}
   deploy:
     if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
     needs: validate
@@ -47,21 +61,8 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: "22"
-      - name: Validate real analytical models
-        run: npm test
-      - name: Assemble static demonstration site
-        run: |
-          mkdir -p dist
-          cp index.html .nojekyll dist/
-          cp -R predictive-models optimization automation-ai modelling-scenarios simulations bi-reporting custom-apps shared dist/
-      - uses: actions/configure-pages@v5
-      - uses: actions/upload-pages-artifact@v4
-        with:
-          path: dist/
-      - name: Publish to GitHub Pages
+      - name: Publish the verified package
         id: deployment
         uses: actions/deploy-pages@v4
+        with:
+          artifact_name: ${{ needs.validate.outputs.artifact }}

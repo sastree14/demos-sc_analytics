@@ -66,6 +66,19 @@ export function installDecisionExperience({family,read,apply,run}){
  if(anchor){anchor.before(callout);anchor.before(scenarios);}
  else root.append(callout,scenarios);
 
+ const stageDetails=[
+ "Define the business question and gather the example input records.",
+ "Check completeness, valid ranges and the constraints that the decision must respect.",
+ "Execute the mathematical model or documented decision rules against the current synthetic scenario.",
+ "Compare feasible options, review exceptions and identify where human approval is needed.",
+ "Check outputs, limitations and the next monitoring condition before sharing a recommendation."
+ ];
+ document.querySelectorAll(".workflow-step,.step").forEach((node,i)=>{
+  if(i<stageDetails.length){
+   node.title=stageDetails[i];
+   if(!node.querySelector(".sc-step-explain"))node.append(el("small","sc-step-explain",stageDetails[i]));
+  }
+ });
  const modeHolder=el("label","sc-present-mode");
  const modeCheck=document.createElement("input");
  modeCheck.type="checkbox";modeCheck.id="sc-fast-mode";

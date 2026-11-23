@@ -132,6 +132,7 @@ export function runForecastStudio(c,raw={}){
  const planningValue=improvement*horizon*perUnit*scaleMoney;
  const monthlyUnits=avgFuture;
  const beyond=Math.max(0,monthlyUnits-Number(params.capacity));
+ const staffing=c.id==="workforce"?Math.ceil(monthlyUnits/c.perEmployee):null;
  const scenarios=[-12,0,12].map(delta=>{
   const effective=outlook+delta,values=forecast.map((v,i)=>Math.max(1,rnd(v*(1+effective/100*(i+1)/horizon))));
   const total=sum(values);
@@ -156,13 +157,13 @@ export function runForecastStudio(c,raw={}){
   metrics:[
    {label:"MODEL ACCURACY",value:selected.accuracy.toFixed(1)+"%",hint:"100 − WAPE · six held-out months"},
    {label:"EXPECTED VOLUME",value:formatCompact(sumFuture),hint:c.unit+" · "+horizon+"-month horizon"},
-   {label:"PLANNING EXPOSURE",value:formatCompact(beyond),hint:"monthly "+c.unit+" above stated capacity"},
+   staffing!==null?{label:"STAFFING REQUIREMENT",value:staffing+" FTE",hint:"at "+c.perEmployee+" cases per FTE/month"}:{label:"PLANNING EXPOSURE",value:formatCompact(beyond),hint:"monthly "+c.unit+" above stated capacity"},
    {label:"VS SIMPLE BASELINE",value:(selected.accuracy-baseline.accuracy>=0?"+":"")+(selected.accuracy-baseline.accuracy).toFixed(1)+" pp",hint:"accuracy difference"}
   ],
   quality:[{name:"Mean absolute error",value:formatNum(selected.mae)+" "+c.unit},{name:"Weighted error",value:selected.wape.toFixed(1)+"%"},{name:"Forecast bias",value:(selected.bias>=0?"+":"")+selected.bias.toFixed(1)+"%"},{name:"Validation",value:"Last six months held out"}],
   impact:{value:currency(planningValue),label:"Illustrative planning value",subtitle:"Model error reduction × selected cost per unit × horizon",note:"This is a scenario illustration of error-cost exposure versus the seasonal baseline, not guaranteed savings. The value is zero if the selected method does not outperform it."},
   decision:{headline:"Translate the outlook into a plan",summary:recommendation,actions:[
-   "Set a monthly operating plan around "+formatNum(avgFuture)+" "+c.unit+".",
+   staffing!==null?"Plan approximately "+staffing+" FTE-equivalents for "+formatNum(avgFuture)+" cases per month at an assumed "+c.perEmployee+" cases per person.":"Set a monthly operating plan around "+formatNum(avgFuture)+" "+c.unit+".",
    "Allocate an exception review if volume exceeds "+formatNum(Number(params.capacity))+" "+c.unit+"/month.",
    "Track forecast error monthly and revisit assumptions when actuals diverge."
   ]},

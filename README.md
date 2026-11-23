@@ -1,33 +1,63 @@
-# SC-Analytics — Decision Demonstrations
+# SC-Analytics — Solutions Lab
 
-A collection of interactive, executive-facing examples of the work SC-Analytics delivers. Every demonstration is built around an actual calculation and fictional, reproducible data.
+Independent, interactive, executive-facing demonstrations of SC-Analytics services. Each module uses actual algorithms with synthetic, reproducible data—not scripted results or confidential client records.
 
-**Live modules:** [Predictive Models — Demand & Risk](./predictive-models/) · [Inventory Optimisation](./optimization/).
+## Live demonstrations
 
-## Modules
+- [Predictive Intelligence Studio](./predictive-models/) — seven business applications with editable controls, model-quality indicators, executive decision guidance and self-contained reporting
+- [Inventory Optimisation](./optimization/) — constraint-aware replenishment with a real discrete allocation solver
+
+## Service roadmap
 
 1. Automation & AI — planned
-2. Predictive Models (time series, ensembles, classification) — available
+2. Predictive Models — **available**
 3. Modelling & Scenario Analysis — planned
-4. Optimization — available (inventory replenishment, exact discrete resource allocation)
-5. Simulations — planned
+4. Optimisation — **available**
+5. Simulation — planned
 6. BI & Reporting — planned
-7. Bespoke CRM / ERP Applications — planned
+7. Custom CRM / ERP — planned
 
-## Publication
+## GitHub Pages deployment
 
-GitHub Pages serves the root catalogue and its modules as independent routes using the included Pages workflow. After initial setup, select **GitHub Actions** as the Pages source under Settings → Pages.
+Source: GitHub Actions under Settings → Pages. The workflow runs all analytical tests with Node.js 22 before publishing static assets. Everything is hosted in a single repository, with separate routes:
 
-Expected URLs:\n- https://sastree14.github.io/demos-sc_analytics/predictive-models/\n- https://sastree14.github.io/demos-sc_analytics/optimization/
+- https://sastree14.github.io/demos-sc_analytics/
+- https://sastree14.github.io/demos-sc_analytics/predictive-models/
+- https://sastree14.github.io/demos-sc_analytics/optimization/
 
-## Data & mathematical integrity
+## Predictive Intelligence Studio — technical integrity
 
-All records and organisations are synthetic. Forecasting uses reproducible seasonal time-series and out-of-sample backtesting; model comparisons, WAPE, MAE, bias and forecast intervals are calculated by browser-side JavaScript. The classification example fits a logistic model to synthetic training observations, with a separate held-out evaluation dataset. Nothing calls an AI API, and no paid services, credentials or customer data are used.
+Built as a static app with native SVG charts, no paid dependencies or external model APIs. Seven reproducible synthetic applications:
 
-The workflow is a guided visualisation of local processing steps, not a live company integration or asynchronous production job. Results are illustrative and should not be interpreted as client-specific forecasts or guaranteed improvements.
+- **Demand, revenue and workload**: seasonal baseline, trend-seasonal and weighted ensemble methods, assessed on six held-out months. WAPE, bias and MAE are calculated. Scenario forecasts and uncertainty bands derive from forecast outputs and historical holdout error. Bands are *illustrative*, not statistically calibrated confidence intervals.
+- **Retention and delivery risk**: locally fitted logistic classification, with 470 training examples and 130 separate holdout records. Adjustable action thresholds, probability distributions, confusion matrices and precision/recall trade-offs.
+- **Cost estimation**: locally fitted multiple linear regression on 420 synthetic jobs, 100 held out; scope controls, numerical uncertainty, input sensitivity and illustrative pricing assumptions.
+- **Production anomalies**: rolling median/MAD detector using prior observations; sensitivity adjustment and detection precision/recall against *injected synthetic events*.
 
-## Optimisation method\n\nInventory optimisation is a real browser-side dynamic programme: each of four synthetic product lines offers discrete purchase quantities, subject to a purchasing-budget constraint, warehouse-capacity limit and per-product maximum. The objective is expected contribution after missed-demand, holding and financing penalties. Compare against a disclosed equal-coverage replenishment heuristic, then stress-test the same plan without re-optimising. The illustrative uplift is not historical or realised client savings.\n\n## Usage
+The impact section never reports realised customer savings. All financial values are planning scenarios derived from explicit assumptions (error costs, hypothetical intervention effectiveness, events found or proposed commercial margin).
 
-Open index.html locally or launch a simple local HTTP server (`python -m http.server 8000`) and navigate to /predictive-models/. No installation or backend required.
+The **executive brief is functional**: it can be downloaded as standalone HTML or printed/saved as a PDF by the browser. The underlying synthetic calculations can be exported as CSV.
 
-© 2026 SC-Analytics. All rights reserved; no code licence is granted by default.
+A user-requested, visibly paced workflow illustrates preparation → validation → calculation → interpretation → monitoring. It does **not** imply the app is connecting to a live ERP, running remote data pipelines or continuously improving models.
+
+## Inventory Optimisation
+
+A discrete, constrained solver allocates purchasing quantities to four synthetic product lines. It respects total budget, warehouse capacity and SKU limits, maximising a defined expected contribution metric. A disclosed reference heuristic provides comparison; scenarios stress-test the same plan. Any calculated uplift is illustrative.
+
+## Run locally
+
+From the repository root:
+
+```sh
+python -m http.server 8000
+```
+
+Open `http://localhost:8000/predictive-models/`.
+
+Run regression tests using:
+
+```sh
+npm test
+```
+
+© 2026 SC-Analytics. All rights reserved. No general code licence is granted by default.

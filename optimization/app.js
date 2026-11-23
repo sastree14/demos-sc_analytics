@@ -112,7 +112,7 @@ function renderResult(r){
   text("comparison-fill",percent(b.fill));text("optimal-fill",percent(o.fill));
   text("comparison-spend",money(b.spend));text("optimal-spend",money(o.spend));
   text("comparison-lost",integer(b.lost));text("optimal-lost",integer(o.lost));
-  renderBars(r);renderTable(r);renderScenarios(r);renderInsights(r);
+  renderBars(r);renderTable(r);renderScenarios(r);renderInsights(r);renderExecutiveBrief(r);
 }
 function el(tag,cls,value){
   const node=document.createElement(tag);if(cls)node.className=cls;if(value!==undefined)node.textContent=String(value);return node;
@@ -194,6 +194,43 @@ $("export-plan").addEventListener("click",()=>{
   document.body.append(link);link.click();link.remove();
   setTimeout(()=>URL.revokeObjectURL(url),500);
 });
+
+function renderExecutiveBrief(r){
+  const s=r.settings,o=r.optimised.evaluation,b=r.comparison.evaluation;
+  const metrics=[
+    ["MODELLED CONTRIBUTION",money(o.contribution)],
+    ["ILLUSTRATIVE UPLIFT",(r.delta>=0?"+":"")+money(r.delta)],
+    ["COVERED DEMAND",percent(o.fill)],
+    ["BUDGET USED",money(o.spend)+" / "+money(s.budget)]
+  ];
+  const host=$("brief-metrics");host.replaceChildren();
+  metrics.forEach(([label,value])=>{
+    const card=el("div","brief-metric");
+    card.append(el("span","",label),el("strong","",value));host.append(card);
+  });
+  text("brief-headline","A purchasing plan that respects the operating constraints");
+  text("brief-summary","The optimised purchase mix produces "+money(o.contribution)+" of modelled expected contribution; "+money(r.delta)+" above the disclosed reference allocation under the same synthetic assumptions.");
+  text("brief-evidence","Budget: "+money(o.spend)+" used of "+money(s.budget)+". Storage: "+integer(o.storage)+" / "+integer(s.capacity)+" units. Forecast demand coverage: "+percent(o.fill)+" versus "+percent(b.fill)+" under the reference rule.");
+}
+function optimisationReportHtml(r){
+  const escape=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+  const s=r.settings,o=r.optimised.evaluation,b=r.comparison.evaluation;
+  const rows=r.diagnostics.map(p=>"<tr><td>"+escape(p.name)+"</td><td>"+integer(p.optimisedScore.expected)+"</td><td>"+integer(p.stock)+"</td><td>"+integer(p.baseline)+"</td><td>"+integer(p.optimised)+"</td></tr>").join("");
+  const scenarios=r.scenarios.map(x=>"<tr><td>"+escape(x.label)+"</td><td>"+money(x.optimised.contribution)+"</td><td>"+money(x.comparison.contribution)+"</td></tr>").join("");
+  const style="body{font:13px/1.65 Arial,sans-serif;color:#1d3f32;max-width:930px;margin:40px auto;padding:0 22px}h1,h2{font-family:Georgia,serif;font-weight:400;letter-spacing:-.025em}h1{font-size:34px}h2{font-size:21px}header{border-bottom:3px solid #2c634c;padding-bottom:18px}header b{font-size:17px;letter-spacing:.07em}header span{float:right;color:#648474;font-size:10px}p{line-height:1.75}.metrics{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid #dce6dc}.metrics>div{border-right:1px solid #dce6dc;padding:14px}.metrics span{display:block;font-size:10px;color:#628b6c}.metrics strong{display:block;font-size:20px;line-height:1.3;overflow-wrap:anywhere;margin-top:9px}table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:10px;border-bottom:1px solid #e1eae1;font-size:11px}th{background:#eef4ee}.note{background:#edf5ee;padding:15px;border-left:3px solid #397656;color:#486b59}.fine{font-size:10px;color:#8b9e8e;margin-top:30px}@media print{@page{size:A4;margin:15mm}body{padding:0;margin:0}table,.metrics{break-inside:avoid}}";
+  return '<!doctype html><html lang="en"><head><meta charset="utf-8"><title>SC-Analytics Inventory Optimisation Executive Brief</title><style>'+style+'</style></head><body><header><b>SC—ANALYTICS</b><span>OPTIMISATION / EXECUTIVE BRIEF</span></header><h1>Inventory allocation decision</h1><p>Illustrative '+escape(cases[s.market].label)+' scenario · '+s.period+'-week horizon · results calculated locally using exact discrete dynamic programming.</p><div class="metrics"><div><span>MODELLED CONTRIBUTION</span><strong>'+money(o.contribution)+'</strong></div><div><span>CONTRIBUTION VS REFERENCE</span><strong>'+money(r.delta)+'</strong></div><div><span>EXPECTED FILL RATE</span><strong>'+percent(o.fill)+'</strong></div><div><span>RESOURCE UTILISATION</span><strong>'+money(o.spend)+' / '+money(s.budget)+'</strong></div></div><h2>Executive interpretation</h2><p>The optimised allocation improves expected contribution by '+money(r.delta)+' over the disclosed comparison rule under the same fictional demand assumptions. It requires '+money(o.spend)+' of purchasing budget and '+integer(o.storage)+' storage slots, within the selected limits.</p><div class="note">Model value is illustrative, not observed profit or verified savings. Calibrate demand, margins and procurement constraints before any business decision.</div><h2>Purchasing plan by product line</h2><table><thead><tr><th>Product</th><th>Demand</th><th>On hand</th><th>Reference</th><th>Optimised</th></tr></thead><tbody>'+rows+'</tbody></table><h2>Scenario stress tests</h2><table><thead><tr><th>Scenario</th><th>Optimised contribution</th><th>Reference contribution</th></tr></thead><tbody>'+scenarios+'</tbody></table><h2>Recommended next actions</h2><ol><li>Validate product-level demand and supply lead times on actual ERP records.</li><li>Review carrying costs, lost-demand penalties and contractual purchasing limits.</li><li>Integrate an audited approval process before operational purchasing.</li></ol><p class="fine">© 2026 SC-Analytics · Synthetic inputs, calculated outputs. No ERP connection or realised customer savings.</p></body></html>';
+}
+function saveReport(body,filename){
+  const blob=new Blob([body],{type:"text/html;charset=utf-8"}),url=URL.createObjectURL(blob);
+  const a=document.createElement("a");a.href=url;a.download=filename;document.body.append(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),1200);
+}
+$("download-optimisation-brief").addEventListener("click",()=>{
+  if(!report)return;
+  saveReport(optimisationReportHtml(report),"SC-Analytics-Optimisation-Executive-Brief.html");
+});
+$("print-optimisation-brief").addEventListener("click",()=>{if(report)window.print()});
+
 showReadouts();
 try{
   report=runOptimisation(readInputs());validateResult(report);renderResult(report);

@@ -100,7 +100,7 @@ $("reset").addEventListener("click",()=>{
 function text(id,value){$(id).textContent=String(value);}
 function renderResult(r){
   const s=r.settings,o=r.optimised.evaluation,b=r.comparison.evaluation;
-  text("kpi-gain",(r.delta>=0?"+":"")+money(r.delta).replace("£","£"));
+  text("kpi-gain",(r.delta>=0?"+":"")+money(r.delta));
   text("kpi-fill",percent(o.fill));
   text("kpi-fill-compare","vs "+percent(b.fill)+" with reference policy");
   text("kpi-spend",money(o.spend));
@@ -178,13 +178,13 @@ $("export-plan").addEventListener("click",()=>{
   const rows=[
     ["SC-Analytics inventory optimisation","Fictional demonstration"],
     ["Market",cases[s.market].label],["Planning weeks",s.period],
-    ["Budget GBP",s.budget],["Capacity units",s.capacity],
+    ["Budget EUR",s.budget],["Capacity units",s.capacity],
     [],
-    ["Product line","Demand","On-hand stock","Reference order units","Optimised order units","Optimised purchase cost GBP"],
+    ["Product line","Demand","On-hand stock","Reference order units","Optimised order units","Optimised purchase cost EUR"],
     ...report.diagnostics.map(p=>[p.name,Math.round(p.optimisedScore.expected),p.stock,p.baseline,p.optimised,p.optimised*p.unitCost]),
-    [],["Reference contribution GBP",report.comparison.evaluation.contribution],
-    ["Optimised contribution GBP",report.optimised.evaluation.contribution],
-    ["Modelled delta GBP",report.delta],
+    [],["Reference contribution EUR",report.comparison.evaluation.contribution],
+    ["Optimised contribution EUR",report.optimised.evaluation.contribution],
+    ["Modelled delta EUR",report.delta],
     ["Modelled fill rate",report.optimised.evaluation.fill],
     ["Disclaimer","Illustrative expectations based only on synthetic data; not realised savings"]
   ];

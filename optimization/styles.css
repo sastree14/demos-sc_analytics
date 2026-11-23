@@ -49,3 +49,19 @@
 @media(max-width:1370px){.bar-row{grid-template-columns:125px minmax(0,1fr) 63px;gap:11px}.optimisation-steps{grid-template-columns:repeat(3,minmax(0,1fr))}.stress-rows{grid-template-columns:1fr}}
 @media(max-width:740px){.bar-row{grid-template-columns:95px minmax(0,1fr) 52px;gap:7px;margin:16px 0}.bar-name strong{font-size:11px!important}.bar-name small{font-size:9px!important}.chart-key .right-legend{margin-left:0}.optimisation-steps{grid-template-columns:repeat(2,minmax(0,1fr))}.stress-rows{grid-template-columns:1fr}.compare-rows>div{grid-template-columns:1.4fr 1fr 1fr}.bar-chart{min-height:220px}}
 @media(max-width:510px){.optimisation-steps{grid-template-columns:1fr}.bar-row{grid-template-columns:92px minmax(0,1fr) 47px}.bar-values{font-size:9px}.compare-rows>div:not(.compare-heading)>span{font-size:10px}.compare-rows>div>strong{font-size:11px}}
+
+
+/* Client-facing executive brief and printable optimisation report. */
+.executive-brief{margin:28px 0 10px;padding:27px 30px}
+.brief-buttons{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.brief-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));margin-top:21px;border:1px solid #e0e8df}
+.brief-metric{padding:17px 14px;border-right:1px solid #e0e8df;min-width:0}
+.brief-metric:last-child{border-right:0}
+.brief-metric span{display:block;font-size:9px;color:#788d82;letter-spacing:.08em;font-weight:800}
+.brief-metric strong{display:block;color:#23573f;font-size:21px;letter-spacing:-.045em;margin-top:9px;overflow-wrap:break-word}
+.brief-analysis{display:grid;grid-template-columns:1fr 1fr;gap:34px;padding:27px 0 17px}
+.brief-analysis h4{font-size:19px;font-family:Georgia,serif;font-weight:400;margin:10px 0}
+.brief-analysis p{font-size:11px;line-height:1.7;color:#687e70;margin-top:9px}
+.brief-disclaimer{border-top:1px solid #dce7df;padding-top:17px;color:#829486;font-size:10px}
+@media(max-width:900px){.brief-metrics{grid-template-columns:repeat(2,1fr)}.brief-metric:nth-child(2){border-right:0}.brief-metric:nth-child(-n+2){border-bottom:1px solid #e0e8df}.brief-analysis{grid-template-columns:1fr}}
+@media print{@page{size:A4;margin:15mm}.sidebar,.topbar,.intro,.tabs,.runbook,.footer,.layout,.section-kicker,.section-heading,[data-panel="method"]{display:none!important}.executive-brief{padding:0;margin:0;border:0;box-shadow:none}.brief-buttons{display:none!important}.brief-metrics,.brief-analysis{break-inside:avoid}body,.shell,.workspace,main{display:block!important;background:#fff!important;width:100%!important;max-width:none!important;margin:0!important;padding:0!important}}

@@ -272,15 +272,16 @@ function controlsForCase(){
  for(const c of descriptors){
   const section=dom("div","control-entry"),head=dom("div","control-label");
   const label=dom("label","",c.label),display=dom("output","",c.kind==="slider"?displayControl(inputs[c.key],c):"");
+  const help=dom("button","sc-input-help","?");help.type="button";help.title="Explain this input";help.setAttribute("aria-label","Explain "+c.label);help.addEventListener("click",()=>experience.askQuestion("Explain "+c.label));
   if(c.kind==="slider"){
-   const id="control-"+c.key;label.htmlFor=id;head.append(label,display);section.append(head);
+   const id="control-"+c.key;label.htmlFor=id;head.append(label,help,display);section.append(head);
    const slider=dom("input");slider.type="range";slider.id=id;slider.min=c.min;slider.max=c.max;slider.step=c.step||1;slider.value=inputs[c.key];
    slider.addEventListener("input",()=>{inputs[c.key]=Number(slider.value);display.textContent=displayControl(inputs[c.key],c);dirty()});
    section.append(slider);
    const end=dom("div","range-ends");end.append(dom("span","",displayControl(c.min,c)),dom("span","",displayControl(c.max,c)));section.append(end);
    if(c.hint)section.append(dom("p","control-hint",c.hint));
   }else{
-   section.append(head);head.append(label);const box=dom("div","control-choices");
+   section.append(head);head.append(label,help);const box=dom("div","control-choices");
    c.choices.forEach(([v,labelText])=>{
     const b=dom("button",Number(inputs[c.key])===Number(v)?"selected":"",labelText);b.type="button";b.setAttribute("aria-pressed",String(Number(inputs[c.key])===Number(v)));
     b.addEventListener("click",()=>{

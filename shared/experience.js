@@ -280,5 +280,5 @@ export function installDecisionExperience({family,read,apply,run}){
   renderSlots();
   if(dialog.open)reportBuilder();
  }
- return {refresh,openReport,guide:()=>toggleGuide(true),getDecision:()=>state.decision};
+ return {refresh,openReport,guide:()=>toggleGuide(true),askQuestion:ask,getDecision:()=>state.decision};
 }

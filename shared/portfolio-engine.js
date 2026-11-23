@@ -93,8 +93,8 @@ modules.find(m=>m.id==="automation-ai").cases.push({
 modules.find(m=>m.id==="modelling-scenarios").cases.push({
  id:"hire-outsource",label:"Hire, outsource or wait?",short:"Compare internal staffing, flexible outsourcing and unmet-demand exposure before committing to fixed capacity.",
  category:"CAPACITY / MAKE OR BUY",categoryShort:"BREAK-EVEN MODEL",
- inputs:[spec("volume","Monthly operating workload",100,1500,50),spec("productivity","Cases per employee / month",80,260,20),spec("salary","Loaded monthly cost / employee",2200,6600,200," €"),spec("outsourced","Outsourced cost per case",10,65,5," €"),spec("penalty","Unserved-case cost",20,120,10," €"),spec("limit","Maximum new employees",0,8,1)],
- defaults:{volume:850,productivity:170,salary:3900,outsourced:32,penalty:65,limit:6}
+ inputs:[spec("volume","Monthly operating workload",100,1500,50),spec("productivity","Cases per employee / month",80,260,20),spec("salary","Loaded monthly cost / employee",2200,6600,200," €"),spec("outsourced","Outsourced cost per case",10,65,5," €"),spec("limit","Maximum new employees",0,8,1)],
+ defaults:{volume:850,productivity:170,salary:3900,outsourced:32,limit:6}
 });
 modules.find(m=>m.id==="simulations").cases.push({
  id:"business-stress",label:"Business capacity stress test",short:"Estimate the probability that workload peaks and staff absences overwhelm available capacity.",

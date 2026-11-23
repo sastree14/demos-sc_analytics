@@ -1,0 +1,147 @@
+/**
+ * Transparent, synthetic-data decision rules for the SC-Analytics Solutions Lab.
+ * No autonomous action, remote AI, external permissions or verified savings.
+ */
+export const familyColors={
+ "predictive-models":{name:"Powder blue",main:"#437ca1",light:"#deedf8",soft:"#f1f7fc"},
+ "optimization":{name:"Sage green",main:"#438568",light:"#e0efdf",soft:"#f3faf2"},
+ "automation-ai":{name:"Soft turquoise",main:"#317f83",light:"#daf1ef",soft:"#effafa"},
+ "modelling-scenarios":{name:"Blush pink",main:"#956880",light:"#f7e1eb",soft:"#fcf4f8"},
+ "simulations":{name:"Pastel lavender",main:"#756aa2",light:"#e9e2f7",soft:"#f8f5fc"},
+ "bi-reporting":{name:"Warm sand",main:"#9a7951",light:"#faefd9",soft:"#fdf9ef"},
+ "custom-apps":{name:"Soft coral",main:"#aa7165",light:"#fae2dc",soft:"#fdf5f3"}
+};
+export const links=[
+ ["predictive-models","Predictive Intelligence"],["optimization","Mathematical Optimisation"],
+ ["modelling-scenarios","Modelling & Scenarios"],["simulations","Simulation & Risk"],
+ ["bi-reporting","BI & Reporting"],["automation-ai","Automation & AI"],["custom-apps","CRM / ERP / Apps"]
+];
+const money=n=>new Intl.NumberFormat("es-ES",{style:"currency",currency:"EUR",maximumFractionDigits:0}).format(Number(n)||0);
+const percent=n=>(100*n).toFixed(1)+"%";
+const number=value=>{
+ if(typeof value==="number")return value;
+ const s=String(value??"").replace(/[€£\s%]/g,"").replace(/[^0-9.,+\-]/g,"");
+ if(!s)return NaN;const comma=s.lastIndexOf(","),dot=s.lastIndexOf(".");
+ if(comma>=0&&dot>=0)return Number(comma>dot?s.replaceAll(".","").replace(",","."):s.replaceAll(",",""));
+ if(comma>=0)return Number(/,\d{3}$/.test(s)?s.replaceAll(",",""):s.replace(",","."));
+ if(dot>=0&&/\.\d{3}$/.test(s))return Number(s.replaceAll(".",""));
+ return Number(s);
+};
+const metric=(result,query)=>result?.metrics?.find(m=>m.label.toLowerCase().includes(query.toLowerCase()));
+const get=(result,query)=>number(metric(result,query)?.value);
+const make=(level,why,threshold,next,review)=>({level,why,threshold,next,review});
+const titles={act:"ACT / REVIEW OPTIONS",prepare:"PREPARE A CONTINGENCY",wait:"WAIT & MONITOR",review:"HUMAN REVIEW REQUIRED"};
+export function evaluateDecision({id,result,params={}}){
+ if(!result)return {...make("review","The analysis has not been calculated.","Run an analysis first.","Check the inputs and run the current case.","When valid results are available."),status:titles.review,id};
+ let d;
+ switch(id){
+ case "demand":case "revenue":case "workforce":{
+  const data=result.future||[],avg=data.reduce((s,x)=>s+x.value,0)/(data.length||1),high=Math.max(0,...data.map(x=>x.high||x.value)),cap=Number(params.capacity)||1;
+  d=avg>cap?make("act","Expected activity exceeds the configured available capacity.","Review capacity if scenario-average activity > "+cap+".","Compare additional resources with unserved-demand costs.","At the next planning cycle.")
+   :high>cap?make("prepare","The expected value fits, but the upper illustrative outlook exceeds capacity.","Prepare when the upper indicative range exceeds "+cap+".","Evaluate a temporary capacity option.","At the next forecast refresh.")
+   :make("wait","Expected activity and its indicative range remain within capacity.","Wait while the upper indicative range is below "+cap+".","Monitor capacity utilisation and forecast errors.","At the next data refresh.");
+  break;
+ }
+ case "churn":case "delivery":{
+  const risk=Number(result.probability)||0,threshold=Number(result.threshold)||.5;
+  d=risk>=threshold?make("act","This example risk score of "+percent(risk)+" exceeds the chosen threshold.","Escalate when risk ≥ "+percent(threshold)+".","Review the case before authorising an intervention.","When new customer or delivery evidence arrives.")
+   :make("wait","The current example risk score "+percent(risk)+" remains below the threshold.","Escalate when risk ≥ "+percent(threshold)+".","Continue monitoring; do not intervene automatically.","When input signals change.");
+  break;
+ }
+ case "anomaly":d=(result.flags||[]).length?make("review",result.flags.length+" sample signals were flagged; an alert is not a confirmed incident.","Investigate when a rolling deviation crosses the selected sensitivity.","Inspect flagged readings with an operator.","After the next sensor readings."):make("wait","No current sample readings crossed the selected anomaly threshold.","Review on new outlying readings.","Continue monitoring.","At the next measurement.");break;
+ case "cost":d=make("prepare","The numerical estimate is based on synthetic fitted examples, not a binding quote.","Request detailed validation before contractual pricing.","Review volume, distance, margins and delivery complexity.","Before a commercial commitment.");break;
+ case "invoice-flow":case "order-exceptions":case "service-routing":case "purchase-approvals":{
+  const key=id==="invoice-flow"?"EXCEPTIONS":id==="order-exceptions"?"REVIEW QUEUE":id==="service-routing"?"HUMAN ESCALATIONS":"HUMAN REVIEW QUEUE",count=get(result,key);
+  d=count>0?make("review",count+" example items require policy review or exception handling.","Keep a human checkpoint whenever any exception is present.","Review the flagged sample records; do not execute actual approvals or transfers.","Once missing information has been supplied.")
+   :make("prepare","All sample items meet the current illustrative routing conditions.","Release a workflow only after verifying rules and permissions.","Validate exceptions and audit logging on real data.","At the next policy update.");break;
+ }
+ case "pricing":{
+  const increase=number(result.impact?.value),current=result.comparison?.series?.[0]?.a||0;
+  d=increase>current*.05?make("prepare","The modelled pricing alternative improves contribution by "+money(increase)+".","Pilot changes only if estimated uplift exceeds 5% of baseline contribution.","Run a limited commercial experiment before changing all prices.","After observing customer conversion.")
+   :make("wait","Modelled pricing alternatives do not show material improvement.","Wait while uplift ≤ 5% of baseline contribution.","Keep current pricing and monitor volume.","At the next pricing review.");break;
+ }
+ case "investment":{
+  const npv=number(result.impact?.value),down=get(result,"DOWNSIDE NPV");
+  d=npv<=0?make("wait","The investment's modelled NPV is "+money(npv)+".","Wait while NPV ≤ €0.","Validate assumptions and seek alternative investments.","When a material benefit or cost estimate changes.")
+  :down<=0?make("prepare","Base NPV is positive, but the downside case is "+money(down)+".","Run a pilot if base NPV > 0 and downside NPV ≤ 0.","Reduce uncertainty before committing capital.","At the pilot decision point.")
+  :make("act","Base and downside NPV are positive under the current assumptions.","Consider formal review when base and downside NPV exceed €0.","Submit to the appropriate financial approval process.","At the capital investment review.");break;
+ }
+ case "recurring":{
+  const x=get(result,"LTV / CAC");d=x<2?make("review","The simplified customer economics have an LTV/CAC of "+x+"×.","Investigate when LTV/CAC < 2×.","Review retention, acquisition costs and margins.","After verified cohort data.")
+    :x<3?make("prepare","LTV/CAC is "+x+"× under the synthetic model.","Prepare if LTV/CAC is between 2× and 3×.","Test a bounded acquisition increase.","At the next cohort review.")
+    :make("act","LTV/CAC is "+x+"×, but cash constraints require review.","Consider acquisition expansion only if ratio ≥ 3× and cash is available.","Request approval for a controlled test.","At the next acquisition review.");break;
+ }
+ case "stock-risk":{
+  const risk=get(result,"STOCKOUT PROBABILITY")/100;
+  d=risk>.25?make("act","Simulated stockout probability is "+percent(risk)+".","Review replenishment when risk exceeds 25%.","Compare stock buffers, supplier lead times and shortage exposure.","At the next purchase cycle.")
+  :risk>.1?make("prepare","Stockout risk is "+percent(risk)+", above the chosen comfort zone.","Prepare if risk is 10–25%.","Evaluate contingency supply.","Before the next order cutoff.")
+  :make("wait","Simulated stockout risk is "+percent(risk)+".","Monitor while risk ≤ 10%.","Keep observing volatility.","At the next inventory review.");break;
+ }
+ case "queue-risk":{
+  const service=get(result,"SERVICE WITHIN SLA")/100;
+  d=service<.8?make("act","Only "+percent(service)+" of simulated requests meet the service target.","Review capacity if SLA < 80%.","Test extra staffing or lower handling times.","Before the next peak workload.")
+  :service<.93?make("prepare","The modelled service level is "+percent(service)+".","Prepare extra cover when 80% ≤ SLA < 93%.","Compare flexible staffing.","At the next shift plan.")
+  :make("wait","Modelled service performance is "+percent(service)+".","Keep the plan while SLA ≥ 93%.","Monitor arrival spikes.","After the next peak.");break;
+ }
+ case "delivery-risk":{
+  const chance=get(result,"ON-TIME PROBABILITY")/100;
+  d=chance<.8?make("review","Only "+percent(chance)+" of simulated paths meet the deadline.","Do not commit before review when probability < 80%.","Revisit the target or add contingency.","Before a contractual deadline is accepted.")
+  :chance<.95?make("prepare","The model meets the deadline in "+percent(chance)+" of simulated runs.","Prepare contingency between 80% and 95%.","Review dependencies and buffer.","Before the project starts.")
+  :make("wait","Simulated on-time probability is "+percent(chance)+".","Maintain the plan if on-time probability ≥ 95%.","Track real milestone progress.","At the next milestone.");break;
+ }
+ case "sales-bi":{
+  const gap=get(result,"TARGET VARIANCE");
+  d=gap<0?make("review","Revenue is "+money(-gap)+" below the selected target.","Investigate when net revenue variance < €0.","Inspect the lowest-performing segment or period.","At the next month-end close.")
+   :make("wait","Revenue meets the selected reporting target.","Wait while target variance ≥ €0.","Check returns and margins before concluding.","At the next reporting refresh.");break;
+ }
+ case "logistics-bi":{
+  const service=get(result,"ON-TIME DELIVERY")/100,goal=Number(params.goal)/100||.92;
+  d=service<goal?make("act","On-time service is "+percent(service)+" versus target "+percent(goal)+".","Investigate if service falls below "+percent(goal)+".","Review carrier and route-level delays.","At the next service review.")
+   :make("wait","The current service rate meets its chosen target.","Maintain plan while service ≥ "+percent(goal)+".","Watch for emerging late-delivery clusters.","At the next service review.");break;
+ }
+ case "profitability-bi":{
+  const margin=get(result,"OPERATING CONTRIBUTION");
+  d=margin<0?make("review","Modelled contribution is "+money(margin)+".","Investigate when contribution is negative.","Validate costs and product mix with finance.","At the next reporting close.")
+   :make("wait","Modelled contribution is positive.","Monitor while contribution remains positive.","Inspect low-margin families.","At the next margin review.");break;
+ }
+ case "sales-crm":{
+  const stale=get(result,"STALE OPPORTUNITIES");
+  d=stale?make("prepare",stale+" deals exceed the chosen activity-age threshold.","Review if stale opportunities > 0.","Assign concrete next steps to owners.","At the next pipeline meeting.")
+   :make("wait","No open deals breach the activity rule.","Maintain tracking while all deals have recent activity.","Monitor the pipeline; do not treat weighted value as won revenue.","At the next pipeline meeting.");break;
+ }
+ case "service-workspace":{
+  const risk=get(result,"PROJECTED SLA RISK")/100;
+  d=risk>.3?make("act","Projected SLA risk is "+percent(risk)+".","Act if risk > 30%.","Rebalance workload and prioritise ageing cases.","Before the next SLA breach.")
+   :make("wait","Current modelled SLA risk is "+percent(risk)+".","Monitor while risk ≤ 30%.","Continue assigning clear case owners.","At the next service meeting.");break;
+ }
+ default:d=make("prepare",result.decision?.summary||"A working model has been calculated, but business sign-off still matters.","Compare current results with relevant operational constraints.","Review the model's evidence and approval rules.","When business assumptions change.");
+ }
+ return {...d,id,status:titles[d.level],actions:result.decision?.actions||[],source:"Transparent example-specific decision rule",limits:"Synthetic business data. Advisory only; not automated authorisation or guaranteed financial impact."};
+}
+export function explainControl(control,value){
+ if(!control)return "Select an editable input to inspect its role in the calculation.";
+ const key=control.key.toLowerCase();
+ let meaning="This is a scenario assumption. Change it and run the model again to compare the results.";
+ if(/threshold|limit|tolerance|sla|goal|confidence|sensitivity/.test(key))meaning="This defines a decision boundary. Changing it can affect review queues and service targets; it does not change historical observations.";
+ else if(/budget|cost|price|penalty|rate|margin|outlay|fee/.test(key))meaning="This affects the economic comparison and may change the preferred action.";
+ else if(/capacity|staff|agent|stock|order|vehicle|load|volume|count|arrivals|demand/.test(key))meaning="This affects capacity, demand, workload or availability.";
+ else if(/growth|uncertainty|volatility|churn|conversion|reliability|adoption/.test(key))meaning="This affects future scenarios and may change model uncertainty or risk.";
+ return control.label+" is currently "+String(value)+(control.unit||"")+". "+meaning+" No external system changes when you edit it.";
+}
+export function answerGuide(query,context){
+ const q=String(query||"").trim().toLowerCase(),{result,decision,controls=[],params={},alternatives=[]}=context;
+ const d=decision||evaluateDecision(context),r=result||{};
+ if(!q)return "Choose a question or ask about the current decision.";
+ if(/who are|what can|how can|hello|hola|help/.test(q))return "I am the SC-Analytics Decision Guide: a transparent, rules-based explanation assistant for the current synthetic analysis. I can explain metrics, assumptions, decision thresholds and saved scenarios. I am not a remote LLM.";
+ if(/why|por qu|recommend|recomiend|reason|decisi[oó]n/.test(q))return d.status+". "+d.why+" "+d.threshold+" This is advisory, not an automatic business action.";
+ if(/wait|esper|do nothing/.test(q))return "Waiting can be valid. "+d.threshold+" "+d.review;
+ if(/threshold|umbral|when|cu[aá]ndo|trigger|switch/.test(q))return d.threshold+" "+d.next+" Review: "+d.review;
+ if(/scenario|compare|compar|alternative|alternativ/.test(q))return alternatives.length?alternatives.map(a=>a.label+": "+a.decision.status+"; "+a.result.metrics[0]?.label+" "+a.result.metrics[0]?.value).join(" | ")+". Use Compare to inspect all metrics.":"Save Alternative A or B first using the scenario controls, then compare results.";
+ if(/cost|€|eur|saving|ahorro|profit|value|impact|benefit|valor/.test(q))return (r.impact?.label||"Illustrative impact")+": "+(r.impact?.value||"not available")+". "+(r.impact?.formula||"See report")+" "+(r.impact?.note||"No verified customer savings.");
+ if(/risk|riesgo|warn|warning|error|limitation|l[ií]mite/.test(q))return d.status+". "+d.why+" Limit: "+d.limits+" "+(r.methodology||"");
+ if(/chart|gr[aá]fic|graph|report|informe|pdf|metric|indicador/.test(q))return "The active analysis is "+(r.chart?.title||r.case?.name||"the selected scenario")+". "+(r.chart?.subtitle||r.decision?.summary||"")+" Open the full report for evidence and actions.";
+ const control=controls.find(c=>q.includes(c.key.toLowerCase())||c.label.toLowerCase().split(" ").some(x=>x.length>4&&q.includes(x)));
+ if(control)return explainControl(control,params[control.key]);
+ if(/change|modify|vary|variable|parameter|modific|cambi|what if|qu[eé] pasa|10%|15%|20%/.test(q))return explainControl(controls[0],params[controls[0]?.key])+" Use the scenario controls and then run the model. I do not change inputs without your confirmation.";
+ return d.why+" I can explain the action, the threshold, business impact, parameter effects and saved scenarios. Ask about one of these.";
+}

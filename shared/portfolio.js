@@ -14,7 +14,7 @@ const runModule=(id,p)=>isOptimization?runOptimizationCase(id,p):run(module.id,i
 let active=module.cases[0].id,inputs=getInitial(active),snapshot=null,busy=false,reviewed=new Set();
 const experience=installDecisionExperience({
  family:module.id,
- read:()=>({id:active,label:getCase(active).label,question:getCase(active).short,result:snapshot,params:{...inputs},controls:getCase(active).inputs}),
+ read:()=>({id:active,label:getCase(active).label,question:getCase(active).short,result:snapshot,params:{...(snapshot?.params||inputs)},controls:getCase(active).inputs}),
  apply:async values=>{inputs={...values};paintControls();dirty();},
  run:()=>execute()
 });

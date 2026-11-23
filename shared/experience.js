@@ -278,6 +278,14 @@ export function installDecisionExperience({family,read,apply,run}){
   lineAction.lastChild.textContent=state.decision.next;
   lineReview.lastChild.textContent=state.decision.review;
   renderSlots();
+  document.querySelectorAll(".kpi-grid .kpi").forEach(card=>{
+   const label=card.querySelector(".label,.k-label")?.textContent?.trim();
+   if(!label||card.dataset.scExplain==="yes")return;
+   card.dataset.scExplain="yes";card.tabIndex=0;card.role="button";card.title="Explain this metric with Decision Guide";
+   const open=()=>ask("Explain "+label);
+   card.addEventListener("click",open);
+   card.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();open();}});
+  });
   if(dialog.open)reportBuilder();
  }
  return {refresh,openReport,guide:()=>toggleGuide(true),askQuestion:ask,getDecision:()=>state.decision};

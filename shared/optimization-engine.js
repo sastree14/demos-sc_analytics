@@ -81,7 +81,8 @@ function workforcePlanning(p){
  const score=arr=>{
   const served=arr.reduce((s,n,i)=>s+Math.min(demand[i],n*p.rate),0),lost=demand.reduce((s,x)=>s+x,0)-served,
   staff=arr.reduce((s,x)=>s+x,0),expense=staff*p.wage;
-  return {arr,served,lost,staff,expense,total:expense+lost*p.penalty};
+  const weightedLoss=arr.reduce((sum,n,i)=>sum+Math.max(0,demand[i]-n*p.rate)*p.penalty*[1,1.5,1.25,.8][i],0);
+  return {arr,served,lost,staff,expense,total:expense+weightedLoss};
  };
  let best=score([0,0,0,0]);
  for(let a=0;a<=maxAllowed;a++)for(let b=0;b<=maxAllowed-a;b++)for(let c=0;c<=maxAllowed-a-b;c++)for(let d=0;d<=maxAllowed-a-b-c;d++){
@@ -102,7 +103,7 @@ function workforcePlanning(p){
  {value:euro(baseline.total-best.total),label:"Illustrative operating cost reduction",formula:"Reference expense and backlog penalties minus optimal expense and penalties.",note:"Each worker is assigned to one shift; legal scheduling, contracts, skills and rest periods must be validated before use."},
  {title:"Cover the highest-need shifts first",summary:"The exact allocation uses "+best.staff+" of "+p.staff+" available staff and leaves "+best.lost+" cases unserved.",actions:["Check required skills, labour rules and contract constraints.","Use actual per-shift demand distributions, not only averages.","Run sensitivity analysis before changing staff rosters."]},
  [["Exact search","All feasible four-shift integer splits"],["Cost objective","Wages plus unserved workload penalty"],["Budget limit",euro(p.budget)],["Current total demand",fmt(demand.reduce((s,x)=>s+x,0))]],
- "Complete enumeration of integer staff allocations across four shifts, subject to maximum staff and wage budget. Work served = min(demand, staff × productivity); the solver minimises wages plus lost service penalties."
+ "Complete enumeration of staff allocations across four shifts under team and wage limits. Work served = min(demand, staff × productivity). The solver minimises wages plus unmet service penalties weighted by shift priority (1, 1.5, 1.25, 0.8)."
  );
 }
 const zones=[{name:"North",base:70},{name:"Central",base:110},{name:"Coastal",base:85}];
@@ -111,7 +112,8 @@ function fleetPlanning(p){
  const score=arr=>{
   const served=arr.reduce((s,n,i)=>s+Math.min(demands[i],n*p.capacity),0),vehicles=arr.reduce((s,x)=>s+x,0),cost=vehicles*p.vehicleCost,
   unserved=demands.reduce((s,x)=>s+x,0)-served;
-  return {arr,served,vehicles,cost,unserved,score:served*p.missedCost-cost};
+  const weightedValue=arr.reduce((sum,n,i)=>sum+Math.min(demands[i],n*p.capacity)*p.missedCost*[1,1.45,.85][i],0);
+  return {arr,served,vehicles,cost,unserved,score:weightedValue-cost};
  };
  let best=score([0,0,0]);
  for(let a=0;a<=limit;a++)for(let b=0;b<=limit-a;b++)for(let c=0;c<=limit-a-b;c++){
@@ -130,7 +132,7 @@ function fleetPlanning(p){
  {value:euro(best.score-baseline.score),label:"Illustrative net service improvement",formula:"Optimised covered-order value minus operating cost, versus equal-share allocation.",note:"This is area-level fleet allocation, not street-level routing or a guaranteed logistics saving. Travel times and driver constraints are omitted."},
  {title:"Allocate vehicles by demand and economic value",summary:"The solution assigns "+best.vehicles+" vehicles with "+fmt(best.unserved)+" unserved orders under the synthetic conditions.",actions:["Validate geographic route times, driver hours and vehicle capacity.","Compare rental, reassignment and outsourcing options.","Consider waiting when extra vehicle cost exceeds unmet-demand penalties."]},
  [["Search method","Exact integer enumeration"],["Constraints","Vehicle availability and daily budget"],["Objective","Covered-order value less vehicle cost"],["Geographic routing","Not included"]],
- "The solver enumerates nonnegative integer vehicle allocations across three service regions, subject to fleet availability and a daily spending limit. It maximises service value from covered orders minus operating cost."
+ "The solver enumerates nonnegative integer allocations across three service regions and respects fleet availability and daily spending. It maximises a weighted service value using regional factors 1, 1.45 and 0.85, minus vehicle operating cost."
  );
 }
 const products=[

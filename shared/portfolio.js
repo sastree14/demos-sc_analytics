@@ -1,4 +1,5 @@
 import {modules,moduleById,caseById,initial,run,presentation} from "./portfolio-engine.js";
+import {installDecisionExperience} from "./experience.js";
 const $=id=>document.getElementById(id),create=(tag,cl,txt)=>{const el=document.createElement(tag);if(cl)el.className=cl;if(txt!==undefined)el.textContent=String(txt);return el;};
 const svgNS="http://www.w3.org/2000/svg",svg=(tag,attrs={},txt)=>{const el=document.createElementNS(svgNS,tag);for(const [k,v] of Object.entries(attrs))el.setAttribute(k,String(v));if(txt!==undefined)el.textContent=String(txt);return el;};
 const number=n=>new Intl.NumberFormat("es-ES",{maximumFractionDigits:1}).format(n);
@@ -6,6 +7,12 @@ const compact=n=>Math.abs(n)>=1000000?number(n/1000000)+" M":Math.abs(n)>=10000?
 const escape=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const module=moduleById(document.body.dataset.module),isWorkflow=module.id==="automation-ai"||module.id==="custom-apps";
 let active=module.cases[0].id,inputs=initial(module.id,active),snapshot=null,busy=false,reviewed=new Set();
+const experience=installDecisionExperience({
+ family:module.id,
+ read:()=>({id:active,label:caseById(module.id,active).label,question:caseById(module.id,active).short,result:snapshot,params:{...inputs},controls:caseById(module.id,active).inputs}),
+ apply:async values=>{inputs={...values};paintControls();dirty();},
+ run:()=>execute()
+});
 function set(id,v){$(id).textContent=String(v)}
 function paintCases(){
  const host=$("case-grid");host.replaceChildren();
@@ -151,6 +158,7 @@ function reportView(out){
 function paint(out){
  snapshot=out;metricCards(out.metrics,"metrics");graphChart(out.chart);chartBars(out.comparison);tableView(out.table);decisionView(out);reportView(out);
  set("active-scenario-label","SYNTHETIC DATA / "+out.case.categoryShort);set("example-method",out.methodology);
+ experience.refresh();
 }
 function resetSteps(){
  document.querySelectorAll(".workflow-step").forEach((element,i)=>{element.classList.remove("done","running");element.querySelector("i").textContent=String(i+1).padStart(2,"0")});
@@ -162,10 +170,12 @@ async function execute(){
  try{
   const messages=["Preparing synthetic business records","Checking assumptions and input constraints","Calculating models and operational rules","Summarising implications for decision-makers","Verifying the current reporting output"];
   for(let i=0;i<5;i++){
-   const step=document.querySelector('[data-step="'+i+'"]');step.classList.add("running");set("workflow-status",messages[i]);await delay(i===2?170:120);
+   const step=document.querySelector('[data-step="'+i+'"]');step.classList.add("running");set("workflow-status",messages[i]);await delay(document.getElementById("sc-fast-mode")?.checked?110:1900);
    if(i===2){const computed=run(module.id,c,params);if(computed.metrics.length!==4)throw Error("Model did not return a complete result");snapshot=computed;}
    if(i===3)paint(snapshot);
-   step.classList.remove("running");step.classList.add("done");step.querySelector("i").textContent="✓";
+   step.classList.remove("running");
+   const warn=i===3&&experience.getDecision()?.level==="review";
+   step.classList.add(warn?"warning":"done");step.querySelector("i").textContent=warn?"!":"✓";
   }
   set("workflow-status","✓ Calculation complete · report and sample register refreshed");set("input-status","Scenario updated successfully.");$("input-status").classList.remove("dirty");
  }catch(error){set("workflow-status","Unable to calculate: "+error.message);set("input-status","Check your inputs: "+error.message);$("input-status").classList.add("dirty")}

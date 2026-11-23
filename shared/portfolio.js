@@ -38,7 +38,9 @@ function displayValue(value,c){
 function paintControls(){
  const host=$("control-list");host.replaceChildren();
  getCase(active).inputs.forEach(c=>{
-  const root=create("div","input-wrap"),head=create("div","input-header"),label=create("label","",c.label);head.append(label);root.append(head);
+  const root=create("div","input-wrap"),head=create("div","input-header"),label=create("label","",c.label);
+  const help=create("button","sc-input-help","?");help.type="button";help.title="Explain this input";help.setAttribute("aria-label","Explain "+c.label);help.addEventListener("click",()=>experience.askQuestion("Explain "+c.label));
+  head.append(label,help);root.append(head);
   if(c.kind==="range"){
    const id="input-"+c.key,labelValue=create("output","",displayValue(inputs[c.key],c));head.append(labelValue);label.htmlFor=id;
    const input=create("input");input.type="range";input.id=id;input.min=c.min;input.max=c.max;input.step=c.step;input.value=inputs[c.key];

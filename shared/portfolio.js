@@ -79,7 +79,7 @@ function graphChart(chart){
  set("chart-title",chart.title);set("chart-description",chart.subtitle);
  const data=chart.series,W=860,H=305,node=elementSvg("main-chart",W,H);
  const all=data.map(x=>x.a),hasSecondary=chart.kind==="line"&&data.some(x=>Number(x.b)!==0),series=hasSecondary?data.flatMap(x=>[x.a,x.b]):all;
- const minV=Math.min(0,...series),maxV=Math.max(1,...series);
+ const minV=Math.min(...series),maxV=Math.max(1,...series);
  if(chart.kind==="line"){
   const low=minV>=0?Math.max(0,Math.min(...series)*.85):minV*1.2,high=maxV*1.12+1;
   const g=grid(node,W,H,{min:low,max:high,ticks:4,left:68,right:17,top:17,bottom:45});

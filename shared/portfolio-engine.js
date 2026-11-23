@@ -83,6 +83,37 @@ export const modules=[
    defaults:{count:250,staff:8,sla:56,load:7,critical:16,cost:130}}
  ]}
 ];
+// Additional generalist business questions to avoid making each discipline look single-purpose.
+modules.find(m=>m.id==="automation-ai").cases.push({
+ id:"agent-workflow",label:"AI-style case orchestration",short:"Follow document intake, synthetic scoring, evidence checks and human checkpoints through a complete process.",
+ category:"OPERATIONS / ASSISTED DECISIONS",categoryShort:"RULE-BASED AGENT PROTOTYPE",
+ inputs:[spec("count","Requests in the processing queue",100,700,50),spec("confidence","Mock confidence threshold",65,95,5,"%"),spec("exposure","Sensitive-value escalation limit",500,9000,500," €"),spec("hours","Average manual review minutes",5,30,5," min"),spec("rate","Illustrative review cost per hour",18,75,1," €")],
+ defaults:{count:350,confidence:80,exposure:3500,hours:15,rate:34}
+});
+modules.find(m=>m.id==="modelling-scenarios").cases.push({
+ id:"hire-outsource",label:"Hire, outsource or wait?",short:"Compare internal staffing, flexible outsourcing and unmet-demand exposure before committing to fixed capacity.",
+ category:"CAPACITY / MAKE OR BUY",categoryShort:"BREAK-EVEN MODEL",
+ inputs:[spec("volume","Monthly operating workload",100,1500,50),spec("productivity","Cases per employee / month",80,260,20),spec("salary","Loaded monthly cost / employee",2200,6600,200," €"),spec("outsourced","Outsourced cost per case",10,65,5," €"),spec("penalty","Unserved-case cost",20,120,10," €"),spec("limit","Maximum new employees",0,8,1)],
+ defaults:{volume:850,productivity:170,salary:3900,outsourced:32,penalty:65,limit:6}
+});
+modules.find(m=>m.id==="simulations").cases.push({
+ id:"business-stress",label:"Business capacity stress test",short:"Estimate the probability that workload peaks and staff absences overwhelm available capacity.",
+ category:"RESILIENCE / CONTINGENCY",categoryShort:"MONTE CARLO",
+ inputs:[spec("demand","Average weekly demand",200,1500,50),spec("volatility","Demand variability",5,45,5,"%"),spec("capacity","Nominal weekly capacity",300,1700,50),spec("absence","Expected capacity outage",0,25,5,"%"),spec("penalty","Cost of unmet work",10,110,10," €")],
+ defaults:{demand:900,volatility:24,capacity:1050,absence:10,penalty:45}
+});
+modules.find(m=>m.id==="bi-reporting").cases.push({
+ id:"executive-bi",label:"Executive command centre",short:"Combine commercial performance, margin and operational service into a board-level decision view.",
+ category:"EXECUTIVE / CROSS-FUNCTION",categoryShort:"MANAGEMENT SCORECARD",
+ inputs:[option("region","Business area",[["All","All business areas"],["North","North"],["East","East"],["South","South"],["West","West"]]),spec("target","Revenue target adjustment",-20,25,5,"%"),spec("cost","Variable cost ratio",30,75,5,"%"),spec("service","Target service quality",80,98,2,"%"),spec("penalty","Exposure per late delivery",20,140,10," €")],
+ defaults:{region:"All",target:8,cost:53,service:92,penalty:70}
+});
+modules.find(m=>m.id==="custom-apps").cases.push({
+ id:"fleet-assets",label:"Fleet maintenance & renewal",short:"Inspect synthetic assets, compare repair and renewal costs, and identify vehicles needing a decision.",
+ category:"ASSETS / LIFE CYCLE",categoryShort:"FLEET DECISION WORKSPACE",
+ inputs:[spec("age","Replacement consideration from",3,12,1," years"),spec("repair","Estimated annual repair cost",2000,13000,500," €"),spec("replacement","Annualised replacement cost",5000,17000,500," €"),spec("downtime","Estimated annual downtime cost",1000,12000,500," €"),spec("buffer","Minimum value difference before action",0,5000,500," €")],
+ defaults:{age:7,repair:6500,replacement:9500,downtime:4800,buffer:1500}
+});
 export const moduleById=id=>modules.find(m=>m.id===id)||modules[0];
 export const caseById=(moduleId,caseId)=>moduleById(moduleId).cases.find(c=>c.id===caseId)||moduleById(moduleId).cases[0];
 export const initial=(moduleId,caseId)=>({...caseById(moduleId,caseId).defaults});
@@ -431,12 +462,119 @@ function appService(p){
   methodology:"Each synthetic service case has priority, current age and an assumed handling horizon. Potential breach means age plus assumed resolution time exceeds the selected SLA. Capacity is a transparent daily throughput estimate."
  });
 }
+
+function assistedAgent(p){
+ const records=seedData(p.count,664,(i,r)=>{
+  const score=round(50+r()*50),value=round(100+r()*14000),sensitive=r()<.09,missing=r()<.12,category=["Technical","Billing","Delivery","Account"][i%4];
+  const route=sensitive?"Privacy review":missing?"Missing information":value>p.exposure?"Manager approval":score<p.confidence?"Low confidence":"Prepare draft";
+  return {id:"REQ-"+(18000+i),score,value,sensitive,missing,category,route};
+ });
+ const by=type=>records.filter(x=>x.route===type).length,ready=by("Prepare draft"),manual=records.length-ready;
+ const counts=["Prepare draft","Low confidence","Missing information","Manager approval","Privacy review"].map(k=>row(k,by(k)));
+ return result({
+  metrics:[measure("REQUESTS CLASSIFIED",num(records.length),"fictional service request records"),measure("DRAFTS PREPARED",num(ready),"templates suggested for approval"),measure("REQUIRES HUMAN ACTION",num(manual),"policy exceptions and uncertainty"),measure("REVIEW TIME AVOIDED",round(ready*p.hours/60,1)+" h","hypothetical effort, not measured saving")],
+  chart:chartBar(counts,"How the case orchestrator routes requests","The mock score is synthetic; no real LLM is called."),
+  comparison:chartBar([row("Intake",records.length),row("Template-ready",ready),row("Human queue",manual)],"Automated preparation vs human decisions","No messages or external tasks are actually performed."),
+  table:{columns:["Request","Type","Illustrative score","Proposed next step"],rows:records.slice(0,10).map(x=>[x.id,x.category,x.score+"%",x.route])},
+  impact:{value:money(ready*p.hours*p.rate/60),label:"Illustrative review-effort equivalent",formula:"Template-ready requests × assumed manual review time × assumed hourly cost.",note:"This is a rule-based demonstration with fictional confidence scores and deterministic templates. No LLM inference, real drafting API, automatic sending or measured savings."},
+  decision:{title:"Keep uncertain requests with a person",summary:"The policy prepares a reviewable suggested route for "+ready+" requests, while "+manual+" require human attention.",actions:["Validate decision rules and personal-data safeguards.","Require explicit review before external communications.","Measure actual routing quality before considering connected AI agents."]},
+  quality:[["Input source","Synthetic requests"],["AI model","None (illustrative heuristic score)"],["External actions","None"],["Manual escalation",num(manual)]],
+  scope:"Receive → check information → score → draft suggestion → human approval",
+  methodology:"Each example request has a seeded fictional confidence score, financial amount, category, privacy flag and completeness state. Deterministic policy checks route the record and do not call an external AI model."
+ });
+}
+function hireOutsource(p){
+ const plans=range(p.limit+1,i=>{
+  const internal=Math.min(p.volume,i*p.productivity),external=p.volume-internal,staffExpense=i*p.salary,outsourcing=external*p.outsourced;
+  return {staff:i,internal,external,total:staffExpense+outsourcing,staffExpense,outsourcing};
+ });
+ const current=plans[0],best=plans.reduce((a,b)=>a.total<b.total?a:b);
+ const breakeven=p.salary/p.productivity,loss=best.total;
+ return result({
+  metrics:[measure("LOWEST MODELLED COST",money(best.total),"per month, before existing overhead"),measure("NEW HIRES",num(best.staff),"in cost-minimising plan"),measure("OUTSOURCED CASES",num(best.external),"remaining variable workload"),measure("SAVINGS VS ALL OUTSOURCE",money(current.total-best.total),"hypothetical cost difference")],
+  chart:chartLine(plans.map(x=>row(x.staff+" hires",round(x.total),round(x.staffExpense))),"Staffing vs outsourcing cost","Each point evaluates fixed staff costs plus the cost of variable outsourced work.",["Total monthly €","Staff expense €"]),
+  comparison:chartBar([row("All outsourced",round(current.total)),row("Best feasible plan",round(best.total)),row("All internal if possible",round(plans.at(-1).total))],"Make-or-buy cost comparison","The selected plan minimises the specified monthly cost."),
+  table:{columns:["New employees","Internal cases","Outsourced cases","Total monthly cost"],rows:plans.map(x=>[num(x.staff),num(x.internal),num(x.external),money(x.total)])},
+  impact:{value:money(current.total-best.total),label:"Illustrative monthly savings vs full outsourcing",formula:"All-outsourced monthly cost minus the minimum total cost among staff plans.",note:"The comparison assumes all incoming cases must be covered by employees or outsourced suppliers. It omits hiring delays, onboarding, dismissal costs, skills and contract constraints."},
+  decision:{title:best.staff?"Test fixed capacity before hiring":"Maintain flexibility until economics change",summary:"Under the selected assumptions, the lowest modelled operating cost uses "+best.staff+" new employees and "+num(best.external)+" outsourced cases. The cost break-even is "+money(breakeven)+" per internal case.",actions:["Validate internal productivity, hiring costs and demand persistence.","Review service-quality commitments and labour-law constraints.","Recalculate after a verified demand or supplier-pricing change."]},
+  quality:[["Decision space",num(plans.length)+" staffing options"],["Objective","Minimum monthly covered-workload cost"],["Demand coverage","100% via internal or external"],["Real contracts","Not modelled"]],
+  scope:"Define demand → compare staff levels → optimise variable purchasing → approve",
+  methodology:"The model enumerates integer new-hire counts from zero to the allowed maximum. Each employee can handle a fixed monthly volume; all remaining cases are outsourced at the editable per-case price."
+ });
+}
+function businessStress(p){
+ const r=rnd(1192),count=1200,rows=[];
+ for(let i=0;i<count;i++){
+  const shock=gaussian(r),demand=Math.max(0,p.demand*(1+shock*p.volatility/100)),absence=Math.min(.60,Math.max(0,p.absence/100+gaussian(r)*.045)),
+  capacity=p.capacity*(1-absence),shortfall=Math.max(0,demand-capacity);
+  rows.push({demand,capacity,shortfall,cost:shortfall*p.penalty});
+ }
+ const fails=rows.filter(x=>x.shortfall>0).length,expected=avg(rows.map(x=>x.cost)),p95=percentile(rows.map(x=>x.shortfall),.95);
+ const ranges=range(10,i=>{const a=i*100,b=(i+1)*100;return row(a+"-"+b,rows.filter(x=>x.shortfall>=a&&(i===9||x.shortfall<b)).length)});
+ return result({
+  metrics:[measure("SERVICE CAPACITY BREACH",percent(fails/count),"across 1,200 workload trials"),measure("EXPECTED EXPOSURE",money(expected),"mean simulated shortfall cost"),measure("P95 SHORTFALL",num(p95),"upper-tail weekly unserved work"),measure("AVERAGE COVERAGE",percent(1-avg(rows.map(x=>x.shortfall/Math.max(1,x.demand)))),"average demand served")],
+  chart:chartDistribution(ranges,"Distribution of unmet workload","Simulated demand and staff availability shocks in each scenario."),
+  comparison:chartBar([row("Nominal capacity",p.capacity),row("Average demand",p.demand),row("Demand with +20%",round(p.demand*1.2))],"Stress scenarios vs available capacity","Weekly units under different operating conditions."),
+  table:{columns:["Trial","Demand","Capacity","Financial exposure"],rows:rows.slice(0,10).map((x,i)=>["Run "+(i+1),num(x.demand),num(x.capacity),money(x.cost)])},
+  impact:{value:money(expected),label:"Expected cost of capacity shortfall",formula:"Mean over trials of max(0, demand − available capacity) × unit penalty.",note:"The shock distributions are illustrative normal approximations, not calibrated from actual business data or guarantees of tail risk."},
+  decision:{title:fails/count>.2?"Prepare additional resilience options":"Monitor resilience without premature expansion",summary:percent(fails/count)+" of hypothetical operating weeks exceed available capacity under the selected variability and absence assumptions.",actions:["Identify actual demand peaks and staff absence patterns.","Compare temporary capacity with shortfall penalties.","Set observable contingency triggers for peak weeks."]},
+  quality:[["Independent trials",num(count)],["Shock distributions","Seeded normal approximations"],["Risk horizon","One operating week"],["Observed client data","None"]],
+  scope:"Measure uncertainty → stress capacity → quantify breach probability → contingency",
+  methodology:"A seeded simulation samples independent demand and staff absence shocks for 1,200 operating weeks. It calculates capacity shortages and hypothetical exposure costs with the selected per-unit penalty."
+ });
+}
+function executiveBI(p){
+ const base=salesSource(),shipping=logisticsSource(),sales=base.filter(x=>x.month>=12&&(p.region==="All"||x.reg===p.region)),
+ ships=shipping.filter(x=>p.region==="All"||x.region===p.region);
+ const revenue=sum(sales.map(x=>x.actual)),target=sum(sales.map(x=>x.target))*(1+p.target/100),profit=revenue*(1-p.cost/100),
+ late=ships.filter(x=>x.delay).length,service=ships.length?1-late/ships.length:1;
+ const monthly=range(12,i=>{const items=sales.filter(x=>x.month===12+i);return row("M"+(i+1),round(sum(items.map(x=>x.actual))),round(sum(items.map(x=>x.target))*(1+p.target/100)))});
+ return result({
+  metrics:[measure("REPORTED REVENUE",money(revenue),"synthetic 12-month sales register"),measure("TARGET VARIANCE",money(revenue-target),"actual minus management target"),measure("OPERATING MARGIN",percent(profit/(revenue||1)),"after editable variable cost ratio"),measure("ON-TIME SERVICE",percent(service),"filtered shipment sample")],
+  chart:chartLine(monthly,"Board-level revenue trend","Consistent 12-month period and filter across the synthetic register.",["Reported revenue €","Target €"]),
+  comparison:chartBar([row("Sales target",round(target)),row("Reported sales",round(revenue)),row("Cost estimate",round(revenue*p.cost/100))],"Combined executive performance","Net income estimates and targets from the same synthetic sales base."),
+  table:{columns:["Function","Observed value","Target","Decision signal"],rows:[
+   ["Sales",money(revenue),money(target),revenue>=target?"On plan":"Below target"],
+   ["Finance",percent(profit/(revenue||1)),"Positive contribution",profit>0?"Positive":"Review"],
+   ["Operations",percent(service),p.service+"%",service>=p.service/100?"Service met":"Service gap"],
+   ["Late delivery",num(late),"< "+round(ships.length*(1-p.service/100)),late<=ships.length*(1-p.service/100)?"On plan":"Escalate"]
+  ]},
+  impact:{value:money((revenue-target)-late*p.penalty),label:"Illustrative combined planning variance",formula:"Sales variance minus the assumed late-delivery exposure on the filtered shipment sample.",note:"Combines two fictional datasets solely to demonstrate management review; the value is not cash flow, incremental profit or audited consolidated reporting."},
+  decision:{title:revenue<target||service<p.service/100?"Review commercial and operational gaps together":"Maintain performance monitoring",summary:"The synthetic business reports "+money(revenue-target)+" revenue variance and "+percent(service)+" on-time service versus the selected "+p.service+"% target.",actions:["Confirm definitions and reconcile metrics with finance and operations.","Assign owners to deviations that exceed policy thresholds.","Drill into affected periods, regions and delivery exceptions."]},
+  quality:[["Sales source","24 × 4 monthly synthetic records"],["Service source","700 synthetic shipments"],["Reporting filter",p.region],["Live data integration","None"]],
+  scope:"Sales and operations → KPI definition → shared filters → executive actions",
+  methodology:"Twelve periods of fictional regional sales are aggregated with region-filtered shipment outcomes. Target adjustments, variable cost ratio and service exposure use the same selected management scope, but no actual finance ledger is connected."
+ });
+}
+function fleetAssets(p){
+ const cars=seedData(90,2013,(i,r)=>{
+  const years=2+Math.floor(r()*12),maintenance=round(p.repair*(.35+years*.11)*(0.85+r()*.3)),down=round(p.downtime*(.15+years*.08)),
+  retain=maintenance+down,replace=p.replacement,delta=retain-replace;
+  const recommendation=years>=p.age&&delta>p.buffer?"Consider renewal":delta>0?"Prepare replacement":"Continue operating";
+  return {id:"VEH-"+String(300+i),years,maintenance,down,retain,replace,delta,recommendation};
+ });
+ const renew=cars.filter(x=>x.recommendation==="Consider renewal"),prepare=cars.filter(x=>x.recommendation==="Prepare replacement"),
+ saved=sum(renew.map(x=>Math.max(0,x.delta))),baseline=sum(cars.map(x=>x.retain)),proposed=baseline-saved;
+ const groups=["Continue operating","Prepare replacement","Consider renewal"].map(name=>row(name,cars.filter(x=>x.recommendation===name).length));
+ return result({
+  metrics:[measure("ASSETS MONITORED",num(cars.length),"fictional vehicles"),measure("RENEWAL CANDIDATES",num(renew.length),"age and lifecycle-cost rule"),measure("PREPARE TO REPLACE",num(prepare.length),"cost warning but limited evidence"),measure("MODELLED COST DIFFERENCE",money(saved),"if all flagged renewals were justified")],
+  chart:chartBar(groups,"Fleet renewal decision queue","Age, estimated maintenance and downtime determine the indicative status."),
+  comparison:chartBar([row("Continue all vehicles",round(baseline)),row("Replace eligible cases",round(proposed))],"Illustrative annual fleet costs","Repairs and downtime versus annualised replacement costs."),
+  table:{columns:["Vehicle","Age","Retain cost","Recommended decision"],rows:cars.slice(0,12).map(x=>[x.id,x.years+" years",money(x.retain),x.recommendation])},
+  impact:{value:money(saved),label:"Illustrative lifecycle cost difference",formula:"For assets meeting age and cost-difference criteria, sum(max(0, retain cost − replacement annual cost)).",note:"Not verified savings. A real replacement decision also requires residual values, purchase/lease prices, utilisation, emissions, financing and condition data."},
+  decision:{title:renew.length?"Validate the vehicles flagged for renewal":"Maintain assets and monitor rising cost",summary:renew.length+" out of 90 synthetic assets meet the selected age and cost-difference thresholds, while "+prepare.length+" require contingency consideration.",actions:["Review condition, age and actual vehicle repair history.","Compare replacement, leasing and maintenance choices across the full lifecycle.","Require a named budget approver before committing to purchases."]},
+  quality:[["Assets","90 fictional vehicles"],["Decision model","Transparent cost and age rule"],["Approval or real purchase","Not connected"],["Register updates","Local demonstration only"]],
+  scope:"Vehicle register → lifecycle-cost estimate → replacement threshold → approval",
+  methodology:"Each fictional vehicle has an age, derived expected repair and downtime costs. Its rule recommends considering replacement when age exceeds the selected threshold and the retain-versus-replace cost gap exceeds the selected buffer."
+ });
+}
 const runners={
  "invoice-flow":automationInvoices,"order-exceptions":automationOrders,"service-routing":automationService,
  "pricing":modellingPricing,"investment":modellingInvestment,"recurring":modellingRecurring,
  "stock-risk":simulateStock,"queue-risk":simulateQueue,"delivery-risk":simulateDelivery,
  "sales-bi":biSales,"logistics-bi":biLogistics,"profitability-bi":biProfit,
- "sales-crm":appCRM,"purchase-approvals":appPurchase,"service-workspace":appService
+ "sales-crm":appCRM,"purchase-approvals":appPurchase,"service-workspace":appService,
+ "agent-workflow":assistedAgent,"hire-outsource":hireOutsource,"business-stress":businessStress,"executive-bi":executiveBI,"fleet-assets":fleetAssets
 };
 export function run(moduleId,caseId,raw={}){
  const c=caseById(moduleId,caseId),p={...c.defaults,...raw};

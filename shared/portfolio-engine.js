@@ -35,8 +35,8 @@ export const modules=[
    seed:204,inputs:[spec("count","Orders per period",100,1000,50),spec("late","Escalation after",1,7,1," days"),spec("inventory","Safety stock buffer",0,30,5,"%"),spec("threshold","Automated approval ceiling",500,9000,500," €"),spec("time","Minutes saved per routine order",2,15,1," min"),spec("hourRate","Hourly operating cost",18,65,1," €")],
    defaults:{count:450,late:6,inventory:5,threshold:8500,time:8,hourRate:32}},
   {id:"service-routing",label:"Assisted service routing",short:"Score sample requests and send uncertain or sensitive cases to a human.",category:"CUSTOMER OPERATIONS",categoryShort:"AI-ASSISTED PROTOTYPE",
-   seed:399,inputs:[spec("count","Incoming service requests",100,800,50),spec("confidence","Auto-routing score threshold",60,95,5,"%"),spec("critical","Critical cases reviewed",90,100,5,"%"),spec("handling","Minutes avoided on routine cases",3,17,1," min"),spec("hourRate","Hourly support cost",18,75,1," €"),spec("fee","Illustrative operating overhead",0,2200,100," €")],
-   defaults:{count:400,confidence:80,critical:100,handling:7,hourRate:33,fee:350}}
+   seed:399,inputs:[spec("count","Incoming service requests",100,800,50),spec("confidence","Auto-routing score threshold",60,95,5,"%"),spec("handling","Minutes avoided on routine cases",3,17,1," min"),spec("hourRate","Hourly support cost",18,75,1," €"),spec("fee","Illustrative operating overhead",0,2200,100," €")],
+   defaults:{count:400,confidence:80,handling:7,hourRate:33,fee:350}}
  ]},
  {id:"modelling-scenarios",label:"Modelling & Scenarios",tag:"FINANCE / STRATEGIC DECISIONS",headline:"Compare possible futures before you commit.",intro:"Explore the economics of pricing, investment and recurring revenue. Adjustable assumptions turn strategy into measurable trade-offs.",focus:"Sensitivity, profitability and risk",cases:[
   {id:"pricing",label:"Price & volume strategy",short:"See how price elasticity, costs and capacity change contribution.",category:"PRICING",categoryShort:"ECONOMIC MODEL",
@@ -65,8 +65,8 @@ export const modules=[
    seed:559,inputs:[option("region","Reporting region",[["All","All regions"],["North","North"],["East","East"],["South","South"],["West","West"]]),spec("months","Months in reporting window",3,12,3),spec("target","Target adjustment",-20,30,5,"%"),spec("cost","Variable cost ratio",35,75,5,"%"),spec("returns","Return / credit adjustment",0,9,1,"%")],
    defaults:{region:"All",months:12,target:8,cost:53,returns:2}},
   {id:"logistics-bi",label:"Delivery service dashboard",short:"Analyse on-time performance, carriers, cost and operational exceptions.",category:"LOGISTICS INTELLIGENCE",categoryShort:"SERVICE SCORECARD",
-   seed:557,inputs:[option("region","Operating region",[["All","All regions"],["North","North"],["East","East"],["South","South"],["West","West"]]),option("carrier","Carrier",[["All","All carriers"],["Atlas","Atlas"],["Faro","Faro"],["Nexa","Nexa"]]),spec("goal","On-time service target",80,98,1,"%"),spec("lateCost","Financial exposure per late order",10,130,5," €"),spec("expedited","Priority share adjustment",0,35,5,"%")],
-   defaults:{region:"All",carrier:"All",goal:92,lateCost:65,expedited:10}},
+   seed:557,inputs:[option("region","Operating region",[["All","All regions"],["North","North"],["East","East"],["South","South"],["West","West"]]),option("carrier","Carrier",[["All","All carriers"],["Atlas","Atlas"],["Faro","Faro"],["Nexa","Nexa"]]),spec("goal","On-time service target",80,98,1,"%"),spec("lateCost","Financial exposure per late order",10,130,5," €")],
+   defaults:{region:"All",carrier:"All",goal:92,lateCost:65}},
   {id:"profitability-bi",label:"Portfolio profitability",short:"See contribution by product group as volume and input costs change.",category:"FINANCE INTELLIGENCE",categoryShort:"PROFITABILITY ANALYSIS",
    seed:407,inputs:[option("channel","Commercial channel",[["All","All channels"],["Direct","Direct"],["Partner","Partner"],["Digital","Digital"]]),spec("months","Reporting periods",3,12,3),spec("inflation","Input cost inflation",0,25,1,"%"),spec("discount","Sales discount",0,18,1,"%"),spec("fixed","Monthly shared overhead",10000,90000,5000," €")],
    defaults:{channel:"All",months:12,inflation:7,discount:3,fixed:30000}}
@@ -388,12 +388,18 @@ function appPurchase(p){
  const items=seedData(p.count,698,(i,r)=>{
   const value=150+Math.round(r()*11500),policy=round(65+r()*35),duplicate=r()<.06,missing=r()<.075;
   const valid=policy>=p.compliance&&!duplicate&&!missing;
-  return {id:"REQ-"+(7000+i),party:["Ops","Finance","Facilities","IT"][i%4],value,policy,valid,duplicate,missing,auto:valid&&value<=p.threshold};
+  return {id:"REQ-"+(7000+i),party:["Ops","Finance","Facilities","IT"][i%4],value,policy,valid,duplicate,missing,auto:false,budgetHold:false};
  });
- const auto=items.filter(x=>x.auto),review=items.length-auto.length,acceptedValue=sum(auto.map(x=>x.value));
+ let reserved=0;
+ for(const item of items){
+  const candidate=item.valid&&item.value<=p.threshold;
+  if(candidate&&reserved+item.value<=p.budget){item.auto=true;reserved+=item.value;}
+  else if(candidate)item.budgetHold=true;
+ }
+ const auto=items.filter(x=>x.auto),review=items.length-auto.length,acceptedValue=reserved;
  const budget=acceptedValue<=p.budget,limit=p.budget;
- const approvedBudget=Math.min(limit,acceptedValue);
- const categories=[row("Policy-eligible",items.filter(x=>x.valid).length),row("Manager route",auto.length),row("Review needed",review),row("Over budget",items.filter(x=>x.auto&&x.value>limit).length)];
+ const approvedBudget=acceptedValue;
+ const categories=[row("Policy-eligible",items.filter(x=>x.valid).length),row("Manager route",auto.length),row("Review needed",review),row("Budget holds",items.filter(x=>x.budgetHold).length)];
  return result({metrics:[measure("REQUESTS SCREENED",num(p.count),"fake purchase requisitions"),measure("ROUTINE APPROVAL ROUTES",num(auto.length),"policy-valid and below limit"),measure("HUMAN REVIEW QUEUE",num(review),"requires authorised sign-off"),measure("BUDGET HEADROOM",money(p.budget-approvedBudget),"after capped routine commitments")],
   chart:chartBar(categories,"Approval policy outcomes","Approval routing requires both policy compliance and spending limits."),
   comparison:chartBar([row("Available budget",p.budget),row("Routine commitments",round(acceptedValue)),row("Budget-limited",round(approvedBudget))],"The budget constraint matters","Capped spending is a scenario illustration, not a booked purchase."),

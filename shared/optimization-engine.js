@@ -31,7 +31,7 @@ export const optimizationModule={
  inputs:[spec("hours","Available machine hours",70,300,10," h"),spec("material","Raw material units",350,2200,50),spec("demand","Market demand factor",70,140,10,"%"),spec("margin","Sales margin factor",75,150,5,"%")],
  defaults:{hours:160,material:1250,demand:100,margin:100}},
  {id:"inventory-allocation",label:"Inventory replenishment",short:"Solve a multi-item purchasing plan with exact two-constraint dynamic programming.",category:"SUPPLY CHAIN / INVENTORY",categoryShort:"EXACT DP / ADVANCED",
- inputs:[spec("budget","Purchasing budget",15000,75000,1000," €"),spec("capacity","Available storage slots",200,900,50),choice("market","Demand scenario",[["base","Baseline"],["high","Demand spike"],["low","Demand slowdown"]]),spec("uncertainty","Demand uncertainty",50,150,10,"%"),spec("service","Service emphasis",50,150,10,"%"),choice("period","Planning period",[[2,"2 weeks"],[4,"4 weeks"],[8,"8 weeks"]])],
+ inputs:[spec("budget","Purchasing budget",15000,70000,1000," €"),spec("capacity","Available storage slots",200,800,50),choice("market","Demand scenario",[["base","Baseline"],["growth","Demand spike"],["soft","Demand slowdown"]]),spec("uncertainty","Demand uncertainty",60,160,10,"%"),spec("service","Service emphasis",50,150,10,"%"),choice("period","Planning period",[[4,"4 weeks"],[8,"8 weeks"],[12,"12 weeks"]])],
  defaults:{budget:33000,capacity:450,market:"base",uncertainty:100,service:100,period:4}}
  ]};
 const factors=[

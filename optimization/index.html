@@ -40,9 +40,9 @@
           <aside class="controls">
             <div class="panel-title"><span>01</span><h3>Business constraints</h3></div>
             <p class="muted short">Set the resources and planning assumptions available to the purchasing team.</p>
-            <div class="range-head"><label for="budget">Purchasing budget</label><output id="budget-display">£33,000</output></div>
+            <div class="range-head"><label for="budget">Purchasing budget</label><output id="budget-display">€33,000</output></div>
             <input id="budget" type="range" min="15000" max="70000" step="500" value="33000">
-            <div class="range-captions"><span>£15k</span><span>£70k</span></div>
+            <div class="range-captions"><span>€15k</span><span>€70k</span></div>
             <div class="range-head"><label for="capacity">Additional storage capacity</label><output id="capacity-display">450 units</output></div>
             <input id="capacity" type="range" min="200" max="800" step="10" value="450">
             <div class="range-captions"><span>200</span><span>800</span></div>
@@ -116,7 +116,7 @@
           <article class="panel method-card"><span class="mini-label">01 / INPUT DATA</span><h3>Four fictional product lines</h3><p>Each line has a demand estimate, on-hand inventory, per-unit cost, contribution margin, shortage penalty, holding cost and maximum order. These are illustrative assumptions, not measurements from a real business.</p></article>
           <article class="panel method-card"><span class="mini-label">02 / OBJECTIVE</span><h3>Expected business contribution</h3><p>Maximise modelled contribution from fulfilled demand, less an explicit penalty for missed demand, expected stock-carry cost and a small financing charge on purchased units. Purchase cost is not counted again as a profit expense because the unit contribution already reflects sold-unit costs.</p></article>
           <article class="panel method-card"><span class="mini-label">03 / CONSTRAINTS</span><h3>Budget and capacity</h3><p>Purchases cannot exceed the available investment or additional storage capacity, and each product has a maximum order. Orders move in multiples of ten units; no fractional replenishment is allowed.</p></article>
-          <article class="panel method-card"><span class="mini-label">04 / SOLVER</span><h3>Exact within the stated increments</h3><p>Multiple-choice dynamic programming explores feasible choices for every SKU, with budget tracked in £50 units and storage in 10-unit batches. It selects the highest objective value from the feasible states, not a heuristic guess.</p></article>
+          <article class="panel method-card"><span class="mini-label">04 / SOLVER</span><h3>Exact within the stated increments</h3><p>Multiple-choice dynamic programming explores feasible choices for every SKU, with budget tracked in €50 units and storage in 10-unit batches. It selects the highest objective value from the feasible states, not a heuristic guess.</p></article>
           <article class="panel method-card"><span class="mini-label">05 / COMPARISON</span><h3>A clear reference policy</h3><p>The benchmark adds replenishment batches to the currently least-covered product until it runs out of feasible budget or capacity. This is a disclosed comparison rule—not a claim about how any real client currently operates.</p></article>
           <article class="panel method-card"><span class="mini-label">06 / UNCERTAINTY</span><h3>Illustrative demand distributions</h3><p>Expected demand uses five symmetric, weighted scenarios. Demand volatility and missed-demand sensitivity are adjustable. The scenario cards test the same optimised plan under different market conditions; they are not probability-calibrated forecasts.</p></article>
         </div>

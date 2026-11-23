@@ -25,6 +25,7 @@ def verify_case(page, case, first):
     slots = page.locator('.sc-scenario-slot')
     metrics = page.locator('.kpi-grid .kpi strong')
     assert metrics.count() == 4
+    assert "Unable" not in page.locator("#input-status,#update-status").inner_text(),case
     baseline = metrics.all_text_contents()
     original = slider.input_value()
     slider.press('End' if original != slider.get_attribute('max') else 'Home')
@@ -60,13 +61,12 @@ def verify_case(page, case, first):
     assert pages.nth(1).locator('svg').count() == 1
     assert pages.nth(0).locator('.sc-report-metric strong').all_text_contents() == baseline
     assert [row.all_text_contents()[-1] for row in [pages.nth(2).locator('table').first.locator('tbody tr').nth(i).locator('td') for i in range(4)]] == saved
-    if first:
-        page.evaluate("window.print = () => {}")
-        page.get_by_text('Print / save PDF',exact=True).click()
-        pdf = PdfReader(io.BytesIO(page.pdf(prefer_css_page_size=True)))
-        assert len(pdf.pages) == 4, (case,len(pdf.pages))
-        for i, sheet in enumerate(pdf.pages):
-            assert f'{i+1} / 4' in sheet.extract_text(), (case,i,sheet.extract_text()[-120:])
+    page.evaluate("window.print = () => {}")
+    page.get_by_text('Print / save PDF',exact=True).click()
+    pdf = PdfReader(io.BytesIO(page.pdf(prefer_css_page_size=True)))
+    assert len(pdf.pages) == 4, (case,len(pdf.pages))
+    for i, sheet in enumerate(pdf.pages):
+        assert f'{i+1} / 4' in sheet.extract_text(), (case,i,sheet.extract_text()[-120:])
     page.get_by_text('Close ×',exact=True).click()
     data = list(csv.reader(io.StringIO(download(page,page.locator('#download-csv,#download-data')))))
     assert len(data)>5 and not any('NaN' in cell for row in data for cell in row)
@@ -80,15 +80,20 @@ def main():
     with sync_playwright() as driver:
         browser = driver.chromium.launch(channel='chrome',args=['--no-sandbox'])
         page = browser.new_page(viewport={'width':1440,'height':900},reduced_motion='reduce')
+        page.set_default_timeout(7000)
         errors = []
+        shots = Path("qa-evidence")
+        shots.mkdir(exist_ok=True)
         page.on('pageerror', lambda e: errors.append(str(e)))
         page.goto(base)
+        page.screenshot(path=shots/'catalog.png')
         for family,count in FAMILIES.items():
             page.goto(base+family+'/')
             assert page.locator('[data-case]').count() == count
             assert page.locator('.sc-crossnav a').count() == 7
             for width in [390,820,1440]:
                 page.set_viewport_size({'width':width,'height':900})
+                page.screenshot(path=shots/f'{family}-{width}.png')
                 assert page.evaluate('document.documentElement.scrollWidth <= innerWidth+1'), (family,width,page.evaluate('document.documentElement.scrollWidth'))
             page.locator('#sc-fast-mode').check()
             for i,case in enumerate(page.locator('[data-case]').evaluate_all('(nodes)=>nodes.map(n=>n.dataset.case)')):

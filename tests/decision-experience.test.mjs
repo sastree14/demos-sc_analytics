@@ -90,3 +90,33 @@ test("Decision Guide explains current facts and does not pretend to run a real L
  const compare=answerGuide("Compare alternatives",ctx);
  assert.ok(compare.includes("Save Alternative"));
 });
+
+test("stock and delivery histograms retain every draw including both tails",()=>{
+ for(const [id,total] of [["stock-risk",1100],["delivery-risk",1000]]){
+  const c=modules.find(m=>m.id==="simulations").cases.find(c=>c.id===id);
+  for(const p of [c.defaults,Object.fromEntries(c.inputs.map(x=>[x.key,x.max??x.values?.at(-1)[0]]))]){
+   const out=run("simulations",id,p);
+   assert.equal(out.chart.series.reduce((sum,bin)=>sum+bin.a,0),total);
+  }
+ }
+});
+
+test("workforce, fleet and production satisfy all displayed resource limits",()=>{
+ for(const c of optimizationModule.cases.slice(1,4)){
+  for(const key of ["min","max","default"]){
+   const params=key==="default"?c.defaults:Object.fromEntries(c.inputs.map(x=>[x.key,x[key]]));
+   const out=runOptimizationCase(c.id,params),rows=out.table.rows;
+   const count=text=>Number(String(text).replace(/[^0-9-]/g,""));
+   if(c.id==="production-mix"){
+    const units=rows.map(row=>count(row[1]));
+    assert.ok(rows.every((row,i)=>units[i]%10===0&&units[i]<=count(row[2])));
+    assert.ok(units.reduce((n,x,i)=>n+x*[.9,1.8,1.1][i],0)<=params.hours+1e-8);
+    assert.ok(units.reduce((n,x,i)=>n+x*[6,12,9][i],0)<=params.material);
+   }else{
+    const allocated=rows.reduce((n,row)=>n+count(row[2]),0);
+    assert.ok(allocated<=(params.staff??params.fleet));
+    assert.ok(allocated*(params.wage??params.vehicleCost)<=params.budget);
+   }
+  }
+ }
+});

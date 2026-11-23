@@ -170,3 +170,7 @@ body[data-family] .logo .monogram,body[data-family] .brand-monogram{letter-spaci
  body.sc-report-print .sc-report-page h3{font-size:15pt}
  body.sc-report-print .sc-report-dialog::backdrop{display:none}
 }
+@media(prefers-reduced-motion:reduce){
+ html{scroll-behavior:auto!important}
+ *{scroll-behavior:auto!important}
+}

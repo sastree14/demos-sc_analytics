@@ -1,4 +1,4 @@
-import {evaluateDecision,answerGuide,explainControl,links,familyColors} from "./decision-engine.js";
+import {evaluateDecision,answerGuide,explainSensitivity,links,familyColors} from "./decision-engine.js";
 
 /**
  * Installs a reusable, fully-local decision layer across SC-Analytics demos.
@@ -10,7 +10,7 @@ const safe=x=>String(x??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"
 const cloneData=x=>JSON.parse(JSON.stringify(x));
 const makeButton=(text,fn,css="sc-action")=>{const n=el("button",css,text);n.type="button";n.addEventListener("click",fn);return n};
 const PAGE_NAMES=["Decision brief","Business analysis","Compare scenarios","Action & monitoring"];
-export function installDecisionExperience({family,read,apply,run}){
+export function installDecisionExperience({family,read,apply,run,simulate}){
  const canonical=familyColors[family]?family:"predictive-models";
  document.body.dataset.family=canonical;
  const state={saved:new Map(),lastId:null,context:null,decision:null,reportPage:0,printing:false,clientLabel:""};
@@ -52,7 +52,7 @@ export function installDecisionExperience({family,read,apply,run}){
  guideLink.style.marginTop="15px";
  cLeft.append(badge,headline,reason,guideLink);
  const lineWhy=el("div"),lineTrigger=el("div"),lineAction=el("div"),lineReview=el("div");
- for(const [slot,title] of [[lineWhy,"WHY"],[lineTrigger,"WHAT WOULD CHANGE THIS DECISION"],[lineAction,"POSSIBLE NEXT ACTION"],[lineReview,"WHEN TO REASSESS"]])slot.append(el("strong","",title),el("div","","—"));
+ for(const [slot,title] of [[lineWhy,"WHY"],[lineTrigger,"ILLUSTRATIVE DECISION THRESHOLD"],[lineAction,"POSSIBLE NEXT ACTION"],[lineReview,"WHEN TO REASSESS"]])slot.append(el("strong","",title),el("div","","—"));
  cRight.append(lineWhy,lineTrigger,lineAction,lineReview);callout.append(cLeft,cRight);
 
  const scenarios=el("section","sc-scenarios");
@@ -128,6 +128,7 @@ export function installDecisionExperience({family,read,apply,run}){
  function ask(text){
   toggleGuide(true);addChat("user",text);
   const ctx=contextForGuide();
+  if(simulate && /which (variable|input)|matters most|most influential/i.test(text)){addChat("assistant",explainSensitivity(ctx,simulate));return;}
   const test=text.match(/what if.*?(increas|decreas|rais|reduc).*?(\d+(?:\.\d+)?)\s*%/i);
   if(test){const term=text.toLowerCase();const ctrl=ctx.controls.find(c=>c.kind!=="choice"&&(term.includes(c.key.toLowerCase())||term.includes(c.label.toLowerCase())))||(ctx.result?.kind==="forecast"&&/demand|sales|workload|revenue/.test(term)?ctx.controls.find(c=>c.key==="outlook"):null);if(ctrl){proposeWhatIf(ctrl,Number(test[2])*(/decreas|reduc/i.test(test[1])?-1:1));return;}addChat("assistant","Select an input available for "+ctx.label+": "+ctx.controls.map(c=>c.label).join(", ")+".");return;}
   addChat("assistant",answerGuide(text,ctx));
@@ -197,8 +198,8 @@ export function installDecisionExperience({family,read,apply,run}){
   p1.append(el("h3","","Economic or operating implication"));para(p1,(r.impact?.label||"Current impact")+": "+(r.impact?.value||"n/a")+". "+(r.impact?.formula||r.impact?.subtitle||"Calculation supplied in the model."));
   p1.append(el("h3","","Business interpretation"));para(p1,r.decision?.summary||r.summary||d.why);foot(p1,0);
   const p2=paper(doc,1,"Evidence behind the recommendation","02 / BUSINESS ANALYSIS");
-  p2.append(el("h3","",r.chart?.title||"Operational model and comparison"));
-  para(p2,r.chart?.subtitle||"Current scenario output and comparison.");
+  p2.append(el("h3","",r.chart?.title||document.getElementById("main-chart-title")?.textContent||"Operational model and comparison"));
+  para(p2,r.chart?.subtitle||document.getElementById("main-chart-subtitle")?.textContent||"Current scenario output and comparison.");
   const figure=el("div","sc-report-figure");
   const sourceSvg=document.querySelector("#main-chart svg,.figure-main svg,.figure svg");
   if(sourceSvg){const copy=sourceSvg.cloneNode(true);copy.removeAttribute("role");figure.append(copy);}
@@ -217,6 +218,7 @@ export function installDecisionExperience({family,read,apply,run}){
   const headers=["Metric",...opts.map(x=>x.label)];
   const metricLabels=[...new Set(opts.flatMap(x=>x.result.metrics?.map(m=>m.label)||[]))].slice(0,12);
   const rows=metricLabels.map(label=>[label,...opts.map(x=>x.result.metrics?.find(m=>m.label===label)?.value||"—")]);
+  if(r.impact)rows.push([r.impact.label,...opts.map(o=>o.result.impact?.value??"—")]);
   if(rows.length)table(p3,headers,rows);
   table(p3,["Scenario","Suggested decision","Reason"],opts.map(x=>[x.label,x.decision.status,x.decision.why]));
   p3.append(el("h3","","Executed assumptions"));

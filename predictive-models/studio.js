@@ -10,6 +10,7 @@ let active="demand",inputs={...initial.demand},result=null,running=false;
 let lastExecutedInputs={...inputs};
 const experience=installDecisionExperience({
  family:"predictive-models",
+ simulate:runCase,
  read:()=>({id:active,label:byId(active).name,question:byId(active).short,result,params:{...lastExecutedInputs},controls:controlDescriptor(byId(active).kind)}),
  apply:async values=>{inputs={...values};controlsForCase();dirty();},
  run:()=>execute()
@@ -152,7 +153,7 @@ function probabilityChart(r){
  const thresholdX=left+r.threshold*(W-left-right),caseX=left+r.probability*(W-left-right);
  root.append(svg("line",{x1:thresholdX,y1:top,x2:thresholdX,y2:H-bottom,stroke:"#a6b5aa","stroke-width":2,"stroke-dasharray":"6 5"}));
  root.append(svg("line",{x1:caseX,y1:top,x2:caseX,y2:H-bottom,stroke:"#307757","stroke-width":2}));
- root.append(svg("text",{x:clamp(caseX+8,left,W-95),y:top+13,"font-size":11,fill:"#2a754f","font-weight":"700"},"CASE "+pct(r.probability)));
+ root.append(svg("text",{x:Math.min(W-95,Math.max(left,caseX+8)),y:top+13,"font-size":11,fill:"#2a754f","font-weight":"700"},"CASE "+pct(r.probability)));
 }
 function confusionChart(r){
  put("second-chart-title","What the review queue catches");

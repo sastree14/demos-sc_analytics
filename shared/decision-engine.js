@@ -49,7 +49,10 @@ export function evaluateDecision({id,result,params={}}){
   break;
  }
  case "anomaly":d=(result.flags||[]).length?make("review",result.flags.length+" sample signals were flagged; an alert is not a confirmed incident.","Investigate when a rolling deviation crosses the selected sensitivity.","Inspect flagged readings with an operator.","After the next sensor readings."):make("wait","No current sample readings crossed the selected anomaly threshold.","Review on new outlying readings.","Continue monitoring.","At the next measurement.");break;
- case "cost":d=make("prepare","The numerical estimate is based on synthetic fitted examples, not a binding quote.","Request detailed validation before contractual pricing.","Review volume, distance, margins and delivery complexity.","Before a commercial commitment.");break;
+ case "cost":{
+  const buffer=result.quote-result.high;
+  d=make(buffer<0?"review":"prepare","The illustrative quote of "+money(result.quote)+" is "+money(Math.abs(buffer))+(buffer<0?" below":" above")+" the upper cost estimate.","Request a risk review if the upper estimate exceeds the proposed quote.","Validate the estimated range and margin before issuing a quote.","When scope, delivery distance or the target margin changes.");break;
+ }
  case "resource-allocation":{
   const gain=get(result,"VALUE VS HEURISTIC");
   d=gain>10000?make("act","The optimal feasible initiative portfolio improves modelled net value by "+money(gain)+" over a disclosed baseline.","Consider formal portfolio selection when improvement > €10,000 and the capacity constraints are met.","Validate project interdependencies and submit the feasible portfolio for review.","At the next investment and resource committee.")
@@ -177,7 +180,23 @@ export function explainControl(control,value){
  else if(/budget|cost|price|penalty|rate|margin|outlay|fee/.test(key))meaning="This affects the economic comparison and may change the preferred action.";
  else if(/capacity|staff|agent|stock|order|vehicle|load|volume|count|arrivals|demand/.test(key))meaning="This affects capacity, demand, workload or availability.";
  else if(/growth|uncertainty|volatility|churn|conversion|reliability|adoption/.test(key))meaning="This affects future scenarios and may change model uncertainty or risk.";
- return control.label+" is currently "+String(value)+(control.unit||"")+". "+meaning+" No external system changes when you edit it.";
+ const display=(control.values||control.choices)?.find(([key])=>key===value)?.[1]??(String(value)+(control.unit||""));
+ return control.label+" is currently "+display+". "+meaning+" No external system changes when you edit it.";
+}
+export function explainSensitivity(context,simulate){
+ const {controls,params,id,result}=context;
+ const base=number(result.impact?.value),tests=[];
+ for(const c of controls.filter(c=>c.kind!=="choice")){
+  const step=c.step||1,shift=step*Math.max(1,Math.round((c.max-c.min)*.1/step));
+  const value=params[c.key]+shift<=c.max?params[c.key]+shift:Math.max(c.min,params[c.key]-shift);
+  const outcome=simulate(id,{...params,[c.key]:value});
+  const delta=number(outcome.impact?.value)-base;
+  if(Number.isFinite(delta))tests.push({label:c.label,from:params[c.key],value,delta,unit:c.unit||""});
+ }
+ tests.sort((a,b)=>Math.abs(b.delta)-Math.abs(a.delta));
+ const top=tests[0];
+ if(!top||top.delta===0)return "Varying one numeric input at a time by roughly 10% of its range left the displayed "+result.impact.label+" unchanged. Other KPIs can still change.";
+ return "For "+result.impact.label+", "+top.label+" produced the largest change in this local test: "+top.from+top.unit+" to "+top.value+top.unit+" changed the result by "+money(top.delta)+". Each numeric input was varied separately by about 10% of its allowed range. Your plan is unchanged.";
 }
 export function answerGuide(query,context){
  const q=String(query||"").trim().toLowerCase(),{result,decision,controls=[],params={},alternatives=[]}=context;

@@ -188,6 +188,12 @@ export function answerGuide(query,context){
  if(/wait|esper|do nothing/.test(q))return "Waiting can be valid. "+d.threshold+" "+d.review;
  if(/threshold|umbral|when|cu[aá]ndo|trigger|switch/.test(q))return d.threshold+" "+d.next+" Review: "+d.review;
  if(/scenario|compare|compar|alternative|alternativ/.test(q))return alternatives.length?alternatives.map(a=>a.label+": "+a.decision.status+"; "+a.result.metrics[0]?.label+" "+a.result.metrics[0]?.value).join(" | ")+". Use Compare to inspect all metrics.":"Save Alternative A or B first using the scenario controls, then compare results.";
+ if(q.startsWith("explain ")||q.startsWith("explica ")){
+  const chosen=controls.find(c=>q.includes(c.key.toLowerCase())||q.includes(c.label.toLowerCase()));
+  if(chosen)return explainControl(chosen,params[chosen.key]);
+  const chosenMetric=(r.metrics||[]).find(m=>q.includes(m.label.toLowerCase()));
+  if(chosenMetric)return chosenMetric.label+": "+chosenMetric.value+". "+chosenMetric.hint+" (synthetic scenario).";
+ }
  if(/cost|€|eur|saving|ahorro|profit|value|impact|benefit|valor/.test(q))return (r.impact?.label||"Illustrative impact")+": "+(r.impact?.value||"not available")+". "+(r.impact?.formula||"See report")+" "+(r.impact?.note||"No verified customer savings.");
  if(/risk|riesgo|warn|warning|error|limitation|l[ií]mite/.test(q))return d.status+". "+d.why+" Limit: "+d.limits+" "+(r.methodology||"");
  const requestedMetric=(r.metrics||[]).find(m=>q.includes(m.label.toLowerCase())||q.includes(m.label.toLowerCase().replaceAll(" ","")));

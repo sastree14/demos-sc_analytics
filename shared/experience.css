@@ -141,3 +141,5 @@ body[data-family] .logo .monogram,body[data-family] .brand-monogram{letter-spaci
  body.sc-report-print .sc-report-page:last-child{break-after:auto}
  @page{size:A4;margin:12mm}
 }
+
+.sc-input-help{border:1px solid var(--sc-border);background:var(--sc-soft);color:var(--sc-accent);font:800 10px Arial;width:20px;height:20px;min-width:20px;border-radius:50%;display:inline-grid;place-items:center;cursor:pointer;margin:0 5px}.sc-input-help:hover{background:var(--sc-pastel)}

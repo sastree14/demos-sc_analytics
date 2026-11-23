@@ -31,7 +31,7 @@ jobs:
         run: |
           mkdir -p dist
           cp index.html .nojekyll dist/
-          cp -R predictive-models optimization dist/
+          cp -R predictive-models optimization automation-ai modelling-scenarios simulations bi-reporting custom-apps shared dist/
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v4
         with:

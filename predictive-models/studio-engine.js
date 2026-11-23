@@ -15,7 +15,7 @@ const std=a=>root(mean(a.map(x=>(x-mean(a))**2)));
 const quantile=(xs,p)=>{if(!xs.length)return 0;const a=[...xs].sort((x,y)=>x-y),i=(a.length-1)*clamp(p,0,1),j=Math.floor(i);return a[j]+(a[Math.ceil(i)]-a[j])*(i-j)};
 export const cases=[
  {id:"demand",name:"Demand & inventory",short:"Predict future volumes and plan stock.",tag:"Forecasting",sector:"DISTRIBUTION",kind:"forecast",unit:"orders",base:1420,trend:9,season:.16,seed:43,unitValue:32,perEmployee:180},
- {id:"revenue",name:"Revenue & sales",short:"Explore sales outlooks and growth scenarios.",tag:"Forecasting",sector:"COMMERCIAL",kind:"forecast",unit:"£k",base:250,trend:3.5,season:.12,seed:87,unitValue:1000,perEmployee:32},
+ {id:"revenue",name:"Revenue & sales",short:"Explore sales outlooks and growth scenarios.",tag:"Forecasting",sector:"COMMERCIAL",kind:"forecast",unit:"€k",base:250,trend:3.5,season:.12,seed:87,unitValue:1000,perEmployee:32},
  {id:"workforce",name:"Workforce planning",short:"Anticipate incoming workload and staffing needs.",tag:"Planning",sector:"OPERATIONS",kind:"forecast",unit:"cases",base:980,trend:8,season:.08,seed:147,unitValue:18,perEmployee:145},
  {id:"churn",name:"Customer retention",short:"Flag accounts likely to disengage.",tag:"Probability",sector:"CUSTOMER SUCCESS",kind:"classification",variant:"churn",seed:552},
  {id:"delivery",name:"Delivery reliability",short:"Prioritise likely delays before escalation.",tag:"Classification",sector:"LOGISTICS",kind:"classification",variant:"delivery",seed:1105},
@@ -37,18 +37,18 @@ export const controlSpecs={
   {key:"horizon",label:"Planning horizon",kind:"choice",choices:[[3,"3 months"],[6,"6 months"],[12,"12 months"]]},
   {key:"outlook",label:"Business outlook",kind:"slider",min:-25,max:25,step:1,unit:"%",hint:"Scenario growth applied progressively across the horizon"},
   {key:"confidence",label:"Uncertainty range",kind:"choice",choices:[[80,"80%"],[90,"90%"],[95,"95%"]]},
-  {key:"unitCost",label:"Cost per planning error",kind:"slider",min:5,max:80,step:1,unit:"£",hint:"Assumption: business cost assigned to one unit of absolute error"},
+  {key:"unitCost",label:"Cost per planning error",kind:"slider",min:5,max:80,step:1,unit:"€",hint:"Assumption: business cost assigned to one unit of absolute error"},
   {key:"capacity",label:"Available capacity / month",kind:"slider",min:100,max:2500,step:50,unit:"",hint:"Compare upcoming demand with current operational capacity"}
  ],
  churn:[
-  {key:"spend",label:"Monthly account value",kind:"slider",min:30,max:600,step:5,unit:"£"},
+  {key:"spend",label:"Monthly account value",kind:"slider",min:30,max:600,step:5,unit:"€"},
   {key:"tenure",label:"Customer relationship",kind:"slider",min:1,max:72,step:1,unit:" months"},
   {key:"support",label:"Recent support cases",kind:"slider",min:0,max:12,step:1,unit:""},
   {key:"engagement",label:"Account engagement",kind:"slider",min:10,max:100,step:5,unit:"%"},
   {key:"threshold",label:"Intervention threshold",kind:"slider",min:20,max:85,step:5,unit:"%"},
   {key:"portfolio",label:"Accounts monitored",kind:"slider",min:100,max:1600,step:50,unit:""},
   {key:"effectiveness",label:"Assumed action effectiveness",kind:"slider",min:10,max:60,step:5,unit:"%"},
-  {key:"cost",label:"Cost per lost account",kind:"slider",min:500,max:6000,step:100,unit:"£"}
+  {key:"cost",label:"Cost per lost account",kind:"slider",min:500,max:6000,step:100,unit:"€"}
  ],
  delivery:[
   {key:"backlog",label:"Orders in queue",kind:"slider",min:10,max:105,step:1,unit:""},
@@ -58,7 +58,7 @@ export const controlSpecs={
   {key:"threshold",label:"Review threshold",kind:"slider",min:20,max:85,step:5,unit:"%"},
   {key:"portfolio",label:"Shipments monitored",kind:"slider",min:100,max:1600,step:50,unit:""},
   {key:"effectiveness",label:"Assumed mitigation",kind:"slider",min:10,max:60,step:5,unit:"%"},
-  {key:"cost",label:"Cost per late delivery",kind:"slider",min:150,max:3000,step:50,unit:"£"}
+  {key:"cost",label:"Cost per late delivery",kind:"slider",min:150,max:3000,step:50,unit:"€"}
  ],
  cost:[
   {key:"volume",label:"Order size",kind:"slider",min:50,max:650,step:10,unit:" units"},
@@ -72,11 +72,11 @@ export const controlSpecs={
   {key:"sensitivity",label:"Alert sensitivity",kind:"choice",choices:[[2.0,"Higher"],[2.7,"Balanced"],[3.5,"Lower"]]},
   {key:"shift",label:"Operating load change",kind:"slider",min:-20,max:30,step:2,unit:"%"},
   {key:"efficiency",label:"Assumed response effectiveness",kind:"slider",min:10,max:60,step:5,unit:"%"},
-  {key:"incidentCost",label:"Cost per disruption",kind:"slider",min:1500,max:15000,step:500,unit:"£"}
+  {key:"incidentCost",label:"Cost per disruption",kind:"slider",min:1500,max:15000,step:500,unit:"€"}
  ]
 };
 const monthAt=(start,i)=>new Date(Date.UTC(start.getUTCFullYear(),start.getUTCMonth()+i,1));
-const monthName=d=>d.toLocaleDateString("en-GB",{month:"short",year:"2-digit",timeZone:"UTC"});
+const monthName=d=>d.toLocaleDateString("es-ES",{month:"short",year:"2-digit",timeZone:"UTC"});
 function syntheticHistory(c){
  const random=seeded(c.seed),start=new Date(Date.UTC(2023,4,1));
  return Array.from({length:42},(_,i)=>{
@@ -171,9 +171,9 @@ export function runForecastStudio(c,raw={}){
   validation:tests.map(t=>({label:t.method==="seasonal"?"Seasonal baseline":t.method==="trend"?"Trend + season":"Weighted ensemble",accuracy:t.accuracy,mae:t.mae,selected:t.method===selected.method}))
  };
 }
-export const formatNum=n=>new Intl.NumberFormat("en-GB",{maximumFractionDigits:0}).format(n);
+export const formatNum=n=>new Intl.NumberFormat("es-ES",{maximumFractionDigits:0}).format(n);
 export const formatCompact=n=>n>=1000000?(n/1000000).toFixed(2)+"m":n>=10000?(n/1000).toFixed(1)+"k":formatNum(n);
-export const currency=n=>new Intl.NumberFormat("en-GB",{style:"currency",currency:"GBP",maximumFractionDigits:0}).format(n);
+export const currency=n=>new Intl.NumberFormat("es-ES",{style:"currency",currency:"EUR",maximumFractionDigits:0}).format(n);
 function classificationSpec(variant){
  if(variant==="churn")return {
   labels:["Monthly account value","Tenure","Support cases","Engagement"],

@@ -2,11 +2,11 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import {modules,moduleById,caseById,initial,run} from "../shared/portfolio-engine.js";
 
-test("five new executive modules expose fifteen distinct service-specific cases",()=>{
+test("five executive modules expose twenty distinct, generalist service cases",()=>{
  assert.equal(modules.length,5);
- assert.ok(modules.every(m=>m.cases.length===3));
+ assert.ok(modules.every(m=>m.cases.length===4));
  const all=modules.flatMap(m=>m.cases.map(c=>c.id));
- assert.equal(new Set(all).size,15);
+ assert.equal(new Set(all).size,20);
  assert.deepEqual(modules.map(m=>m.id),["automation-ai","modelling-scenarios","simulations","bi-reporting","custom-apps"]);
 });
 

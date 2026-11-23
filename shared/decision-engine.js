@@ -78,8 +78,8 @@ export function evaluateDecision({id,result,params={}}){
   d=gain>500?make("act","The exact allocation produces "+money(gain)+" more modelled contribution than the disclosed rule, with "+String(fill)+"% expected fill.","Consider a purchasing-plan review when improvement exceeds €500.","Validate supplier terms and costs, then submit for purchasing approval.","Before the next order cutoff.")
   :make("wait","The exact allocation is not materially better than the stated reference plan.","Wait while contribution uplift ≤ €500.","Monitor SKU demand and supply restrictions.","At the next replenishment run.");break;
  }
- case "invoice-flow":case "order-exceptions":case "service-routing":case "purchase-approvals":{
-  const key=id==="invoice-flow"?"EXCEPTIONS":id==="order-exceptions"?"REVIEW QUEUE":id==="service-routing"?"HUMAN ESCALATIONS":"HUMAN REVIEW QUEUE",count=get(result,key);
+ case "invoice-flow":case "order-exceptions":case "service-routing":case "purchase-approvals":case "agent-workflow":{
+  const key=id==="invoice-flow"?"EXCEPTIONS":id==="order-exceptions"?"REVIEW QUEUE":id==="service-routing"?"HUMAN ESCALATIONS":id==="agent-workflow"?"REQUIRES HUMAN ACTION":"HUMAN REVIEW QUEUE",count=get(result,key);
   d=count>0?make("review",count+" example items require policy review or exception handling.","Keep a human checkpoint whenever any exception is present.","Review the flagged sample records; do not execute actual approvals or transfers.","Once missing information has been supplied.")
    :make("prepare","All sample items meet the current illustrative routing conditions.","Release a workflow only after verifying rules and permissions.","Validate exceptions and audit logging on real data.","At the next policy update.");break;
  }
@@ -98,6 +98,29 @@ export function evaluateDecision({id,result,params={}}){
   const x=get(result,"LTV / CAC");d=x<2?make("review","The simplified customer economics have an LTV/CAC of "+x+"×.","Investigate when LTV/CAC < 2×.","Review retention, acquisition costs and margins.","After verified cohort data.")
     :x<3?make("prepare","LTV/CAC is "+x+"× under the synthetic model.","Prepare if LTV/CAC is between 2× and 3×.","Test a bounded acquisition increase.","At the next cohort review.")
     :make("act","LTV/CAC is "+x+"×, but cash constraints require review.","Consider acquisition expansion only if ratio ≥ 3× and cash is available.","Request approval for a controlled test.","At the next acquisition review.");break;
+ }
+ case "hire-outsource":{
+  const saved=get(result,"SAVINGS VS ALL OUTSOURCE"),hires=get(result,"NEW HIRES");
+  d=hires===0?make("wait","Fully outsourced coverage is the lowest-cost option under the current example assumptions.","Wait on permanent hiring while no feasible plan with new staff reduces monthly cost.","Monitor supplier prices and volume persistence.","At the next staffing budget review.")
+   :saved>2000?make("act","The cost-minimising scenario uses "+hires+" internal hires and reduces modelled cost by "+money(saved)+" versus outsourcing all work.","Consider recruitment review when the expected saving exceeds €2,000 per month.","Validate productivity, employer costs and legal constraints before approving recruitment.","Before signing employment contracts.")
+   :make("prepare","Internal hiring shows a modest modelled economic advantage.","Prepare if the cost improvement is positive but ≤ €2,000.","Pilot internal capacity or renegotiate an outsourcing contract.","At the next demand review.");break;
+ }
+ case "business-stress":{
+  const risk=get(result,"SERVICE CAPACITY BREACH")/100;
+  d=risk>.3?make("act","Simulated capacity is breached in "+percent(risk)+" of operating weeks.","Review capacity or contingency when simulated breach risk > 30%.","Compare temporary staffing and flex capacity with expected shortfall cost.","Before the next seasonal demand peak.")
+   :risk>.1?make("prepare","Capacity breach risk is "+percent(risk)+" under fictional demand and outage shocks.","Prepare contingency when breach risk is 10–30%.","Identify surge suppliers and reserve flexible cover.","At the next resilience exercise.")
+   :make("wait","Capacity remains sufficient in most trials.","Maintain the current plan while breach risk ≤ 10%.","Monitor workloads, absences and data quality.","After new workload records arrive.");break;
+ }
+ case "executive-bi":{
+  const revenue=get(result,"TARGET VARIANCE"),service=get(result,"ON-TIME SERVICE")/100,goal=Number(params.service)/100||.92;
+  d=revenue<0||service<goal?make("review","The selected reporting scope has a revenue shortfall of "+money(Math.max(0,-revenue))+" or service performance "+percent(service)+" below its "+percent(goal)+" target.","Escalate if revenue variance < €0 OR on-time service falls below "+percent(goal)+".","Assign owners to the failing commercial or operational measures.","At the next executive management review.")
+   :make("wait","Commercial and operational example targets are both met.","Monitor while revenue variance ≥ €0 and service ≥ "+percent(goal)+".","Check underlying margin and capacity signals.","At the next executive reporting refresh.");break;
+ }
+ case "fleet-assets":{
+  const renew=get(result,"RENEWAL CANDIDATES"),prepare=get(result,"PREPARE TO REPLACE");
+  d=renew>0?make("act",renew+" vehicles meet both the configured age and modelled lifecycle-cost conditions.","Review replacement if asset age ≥ "+String(params.age)+" years AND retaining it costs > replacement plus "+money(params.buffer||0)+".","Compare actual repair history, disposal value and leasing offers before approval.","Before each flagged asset's next major maintenance period.")
+   :prepare>0?make("prepare",prepare+" vehicles have a cost warning but do not meet all criteria.","Prepare when retain cost exceeds replacement cost without meeting final approval criteria.","Collect condition and usage evidence before committing.","At the next fleet lifecycle review.")
+   :make("wait","No example assets currently meet replacement review criteria.","Continue operating while age and cost thresholds are not both crossed.","Monitor maintenance cost and downtime.","At the next asset inspection.");break;
  }
  case "stock-risk":{
   const risk=get(result,"STOCKOUT PROBABILITY")/100;

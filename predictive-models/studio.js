@@ -248,10 +248,10 @@ function renderReport(r){
  r.quality.forEach(q=>{const row=dom("div");row.append(dom("span","",q.name),dom("b","",q.value));quality.append(row)});
  put("report-method",r.methodology+" Business impact: "+r.impact.note);
 }
-function controlDescriptor(kind){return controlSpecs[kind==="classification"?active:kind]||controlSpecs.forecast;}
+function controlDescriptor(kind){return controlSpecs[(kind==="classification"||kind==="regression")?active:kind]||controlSpecs.forecast;}
 function displayControl(value,spec){
  if(spec.key==="sensitivity")return Number(value).toFixed(1)+"σ";
- if(spec.key==="unitCost")return "£"+fmt(Number(value));
+ if(spec.key==="unitCost"||spec.key==="cost")return "£"+fmt(Number(value));
  if(spec.key==="budget")return currency(Number(value));
  const n=Number(value);const sign=spec.key==="outlook"&&n>0?"+":"";
  return sign+fmt(n)+(spec.unit||"");
@@ -287,6 +287,7 @@ function resetWorkflow(){
  put("workflow-status","● Example analysis ready");
 }
 function selectCase(id){
+ if(running)return;
  active=byId(id).id;
  inputs={...initial[active]};controlsForCase();
  document.querySelectorAll("[data-case]").forEach(button=>{const selected=button.dataset.case===active;button.classList.toggle("active",selected);button.setAttribute("aria-pressed",String(selected))});

@@ -413,7 +413,7 @@ function appService(p){
  });
  const capacity=p.staff*p.load,open=records.length,due=records.filter(x=>x.atRisk),critical=records.filter(x=>x.priority==="Critical"&&x.age>p.critical),days=open/(capacity||1);
  const stage=[row("Active cases",open),row("Within projected SLA",open-due.length),row("At SLA risk",due.length),row("Critical escalation",critical.length)];
- const prioritized=[...records].sort((a,b)=>({Critical:3,High:2,Standard:1}[b.priority]-{Critical:3,High:2,Standard:1}[a.priority]||b.age-a.age);
+ const prioritized=[...records].sort((a,b)=>({Critical:3,High:2,Standard:1}[b.priority]-{Critical:3,High:2,Standard:1}[a.priority]||b.age-a.age));
  return result({metrics:[measure("OPEN SERVICE CASES",num(open),"synthetic service backlog"),measure("PROJECTED SLA RISK",percent(due.length/open),"current age + hypothetical work"),measure("CRITICAL ESCALATIONS",num(critical.length),"aged beyond chosen threshold"),measure("BACKLOG COVERAGE",round(days,1)+" days","cases ÷ daily staff capacity")],
   chart:chartBar(stage,"Case management operational board","All statuses are computed from the same cases and policy controls."),
   comparison:chartBar([row("Backlog",open),row("Daily capacity",capacity),row("SLA-risk cases",due.length)],"Workload versus team capacity","Simple throughput estimate before more detailed scheduling."),

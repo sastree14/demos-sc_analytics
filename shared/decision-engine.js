@@ -50,6 +50,34 @@ export function evaluateDecision({id,result,params={}}){
  }
  case "anomaly":d=(result.flags||[]).length?make("review",result.flags.length+" sample signals were flagged; an alert is not a confirmed incident.","Investigate when a rolling deviation crosses the selected sensitivity.","Inspect flagged readings with an operator.","After the next sensor readings."):make("wait","No current sample readings crossed the selected anomaly threshold.","Review on new outlying readings.","Continue monitoring.","At the next measurement.");break;
  case "cost":d=make("prepare","The numerical estimate is based on synthetic fitted examples, not a binding quote.","Request detailed validation before contractual pricing.","Review volume, distance, margins and delivery complexity.","Before a commercial commitment.");break;
+ case "resource-allocation":{
+  const gain=get(result,"VALUE VS HEURISTIC");
+  d=gain>10000?make("act","The optimal feasible initiative portfolio improves modelled net value by "+money(gain)+" over a disclosed baseline.","Consider formal portfolio selection when improvement > €10,000 and the capacity constraints are met.","Validate project interdependencies and submit the feasible portfolio for review.","At the next investment and resource committee.")
+  :gain>0?make("prepare","The feasible portfolio improves the illustrative benchmark by "+money(gain)+".","Prepare alternatives when improvement is positive but ≤ €10,000.","Confirm projected benefits, project hours and constraints.","Before budget allocation.")
+  :make("wait","No material modelled benefit over the current reference selection.","Keep the current portfolio when no feasible improvement is found.","Monitor budget and available delivery capacity.","After a project assumption changes.");break;
+ }
+ case "workforce-allocation":{
+  const gain=get(result,"COST REDUCTION"),unserved=get(result,"UNSERVED CASES");
+  d=gain>1000?make("act","Reassigning the example team reduces weighted operating cost by "+money(gain)+" while respecting team and budget limits.","Review shift allocation when modelled reduction exceeds €1,000.","Check skills, working-time rules and staff availability before approval.","Before the next staffing rota.")
+  :unserved>0?make("prepare","Some work remains unserved, but reallocating shifts provides limited modelled cost improvement.","Prepare more cover if unserved cases persist without a feasible reallocation.","Check flexible capacity and shifts with the highest service penalties.","Before the next peak shift.")
+  :make("wait","The current shift allocation can meet demand under the selected assumptions.","Wait while all shifts remain covered.","Monitor actual arrivals and productivity.","At the next roster review.");break;
+ }
+ case "fleet-allocation":{
+  const gain=get(result,"COST & SERVICE UPLIFT"),unserved=get(result,"UNSERVED ORDERS");
+  d=gain>2000?make("act","Zone allocation improves modelled net service value by "+money(gain)+" versus equal-share dispatch.","Review reassignment when value uplift > €2,000.","Evaluate changing fleet allocation before paying for additional vehicles.","Before the next dispatch plan.")
+  :unserved>0?make("prepare","The fleet cannot cover all example demand; extra vehicles may not always be justified.","Prepare additional capacity if shortage penalties exceed added vehicle cost.","Compare temporary rental, routing and outsourcing.","At the next vehicle planning cycle.")
+  :make("wait","The current fleet allocation can cover modelled demand.","Wait while all selected zones are sufficiently covered.","Track route demand and vehicle availability.","At the next fleet review.");break;
+ }
+ case "production-mix":{
+  const gain=get(result,"IMPROVEMENT VS REFERENCE");
+  d=gain>500?make("act","The exact product mix improves expected contribution by "+money(gain)+" over the equal-share plan.","Review a production-mix change when uplift > €500.","Validate demand, machine time and batch constraints with production.","Before the next production schedule.")
+  :make("wait","The candidate mix does not materially exceed the reference contribution.","Wait while improvement ≤ €500.","Monitor changes in margins, machine availability and orders.","At the next schedule update.");break;
+ }
+ case "inventory-allocation":{
+  const gain=get(result,"CONTRIBUTION IMPROVEMENT"),fill=get(result,"DEMAND FULFILMENT");
+  d=gain>500?make("act","The exact allocation produces "+money(gain)+" more modelled contribution than the disclosed rule, with "+String(fill)+"% expected fill.","Consider a purchasing-plan review when improvement exceeds €500.","Validate supplier terms and costs, then submit for purchasing approval.","Before the next order cutoff.")
+  :make("wait","The exact allocation is not materially better than the stated reference plan.","Wait while contribution uplift ≤ €500.","Monitor SKU demand and supply restrictions.","At the next replenishment run.");break;
+ }
  case "invoice-flow":case "order-exceptions":case "service-routing":case "purchase-approvals":{
   const key=id==="invoice-flow"?"EXCEPTIONS":id==="order-exceptions"?"REVIEW QUEUE":id==="service-routing"?"HUMAN ESCALATIONS":"HUMAN REVIEW QUEUE",count=get(result,key);
   d=count>0?make("review",count+" example items require policy review or exception handling.","Keep a human checkpoint whenever any exception is present.","Review the flagged sample records; do not execute actual approvals or transfers.","Once missing information has been supplied.")

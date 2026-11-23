@@ -15,7 +15,6 @@ const experience=installDecisionExperience({
  apply:async values=>{inputs={...values};controlsForCase();dirty();},
  run:()=>execute()
 });
-const safe=(value)=>String(value??"").replace(/[&<>"']/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[char]));
 const signed=(x,digits=0)=>(x>0?"+":"")+(digits?Number(x).toFixed(digits):formatNum(x));
 const put=(id,value)=>{$(id).textContent=String(value)};
 function svg(name,attributes={},text){
@@ -364,17 +363,11 @@ $("download-data").addEventListener("click",()=>{
   rows.push(["Observation","Sensor reading","Known injected event","Detector flag","Robust score"]);
   r.series.forEach(row=>rows.push([row.label,row.value,row.realAnomaly?1:0,row.flagged?1:0,row.score]));
  }
+ rows.push([],["Metric","Value","Meaning"],...r.metrics.map(m=>[m.label,m.value,m.hint]),[],["Input","Executed value"],...Object.entries(r.params));
  rows.push(["DISCLAIMER","Fictional data and analytical examples only"]);
  download("sc-analytics-"+r.case.id+"-example.csv",rows.map(row=>row.map(csvCell).join(",")).join("\r\n"),"text/csv;charset=utf-8");
 });
-const print=()=>{if(result)window.print()};
-$("print-report").addEventListener("click",print);
-$("print-report-top").addEventListener("click",()=>{document.querySelector("#executive-report").scrollIntoView({behavior:"smooth"});});
-$("download-report").addEventListener("click",()=>{
- if(!result)return;
- const body=$("report-sheet").outerHTML;
- const styling=`body{background:#fff;color:#18382e;font:14px/1.6 Arial,sans-serif;max-width:860px;margin:34px auto;padding:0 20px}.report-letterhead,.report-heading,.report-signoff{display:flex;justify-content:space-between;gap:20px;align-items:start;border-bottom:1px solid #cbd9cf;padding-bottom:15px;margin-bottom:24px}.report-logo{font-size:18px;font-weight:800;letter-spacing:.08em}.report-logo small{display:block;font-size:9px;color:#668575}.report-heading h3{font:normal 30px Georgia,serif;margin:8px 0}.report-overline,.report-serial{color:#418464;font:700 10px Arial;letter-spacing:.09em}.report-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin:22px 0}.report-metric{border:1px solid #dce7db;padding:14px}.report-metric span{display:block;font:700 10px Arial;color:#69857b}.report-metric strong{display:block;font-size:21px;margin:9px 0;overflow-wrap:anywhere}.report-metric small{font-size:10px;color:#8ea295}.report-columns,.report-bottom{display:grid;grid-template-columns:1fr 1fr;gap:27px;margin:25px 0}.report-columns h4{font-size:17px}.report-columns p,.report-columns li,.report-bottom p{font-size:12px}.report-bottom{padding-top:16px;border-top:1px solid #dce7dc}.report-quality>div{display:flex;justify-content:space-between;border-bottom:1px solid #edf1eb;padding:6px 0;gap:10px;font-size:11px}.report-signoff{font-size:9px;border-top:1px solid #cddacd;border-bottom:0;padding-top:15px;color:#718c7b}.report-serial{text-align:right}@media print{@page{size:A4;margin:14mm}body{margin:0;padding:0}.report-columns,.report-bottom,.report-metrics{break-inside:avoid}}`;
- const html='<!doctype html><html lang="en"><head><meta charset="utf-8"><title>'+safe(result.case.name)+' — SC-Analytics Executive Brief</title><style>'+styling+'</style></head><body>'+body+'<p style="color:#7d9689;font-size:10px">Generated from synthetic, locally calculated demonstration data. Not a real client report.</p></body></html>';
- download("SC-Analytics-Executive-Report-"+result.case.id+".html",html,"text/html;charset=utf-8");
-});
+$("print-report").addEventListener("click",experience.printFullReport);
+$("print-report-top").addEventListener("click",()=>experience.openReport(0));
+$("download-report").addEventListener("click",experience.downloadFullReport);
 renderCards();selectCase("demand");

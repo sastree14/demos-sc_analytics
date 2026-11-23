@@ -13,7 +13,7 @@ const PAGE_NAMES=["Decision brief","Business analysis","Compare scenarios","Acti
 export function installDecisionExperience({family,read,apply,run,simulate}){
  const canonical=familyColors[family]?family:"predictive-models";
  document.body.dataset.family=canonical;
- const state={saved:new Map(),lastId:null,context:null,decision:null,reportPage:0,printing:false,clientLabel:""};
+ const state={saved:new Map(),context:null,decision:null,reportPage:0,clientLabel:""};
  const stylesheet=document.createElement("link");
  stylesheet.rel="stylesheet";stylesheet.href=new URL("./experience.css",import.meta.url).href;
  document.head.append(stylesheet);
@@ -46,7 +46,7 @@ export function installDecisionExperience({family,read,apply,run,simulate}){
  const callout=el("section","sc-decision");
  callout.setAttribute("aria-label","What should you do next?");
  const cLeft=el("div"),cRight=el("div","sc-decision-body");
- cLeft.append(el("div","sc-eyebrow","THE NEXT BUSINESS DECISION"));
+ cLeft.append(el("div","sc-eyebrow","WHAT SHOULD YOU DO NEXT?"));
  const badge=el("span","sc-decision-status","ASSESSING"),headline=el("h3","","What should you do next?"),reason=el("p","","Run an example to inspect decision options.");
  const guideLink=makeButton("Why this recommendation? ↗",()=>{toggleGuide(true);ask("Why are you recommending this?")},"sc-action");
  guideLink.style.marginTop="15px";
@@ -130,7 +130,20 @@ export function installDecisionExperience({family,read,apply,run,simulate}){
   const ctx=contextForGuide();
   if(simulate && /which (variable|input)|matters most|most influential/i.test(text)){addChat("assistant",explainSensitivity(ctx,simulate));return;}
   const test=text.match(/what if.*?(increas|decreas|rais|reduc).*?(\d+(?:\.\d+)?)\s*%/i);
-  if(test){const term=text.toLowerCase();const ctrl=ctx.controls.find(c=>c.kind!=="choice"&&(term.includes(c.key.toLowerCase())||term.includes(c.label.toLowerCase())))||(ctx.result?.kind==="forecast"&&/demand|sales|workload|revenue/.test(term)?ctx.controls.find(c=>c.key==="outlook"):null);if(ctrl){proposeWhatIf(ctrl,Number(test[2])*(/decreas|reduc/i.test(test[1])?-1:1));return;}addChat("assistant","Select an input available for "+ctx.label+": "+ctx.controls.map(c=>c.label).join(", ")+".");return;}
+  if(test){
+   const term=text.toLowerCase();
+   let control=ctx.controls.find(c=>c.kind!=="choice"&&(term.includes(c.key.toLowerCase())||term.includes(c.label.toLowerCase())));
+   if(!control&&ctx.result?.kind==="forecast"&&/demand|sales|workload|revenue/.test(term)){
+    control=ctx.controls.find(c=>c.key==="outlook");
+   }
+   if(control){
+    const direction=/decreas|reduc/i.test(test[1])?-1:1;
+    proposeWhatIf(control,Number(test[2])*direction);
+   }else{
+    addChat("assistant","Select an input available for "+ctx.label+": "+ctx.controls.map(c=>c.label).join(", ")+".");
+   }
+   return;
+  }
   addChat("assistant",answerGuide(text,ctx));
  }
  form.addEventListener("submit",e=>{e.preventDefault();const q=input.value.trim();if(!q)return;input.value="";ask(q);});
@@ -142,6 +155,7 @@ export function installDecisionExperience({family,read,apply,run,simulate}){
   const target=c.unit==="%"?prior+change:prior*(1+change/100);
   const next=Math.max(c.min,Math.min(max,c.min+Math.round((target-c.min)/step)*step));
   toggleGuide(true);
+  if(next===prior){addChat("assistant",c.label+" stays at "+prior+" after applying the input limits and step size. Try another change.");return;}
   addChat("assistant","I propose a what-if test: "+c.label+" from "+prior+" to "+next+". This is a local synthetic scenario, not an operational action. Apply this change?");
   const row=el("div","sc-guide-quick");
   row.append(makeButton("Apply & recalculate",async()=>{
@@ -204,7 +218,13 @@ export function installDecisionExperience({family,read,apply,run,simulate}){
   const sourceSvg=document.querySelector("#main-chart svg,.figure-main svg,.figure svg");
   if(sourceSvg){const copy=sourceSvg.cloneNode(true);copy.removeAttribute("role");figure.append(copy);}
   else{const source=document.querySelector("#bar-chart");
-   if(source)para(figure,"Allocation chart is summarised in the data table below.");}
+   if(source){
+    const graph=source.cloneNode(true);graph.removeAttribute("id");
+    graph.querySelectorAll(".bar-row").forEach(row=>row.style.cssText="display:grid;grid-template-columns:32% 1fr 14%;gap:8px;align-items:center;margin:6px 0;font-size:11px");
+    graph.querySelectorAll(".bar-name small,.bar-values span").forEach(n=>n.style.display="block");
+    graph.querySelectorAll(".bar-fill").forEach(n=>{n.style.height="6px";n.style.margin="3px 0";n.style.background=n.classList.contains("reference")?"#b7ac8e":"#438568";});
+    figure.append(graph);
+   }}
   figure.append(el("p","","Generated from the currently executed synthetic scenario."));
   p2.append(figure);
   p2.append(el("h3","","Sample records and quality checks"));
@@ -255,7 +275,7 @@ export function installDecisionExperience({family,read,apply,run,simulate}){
   document.body.classList.add("sc-report-print");window.print();
  }
  function downloadFullReport(){
-  if(!doc.childNodes.length)reportBuilder();
+  reportBuilder();
   const htmlCSS="body{font:13px/1.7 Arial,sans-serif;color:#25443b;max-width:920px;margin:20px auto;padding:0 18px}.sc-report-page{padding:25px 30px;min-height:850px;break-after:page;border:1px solid #dbe6db;margin:0 0 20px;display:block!important}.sc-report-paper-top{display:flex;justify-content:space-between;gap:20px;border-bottom:3px solid #438568;padding-bottom:15px}.sc-report-paper-top b{font-size:18px}.sc-report-paper-top span,.sc-report-eyebrow{font-size:10px;color:#458767;letter-spacing:.12em}.sc-report-page h2{font:normal 34px Georgia,serif}.sc-report-page h3{font:normal 22px Georgia,serif;margin-top:23px}p,li{line-height:1.8}.sc-report-metrics{display:grid;grid-template-columns:1fr 1fr;gap:10px}.sc-report-metric,.sc-report-highlight{border:1px solid #d9e7dc;padding:13px}.sc-report-metric small{display:block;font-size:10px}.sc-report-metric strong{display:block;font-size:21px}.sc-report-figure svg{width:100%;max-height:250px}.sc-report-table{width:100%;border-collapse:collapse;font-size:11px}.sc-report-table th,.sc-report-table td{border-bottom:1px solid #dbe6db;padding:8px;text-align:left}.sc-report-paper-foot{font-size:9px;color:#7c9b89;margin-top:30px}@media print{@page{size:A4;margin:13mm}.sc-report-page{border:0;break-after:page;margin:0;min-height:0;padding:0}.sc-report-page:last-child{break-after:auto}.sc-report-table td,.sc-report-table th{padding:4px}.sc-report-page p,.sc-report-page li{line-height:1.4;margin:6px 0}}";
   const html='<!doctype html><html lang="en"><head><meta charset="utf-8"><title>SC-Analytics · '+safe(state.context?.label||"Executive report")+'</title><style>'+htmlCSS+'</style></head><body>'+doc.outerHTML+'</body></html>';
   const name="SC-Analytics-"+(state.context?.id||"Decision")+"-Executive-Report.html",url=URL.createObjectURL(new Blob([html],{type:"text/html;charset=utf-8"}));
@@ -304,7 +324,8 @@ export function installDecisionExperience({family,read,apply,run,simulate}){
    state.decision.level==="review"?"An exception needs human judgment":
    state.decision.level==="prepare"?"Prepare an alternative, without committing yet":"Evaluate the proposed action";
   reason.textContent=state.decision.why;
-  lineWhy.lastChild.textContent=state.decision.why;
+  lineWhy.firstChild.textContent=ctx.result.impact?.label||"Modelled impact";
+  lineWhy.lastChild.textContent=[ctx.result.impact?.value,ctx.result.impact?.formula||ctx.result.impact?.subtitle].filter(Boolean).join(" · ");
   lineTrigger.lastChild.textContent=state.decision.threshold;
   lineAction.lastChild.textContent=state.decision.next;
   lineReview.lastChild.textContent=state.decision.review;
@@ -319,5 +340,5 @@ export function installDecisionExperience({family,read,apply,run,simulate}){
   });
   if(dialog.open)reportBuilder();
  }
- return {refresh,openReport,guide:()=>toggleGuide(true),askQuestion:ask,getDecision:()=>state.decision};
+ return {refresh,openReport,downloadFullReport,printFullReport,guide:()=>toggleGuide(true),askQuestion:ask,getDecision:()=>state.decision};
 }

@@ -120,3 +120,16 @@ test("workforce, fleet and production satisfy all displayed resource limits",()=
   }
  }
 });
+
+test("every portfolio and optimisation control has a valid default and changes model evidence",()=>{
+ for(const family of [...modules,optimizationModule])for(const model of family.cases){
+  const calculate=params=>family===optimizationModule?runOptimizationCase(model.id,params):run(family.id,model.id,params);
+  const evidence=out=>JSON.stringify([out.metrics,out.chart,out.table,out.comparison,out.impact,out.quality]);
+  for(const c of model.inputs){
+   if(c.kind!=="choice")assert.ok(Number.isInteger((model.defaults[c.key]-c.min)/c.step),model.id+"/"+c.key);
+   const lo=calculate({[c.key]:c.values?.[0][0]??c.min}),hi=calculate({[c.key]:c.values?.at(-1)[0]??c.max});
+   assert.notEqual(evidence(lo),evidence(hi),model.id+"/"+c.key);
+   assert.doesNotMatch(evidence(lo)+evidence(hi),/NaN|Infinity/);
+  }
+ }
+});

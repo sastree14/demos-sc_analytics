@@ -227,7 +227,7 @@ function modellingRecurring(p){
  }
  const ltv=p.arpa*(p.margin/100)/(p.churn/100),payback=p.cac/(p.arpa*p.margin/100),multiple=ltv/p.cac;
  return result({metrics:[measure("ENDING MRR",money(monthly.at(-1).a),"modelled month 12"),measure("LTV / CAC",round(multiple,1)+"×","simple churn-based economics"),measure("CAC PAYBACK",round(payback,1)+" months","at current contribution / account"),measure("ANNUAL NET CONTRIBUTION",money(gmProfit),"gross profit less acquisition spend")],
-  chart:chartLine(monthly,"Monthly recurring revenue outlook","Cohort-level additions and expected churn alter the account base.",["Revenue €","Active accounts"]),
+  chart:chartLine(monthly.map(x=>row(x.label,x.a,x.c)),"Monthly recurring revenue and contribution","Recurring revenue and gross contribution after acquisition spend, in euros.",["Revenue €","Contribution €"]),
   comparison:chartBar([row("Starting accounts",p.customers),row("New accounts",round(acquired)),row("Ending accounts",round(active))],"Account base bridge","Gross acquisitions are offset by losses from monthly churn."),
   table:{columns:["Period","Active accounts","MRR","Contribution after CAC"],rows:monthly.map(x=>[x.label,num(x.b),money(x.a),money(x.c)])},
   impact:{value:money(ltv),label:"Illustrative gross profit LTV per account",formula:"Monthly revenue × gross margin ÷ monthly churn rate.",note:"Simplified steady-state customer value, not audited cohort LTV. Forecast omits seasonality, discounts, retention heterogeneity and fixed overhead."},
@@ -518,7 +518,7 @@ function businessStress(p){
   rows.push({demand,capacity,shortfall,cost:shortfall*p.penalty});
  }
  const fails=rows.filter(x=>x.shortfall>0).length,expected=avg(rows.map(x=>x.cost)),p95=percentile(rows.map(x=>x.shortfall),.95);
- const ranges=range(10,i=>{const a=i*100,b=(i+1)*100;return row(a+"-"+b,rows.filter(x=>x.shortfall>=a&&(i===9||x.shortfall<b)).length)});
+ const ranges=range(10,i=>{const a=i*100,b=(i+1)*100;return row(i===9?a+"+":a+"–<"+b,rows.filter(x=>x.shortfall>=a&&(i===9||x.shortfall<b)).length)});
  return result({
   metrics:[measure("SERVICE CAPACITY BREACH",percent(fails/count),"across 1,200 workload trials"),measure("EXPECTED EXPOSURE",money(expected),"mean simulated shortfall cost"),measure("P95 SHORTFALL",num(p95),"upper-tail weekly unserved work"),measure("AVERAGE COVERAGE",percent(1-avg(rows.map(x=>x.shortfall/Math.max(1,x.demand)))),"average demand served")],
   chart:chartDistribution(ranges,"Distribution of unmet workload","Simulated demand and staff availability shocks in each scenario."),

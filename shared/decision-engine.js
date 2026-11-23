@@ -37,9 +37,9 @@ export function evaluateDecision({id,result,params={}}){
  switch(id){
  case "demand":case "revenue":case "workforce":{
   const data=result.future||[],avg=data.reduce((s,x)=>s+x.value,0)/(data.length||1),high=Math.max(0,...data.map(x=>x.high||x.value)),cap=Number(params.capacity)||1;
-  d=avg>cap?make("act","Expected activity exceeds the configured available capacity.","Review capacity if scenario-average activity > "+cap+".","Compare additional resources with unserved-demand costs.","At the next planning cycle.")
-   :high>cap?make("prepare","The expected value fits, but the upper illustrative outlook exceeds capacity.","Prepare when the upper indicative range exceeds "+cap+".","Evaluate a temporary capacity option.","At the next forecast refresh.")
-   :make("wait","Expected activity and its indicative range remain within capacity.","Wait while the upper indicative range is below "+cap+".","Monitor capacity utilisation and forecast errors.","At the next data refresh.");
+  d=avg>cap?make("act","Average expected activity ("+Math.round(avg)+") exceeds the configured capacity ("+cap+").","Review capacity if scenario-average activity > "+cap+".","Compare additional resources with unserved-demand costs.","At the next planning cycle.")
+   :high>cap?make("prepare","Average expected activity is "+Math.round(avg)+" and the upper illustrative outlook reaches "+Math.round(high)+", above capacity "+cap+".","Prepare when the upper indicative range exceeds "+cap+".","Evaluate a temporary capacity option.","At the next forecast refresh.")
+   :make("wait","The highest upper estimate ("+Math.round(high)+") fits within capacity ("+cap+").","Wait while the upper indicative range is below "+cap+".","Monitor capacity utilisation and forecast errors.","At the next data refresh.");
   break;
  }
  case "churn":case "delivery":{
@@ -48,7 +48,7 @@ export function evaluateDecision({id,result,params={}}){
    :make("wait","The current example risk score "+percent(risk)+" remains below the threshold.","Escalate when risk ≥ "+percent(threshold)+".","Continue monitoring; do not intervene automatically.","When input signals change.");
   break;
  }
- case "anomaly":d=(result.flags||[]).length?make("review",result.flags.length+" sample signals were flagged; an alert is not a confirmed incident.","Investigate when a rolling deviation crosses the selected sensitivity.","Inspect flagged readings with an operator.","After the next sensor readings."):make("wait","No current sample readings crossed the selected anomaly threshold.","Review on new outlying readings.","Continue monitoring.","At the next measurement.");break;
+ case "anomaly":d=(result.flags||[]).length?make("review",result.flags.length+" sample signals were flagged; an alert is not a confirmed incident.","Investigate when the robust deviation exceeds "+params.sensitivity+" times the rolling scale.","Inspect flagged readings with an operator.","After the next sensor readings."):make("wait","No current sample readings crossed the selected anomaly threshold.","Review on new outlying readings.","Continue monitoring.","At the next measurement.");break;
  case "cost":{
   const buffer=result.quote-result.high;
   d=make(buffer<0?"review":"prepare","The illustrative quote of "+money(result.quote)+" is "+money(Math.abs(buffer))+(buffer<0?" below":" above")+" the upper cost estimate.","Request a risk review if the upper estimate exceeds the proposed quote.","Validate the estimated range and margin before issuing a quote.","When scope, delivery distance or the target margin changes.");break;
@@ -68,7 +68,7 @@ export function evaluateDecision({id,result,params={}}){
  case "fleet-allocation":{
   const gain=get(result,"COST & SERVICE UPLIFT"),unserved=get(result,"UNSERVED ORDERS");
   d=gain>2000?make("act","Zone allocation improves modelled net service value by "+money(gain)+" versus equal-share dispatch.","Review reassignment when value uplift > €2,000.","Evaluate changing fleet allocation before paying for additional vehicles.","Before the next dispatch plan.")
-  :unserved>0?make("prepare","The fleet cannot cover all example demand; extra vehicles may not always be justified.","Prepare additional capacity if shortage penalties exceed added vehicle cost.","Compare temporary rental, routing and outsourcing.","At the next vehicle planning cycle.")
+  :unserved>0?make("prepare","The lowest-cost trade-off leaves "+unserved+" orders unserved under the selected budget and operating assumptions.","Prepare additional capacity if shortage penalties exceed added vehicle cost.","Compare temporary rental, routing and outsourcing.","At the next vehicle planning cycle.")
   :make("wait","The current fleet allocation can cover modelled demand.","Wait while all selected zones are sufficiently covered.","Track route demand and vehicle availability.","At the next fleet review.");break;
  }
  case "production-mix":{

@@ -18,6 +18,7 @@ def download(page, button):
     return Path(event.value.path()).read_text()
 
 def verify_case(page, case, first):
+    page.set_viewport_size({'width':390 if first else 1440,'height':900})
     page.locator(f'[data-case="{case}"]').click()
     run = page.locator('#calculate,#run-analysis')
     controls = page.locator('#control-list input[type=range]')
@@ -56,6 +57,8 @@ def verify_case(page, case, first):
     for i in range(4):
         page.locator('.sc-report-pagination button').nth(i).click()
         assert pages.nth(i).is_visible()
+    if first:
+        assert page.locator(".sc-report-scroll").evaluate("n=>n.scrollWidth <= n.clientWidth+1")
     report = download(page,page.get_by_text('Download HTML',exact=True))
     assert 'North &amp; West' in report and 'Alternative A' in report and 'Alternative B' in report
     assert pages.nth(1).locator('svg').count() == 1
@@ -68,7 +71,10 @@ def verify_case(page, case, first):
     for i, sheet in enumerate(pdf.pages):
         assert f'{i+1} / 4' in sheet.extract_text(), (case,i,sheet.extract_text()[-120:])
     page.get_by_text('Close ×',exact=True).click()
+    if first:
+        assert download(page,page.locator('#download-report')) == report
     data = list(csv.reader(io.StringIO(download(page,page.locator('#download-csv,#download-data')))))
+    assert all(any(value in row for row in data) for value in baseline),case
     assert len(data)>5 and not any('NaN' in cell for row in data for cell in row)
     print('PASS',case,flush=True)
 
@@ -84,6 +90,7 @@ def main():
         errors = []
         shots = Path("qa-evidence")
         shots.mkdir(exist_ok=True)
+        page.on('console', lambda entry: errors.append(entry.text) if entry.type == 'error' else None)
         page.on('pageerror', lambda e: errors.append(str(e)))
         page.goto(base)
         page.screenshot(path=shots/'catalog.png')
@@ -104,6 +111,8 @@ def main():
         page.locator('#run-optimisation').click()
         page.get_by_text('Analysis complete',exact=True).wait_for()
         assert '€' in page.locator('#kpi-gain').inner_text()
+        assert "Reference contribution EUR" in download(page,page.locator('#export-plan'))
+        assert "Advanced inventory replenishment" in download(page,page.locator('#download-optimisation-brief'))
         assert not errors,errors
     server.shutdown()
 

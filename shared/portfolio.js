@@ -1,15 +1,20 @@
 import {modules,moduleById,caseById,initial,run,presentation} from "./portfolio-engine.js";
 import {installDecisionExperience} from "./experience.js";
+import {optimizationModule,optimizationCase,initialOptimization,runOptimizationCase} from "./optimization-engine.js";
 const $=id=>document.getElementById(id),create=(tag,cl,txt)=>{const el=document.createElement(tag);if(cl)el.className=cl;if(txt!==undefined)el.textContent=String(txt);return el;};
 const svgNS="http://www.w3.org/2000/svg",svg=(tag,attrs={},txt)=>{const el=document.createElementNS(svgNS,tag);for(const [k,v] of Object.entries(attrs))el.setAttribute(k,String(v));if(txt!==undefined)el.textContent=String(txt);return el;};
 const number=n=>new Intl.NumberFormat("es-ES",{maximumFractionDigits:1}).format(n);
 const compact=n=>Math.abs(n)>=1000000?number(n/1000000)+" M":Math.abs(n)>=10000?number(n/1000)+" k":number(n);
 const escape=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-const module=moduleById(document.body.dataset.module),isWorkflow=module.id==="automation-ai"||module.id==="custom-apps";
-let active=module.cases[0].id,inputs=initial(module.id,active),snapshot=null,busy=false,reviewed=new Set();
+const isOptimization=document.body.dataset.module==="optimization";
+const module=isOptimization?optimizationModule:moduleById(document.body.dataset.module),isWorkflow=module.id==="automation-ai"||module.id==="custom-apps";
+const getCase=id=>isOptimization?optimizationCase(id):caseById(module.id,id);
+const getInitial=id=>isOptimization?initialOptimization(id):initial(module.id,id);
+const runModule=(id,p)=>isOptimization?runOptimizationCase(id,p):run(module.id,id,p);
+let active=module.cases[0].id,inputs=getInitial(active),snapshot=null,busy=false,reviewed=new Set();
 const experience=installDecisionExperience({
  family:module.id,
- read:()=>({id:active,label:caseById(module.id,active).label,question:caseById(module.id,active).short,result:snapshot,params:{...inputs},controls:caseById(module.id,active).inputs}),
+ read:()=>({id:active,label:getCase(active).label,question:getCase(active).short,result:snapshot,params:{...inputs},controls:getCase(active).inputs}),
  apply:async values=>{inputs={...values};paintControls();dirty();},
  run:()=>execute()
 });
@@ -20,6 +25,7 @@ function paintCases(){
   const button=create("button","case-card"+(c.id===active?" active":""));button.type="button";button.dataset.case=c.id;
   button.setAttribute("aria-pressed",String(c.id===active));
   button.append(create("span","number",String(i+1).padStart(2,"0")+" / "+c.category),create("span","category",c.categoryShort),create("strong","",c.label),create("p","",c.short),create("span","arrow","↗"));
+  if(isOptimization&&c.id==="inventory-allocation")button.title="Select here for executive view; detailed exact solver is available below.";
   button.addEventListener("click",()=>choose(c.id,true));host.append(button);
  });
 }
@@ -31,7 +37,7 @@ function displayValue(value,c){
 }
 function paintControls(){
  const host=$("control-list");host.replaceChildren();
- caseById(module.id,active).inputs.forEach(c=>{
+ getCase(active).inputs.forEach(c=>{
   const root=create("div","input-wrap"),head=create("div","input-header"),label=create("label","",c.label);head.append(label);root.append(head);
   if(c.kind==="range"){
    const id="input-"+c.key,labelValue=create("output","",displayValue(inputs[c.key],c));head.append(labelValue);label.htmlFor=id;
@@ -52,13 +58,14 @@ function paintControls(){
 function dirty(){set("input-status","Scenario modified · run analysis to update results.");$("input-status").classList.add("dirty");}
 function choose(id,scroll=false){
  if(busy)return;
- active=caseById(module.id,id).id;inputs=initial(module.id,active);reviewed=new Set();
+ active=caseById(module.id,id).id;inputs=getInitial(active);reviewed=new Set();
  paintCases();paintControls();
- const c=caseById(module.id,active);
+ const c=getCase(active);
+ const deep=document.getElementById("optimization-advanced-link");if(deep)deep.hidden=c.id!=="inventory-allocation";
  set("current-category",c.category+" / "+c.categoryShort);
  set("current-case",c.label);set("current-copy",c.short);
  resetWorkflow();
- try{paint(run(module.id,active,inputs));set("input-status","Example calculated from synthetic records. Change assumptions to experiment.");$("input-status").classList.remove("dirty");}
+ try{paint(runModule(active,inputs));set("input-status","Example calculated from synthetic records. Change assumptions to experiment.");$("input-status").classList.remove("dirty");}
  catch(e){set("input-status","Unable to calculate this case: "+e.message);}
  if(scroll)document.querySelector("#workbench").scrollIntoView({behavior:"smooth",block:"start"});
 }
@@ -190,7 +197,7 @@ $("download-csv").addEventListener("click",()=>{
  if(!snapshot)return;const rows=[["SC-Analytics / Synthetic operating example"],["Module",module.label],["Use case",snapshot.case.label],[],["Metric","Value","Meaning"],...snapshot.metrics.map(m=>[m.label,m.value,m.hint]),[],[...snapshot.table.columns,...(isWorkflow?["Locally reviewed"] :[])],...snapshot.table.rows.map((row,i)=>[...row,...(isWorkflow?[reviewed.has(i)?"yes":"no"]:[])])];
  download("SC-Analytics-"+active+"-sample.csv",rows.map(r=>r.map(csvCell).join(",")).join("\r\n"),"text/csv;charset=utf-8");
 });
-$("reset").addEventListener("click",()=>{inputs=initial(module.id,active);reviewed=new Set();paintControls();execute()});
+$("reset").addEventListener("click",()=>{inputs=getInitial(active);reviewed=new Set();paintControls();execute()});
 $("calculate").addEventListener("click",()=>{reviewed=new Set();execute()});
 $("print").addEventListener("click",()=>{if(snapshot)window.print()});
 $("download-report").addEventListener("click",()=>{

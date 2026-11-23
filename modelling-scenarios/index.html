@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#15363b">
+<meta name="description" content="Modelling &amp; Scenarios: Explore the economics of pricing, investment and recurring revenue. Adjustable assumptions turn strategy into measurable trade-offs. Interactive business scenarios, calculated metrics, illustrative economics and downloadable executive reports.">
+<title>Modelling &amp; Scenarios — SC-Analytics Solutions Lab</title>
+<link rel="stylesheet" href="../shared/portfolio.css">
+<script type="module" src="../shared/portfolio.js"></script>
+</head>
+<body data-module="modelling-scenarios">
+<div class="app">
+  <aside class="rail" aria-label="Solutions Lab navigation">
+    <a class="logo" href="../"><span class="monogram">S/C</span><span class="logo-name">SC—ANALYTICS<small>DECISION SYSTEMS</small></span></a>
+    <div class="rail-rule"></div><span class="rail-overline">EXPLORE OUR SOLUTIONS</span>
+    <nav class="rail-menu" aria-label="Demo modules">
+      <a href="../predictive-models/"><span class="idx">00</span>Predictive Intelligence</a>
+      <a href="../automation-ai/" class=""><span class="idx">01</span>Automation & AI</a>
+<a href="../modelling-scenarios/" class="current"><span class="idx">02</span>Modelling</a>
+<a href="../simulations/" class=""><span class="idx">03</span>Simulation</a>
+<a href="../bi-reporting/" class=""><span class="idx">04</span>BI & Reporting</a>
+<a href="../custom-apps/" class=""><span class="idx">05</span>CRM / ERP</a>
+      <a href="../optimization/"><span class="idx">06</span>Optimisation</a>
+    </nav>
+    <div class="rail-spacer"></div>
+    <div class="rail-bottom"><small>SC / CLIENT SOLUTIONS</small><strong>Better decisions.<br><em>Better business.</em></strong><p>Mathematical modelling and practical technology, designed around decisions that matter.</p><a href="https://www.sc-analytics.io/" target="_blank" rel="noopener">Explore SC-Analytics <span>↗</span></a></div>
+  </aside>
+  <div class="main-area">
+   <header class="topbar"><div class="crumbs"><a href="../">Solutions Lab</a><span>/</span><strong>Modelling &amp; Scenarios</strong></div><div class="meta"><span><i class="status-dot"></i>WORKING EXAMPLE</span><a href="https://www.sc-analytics.io/" target="_blank" rel="noopener">SC-Analytics ↗</a></div></header>
+   <main class="body">
+    <section class="hero" id="overview">
+     <div class="hero-copy"><div class="eyebrow">FINANCE / STRATEGIC DECISIONS</div><h1>Compare possible futures before you commit..<br><em>A smarter way to work.</em></h1><p>Explore the economics of pricing, investment and recurring revenue. Adjustable assumptions turn strategy into measurable trade-offs.</p>
+      <div class="hero-links"><a href="#examples" class="primary-link">Explore business examples <span>↗</span></a><a class="light-link" href="#report">See the executive deliverable ↓</a></div>
+     </div>
+     <div class="hero-side"><span>SC / REAL ANALYTICAL METHODS</span><div class="feature-symbol">03</div><strong>Sensitivity, profitability and risk</strong><p>Illustrative data. Editable assumptions. Outputs you can trace to the calculation.</p></div>
+    </section>
+    <nav class="discipline-strip" aria-label="Other SC-Analytics solutions"><a href="../automation-ai/" class=""><span>01</span>Automation & AI</a>
+<a href="../modelling-scenarios/" class="active"><span>02</span>Modelling</a>
+<a href="../simulations/" class=""><span>03</span>Simulation</a>
+<a href="../bi-reporting/" class=""><span>04</span>BI & Reporting</a>
+<a href="../custom-apps/" class=""><span>05</span>CRM / ERP</a></nav>
+    <section class="content-section" id="examples">
+      <div class="section-head"><div><div class="eyebrow dark">START WITH THE BUSINESS QUESTION</div><h2>Choose a practical example.</h2><p>Each case has its own records, analytical logic, metrics and executive recommendation. Select one to open the live workbench.</p></div><span class="section-index">01 / USE CASES</span></div>
+      <div class="case-grid" id="case-grid" role="group" aria-label="Choose an example"></div>
+      <p class="notice-line"><b>✓</b> All records are synthetic, deterministic examples. Financial figures are in euros. This demonstration does not access customer systems.</p>
+    </section>
+    <section class="content-section" id="workbench">
+      <div class="section-head"><div><div class="eyebrow dark">LIVE BUSINESS WORKBENCH</div><h2>Adjust the assumptions.<br><em>Understand the decision.</em></h2><p>Change business inputs, run the model and see how the scenario affects performance, risk and recommendations.</p></div><span class="section-index">02 / EXPLORE</span></div>
+      <div class="workbench-head"><div><span class="small" id="current-category">PRICING / ECONOMIC MODEL</span><h3 id="current-case">Price &amp; volume strategy</h3><p id="current-copy">See how price elasticity, costs and capacity change contribution.</p></div><span class="scenario-label" id="active-scenario-label">SYNTHETIC DATA</span></div>
+      <div class="workbench">
+       <aside class="controls" aria-label="Scenario inputs">
+        <div class="overline">01 / BUSINESS INPUTS</div><h3>Set the operating context</h3><p>Each control changes a defined assumption used by the analytical calculation.</p>
+        <div id="control-list" class="input-list"></div>
+        <div class="control-footer"><button id="calculate" class="dark-button" type="button">Run scenario <span>→</span></button><button id="reset" type="button" class="secondary-button">Restore example settings</button><p id="input-status" class="update-note" aria-live="polite"></p></div>
+        <div class="data-note">ⓘ Calculations run locally in the browser. There are no live ERP, CRM, AI-provider or finance connections.</div>
+       </aside>
+       <div class="analysis">
+        <div class="kpi-grid" id="metrics" aria-live="polite"></div>
+        <article class="panel">
+          <div class="panel-head"><div><div class="panel-overline">02 / MODELLED OUTPUT</div><h3 id="chart-title"></h3><p id="chart-description"></p></div><button type="button" id="download-csv" class="action-icon">↓ CSV DATA</button></div>
+          <div id="main-chart" class="figure"></div><div class="chart-legend" id="legend"></div>
+        </article>
+        <div class="panel-split">
+         <article class="panel"><div class="panel-head"><div><div class="panel-overline">03 / COMPARISON</div><h3 id="comparison-title"></h3><p id="comparison-description"></p></div></div><div class="mini-figure" id="comparison-bars"></div></article>
+         <article class="panel"><div class="panel-overline">04 / METHOD & ASSUMPTIONS</div><h3 style="font-size:17px;margin:8px 0 11px">How to interpret this view</h3><p id="example-method" style="font-size:11px;line-height:1.8;color:#728b7d"></p></article>
+        </div>
+        <article class="panel" id="record-section">
+         <div class="panel-head"><div><div class="panel-overline">05 / OPERATIONAL RECORDS</div><h3>Inside the example</h3><p id="sample-count">A sample of the modelled business records.</p></div></div>
+         <div class="table-scroller"><table class="data-table" id="sample-table"></table></div><p class="audit-banner" id="audit-banner"></p>
+        </article>
+       </div>
+      </div>
+      <div class="outcome">
+       <article class="impact"><div class="eyebrow">ILLUSTRATIVE BUSINESS VALUE</div><strong id="impact-value">—</strong><h3 id="impact-name"></h3><p id="impact-formula"></p><div class="disclaimer" id="impact-note"></div></article>
+       <article class="decision"><div class="eyebrow dark">FROM ANALYSIS TO ACTION</div><h3 id="decision-title"></h3><p id="decision-summary"></p><ul id="decision-list"></ul></article>
+      </div>
+    </section>
+    <section class="content-section" id="workflow">
+     <div class="section-head"><div><div class="eyebrow dark">DECISION WORKFLOW / DEMONSTRATION</div><h2>From business data<br><em>to a clear next step.</em></h2><p>The visual sequence shows the local analytical process, not a remote deployment.</p></div><span class="section-index">03 / PROCESS</span></div>
+     <div class="workflow"><div class="workflow-step" data-step="0"><i>01</i><strong>Define the decision</strong><small>What must the business choose?</small></div>
+<div class="workflow-step" data-step="1"><i>02</i><strong>Check inputs</strong><small>Rules, cost and assumptions</small></div>
+<div class="workflow-step" data-step="2"><i>03</i><strong>Calculate</strong><small>Real model or analytical engine</small></div>
+<div class="workflow-step" data-step="3"><i>04</i><strong>Guide action</strong><small>Compare choices and exceptions</small></div>
+<div class="workflow-step" data-step="4"><i>05</i><strong>Review outputs</strong><small>Metrics, limitations and report</small></div></div><div id="workflow-status" class="workflow-status" aria-live="polite"></div>
+    </section>
+    <section class="content-section" id="report">
+      <div class="section-head"><div><div class="eyebrow dark">CLIENT-FACING DELIVERABLE</div><h2>Reporting you can take<br><em>into a decision meeting.</em></h2><p>Current metrics, quality notes, interpretation and suggested actions are available in a downloadable report.</p></div><span class="section-index">04 / EXECUTIVE BRIEF</span></div>
+      <div class="report-sheet" id="report-sheet">
+       <div class="report-top"><b>SC—ANALYTICS</b><span>MODEL OUTPUT / EXECUTIVE BRIEF</span></div>
+       <div class="report-title"><div class="eyebrow dark" id="report-id"></div><h3 id="report-title"></h3><p id="report-description"></p></div>
+       <div id="report-metrics" class="report-metrics"></div>
+       <div class="report-columns">
+        <div><div class="eyebrow dark">01 / EXECUTIVE INTERPRETATION</div><h4 id="report-insight"></h4><p id="report-summary"></p></div>
+        <div><div class="eyebrow dark">02 / RECOMMENDED ACTIONS</div><ol id="report-actions-list"></ol></div>
+       </div>
+       <div class="report-method">
+        <div><div class="eyebrow dark">03 / QUALITY & EVIDENCE</div><div id="report-quality"></div></div>
+        <div><div class="eyebrow dark">04 / METHOD AND LIMITATIONS</div><p id="report-methodology"></p><p id="report-assumptions"></p></div>
+       </div>
+       <div class="report-footer"><span>SC-ANALYTICS / INDEPENDENT BUSINESS EXAMPLE</span><span>FICTIONAL INPUTS · NO GUARANTEED COMMERCIAL RESULTS</span></div>
+      </div>
+      <div class="report-actions"><div><strong>Share the decision, not just the chart.</strong><p>Download a self-contained HTML report or use your browser to print it as PDF. Figures reflect the last executed scenario.</p></div><div class="report-buttons"><button type="button" id="download-report">↓ Download report</button><button type="button" id="print" class="dark">↗ Print / save PDF</button></div></div>
+    </section>
+    <section class="content-section" id="limitations">
+     <div class="section-head"><div><div class="eyebrow dark">FROM DEMONSTRATION TO DELIVERY</div><h2>Designed around<br><em>your real operations.</em></h2></div><span class="section-index">05 / DELIVERY</span></div>
+     <div class="limitations"><h3>What would a client implementation involve?</h3><p>We first agree on the business problem and operational decision, then connect approved data, validate assumptions and metrics, build the appropriate analytical or application components and introduce human approval where needed. Production integrations, privacy and access controls, and monitoring require a dedicated engagement. This public demonstration uses fictional records only.</p></div>
+    </section>
+   </main>
+   <footer class="footer"><span>© 2026 SC-Analytics · Mathematical models. Business decisions.</span><span><a href="../">All demonstrations</a> · <a href="https://www.sc-analytics.io/" target="_blank" rel="noopener">sc-analytics.io ↗</a></span></footer>
+  </div>
+</div>
+</body></html>

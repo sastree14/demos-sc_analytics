@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#182e38">
+<meta name="description" content="Advanced inventory allocation with a precise discrete optimisation solver, disclosed baseline and executive reporting.">
+<title>Advanced Inventory Optimisation | SC-Analytics Solutions Lab</title>
+<link rel="stylesheet" href="../predictive-models/styles.css">
+<link rel="stylesheet" href="./styles.css">
+<script type="module" src="./app.js"></script>
+</head><body>
+<div class="shell">
+  <aside class="sidebar" aria-label="Navigation">
+    <a class="brand" href="../"><span class="brand-emblem">SC</span><span><strong>SC–ANALYTICS</strong><small>DECISION STUDIO</small></span></a>
+    <div class="side-divider"></div>
+    <div class="side-section">WORKSPACE</div>
+    <nav class="side-nav">
+      <button type="button" class="nav-link active" data-view="plan"><span class="nav-symbol">01</span><span>Replenishment planner</span><b>↗</b></button>
+      <button type="button" class="nav-link" data-view="method"><span class="nav-symbol">02</span><span>Model notes</span><b>↗</b></button>
+    </nav>
+    <div class="side-section second">ABOUT THIS SOLUTION</div>
+    <div class="side-copy">Resource allocation under real mathematical constraints. Investment, coverage and commercial value in one decision.</div>
+    <div class="side-bottom"><div class="line-icon">↗</div><strong>Make every unit count.</strong><p>Move from a stock replenishment rule to a defensible, constraint-aware purchasing plan.</p><a href="https://www.sc-analytics.io/" target="_blank" rel="noopener">Explore SC-Analytics <span>↗</span></a></div>
+  </aside>
+  <div class="workspace">
+    <header class="topbar"><div class="top-path"><a href="../">Solutions lab</a><span>/</span><strong>Inventory optimisation</strong></div><div class="top-meta"><span class="status-dot"></span> EXAMPLE ENVIRONMENT <span class="top-sep"></span> EN</div></header>
+    <main>
+      <div class="intro">
+        <div class="eyebrow"><span class="square"></span> MATHEMATICAL OPTIMISATION / WORKING DEMONSTRATION</div>
+        <div class="intro-main"><div><h1>Better allocation. <em>Stronger decisions.</em></h1><p>Four product lines. Limited purchasing budget. Limited warehouse capacity. Set the constraints and calculate a replenishment plan that balances service, stock exposure and expected contribution.</p></div><div class="dataset-note"><span>WORKING EXAMPLE</span><strong>Four fictional product lines</strong><small>Actual discrete optimisation · all figures illustrative</small></div></div>
+      </div>
+      <div class="tabs" role="tablist" aria-label="Modules">
+        <button role="tab" aria-selected="true" class="tab active" data-view="plan">01 &nbsp; Resource allocation</button>
+        <button role="tab" aria-selected="false" class="tab" data-view="method">02 &nbsp; How the solver works</button>
+      </div>
+      <section data-panel="plan">
+        <div class="section-kicker"><span>ANALYSIS 01</span><span>INVENTORY / PURCHASE ALLOCATION</span></div>
+        <div class="section-heading"><div><h2>Replenishment planner</h2><p>Explore how the purchasing mix changes when the operating constraints and market outlook change.</p></div><div class="section-index">SOLVER / O01</div></div>
+        <div class="layout">
+          <aside class="controls">
+            <div class="panel-title"><span>01</span><h3>Business constraints</h3></div>
+            <p class="muted short">Set the resources and planning assumptions available to the purchasing team.</p>
+            <div class="range-head"><label for="budget">Purchasing budget</label><output id="budget-display">€33,000</output></div>
+            <input id="budget" type="range" min="15000" max="70000" step="500" value="33000">
+            <div class="range-captions"><span>€15k</span><span>€70k</span></div>
+            <div class="range-head"><label for="capacity">Additional storage capacity</label><output id="capacity-display">450 units</output></div>
+            <input id="capacity" type="range" min="200" max="800" step="10" value="450">
+            <div class="range-captions"><span>200</span><span>800</span></div>
+            <label for="market">Market outlook</label>
+            <select id="market"><option value="base">Expected market</option><option value="growth">Demand surge (+22%)</option><option value="soft">Soft demand (−18%)</option></select>
+            <label>Planning period</label>
+            <div class="segmented" id="period-buttons" role="group" aria-label="Planning period">
+              <button class="chosen" type="button" data-period="4">4 weeks</button>
+              <button type="button" data-period="8">8 weeks</button>
+              <button type="button" data-period="12">12 weeks</button>
+            </div>
+            <div class="control-separator"></div>
+            <div class="range-head"><label for="uncertainty">Demand variability</label><output id="uncertainty-display">100%</output></div>
+            <input id="uncertainty" type="range" min="60" max="160" value="100" step="10">
+            <div class="range-captions"><span>More stable</span><span>More volatile</span></div>
+            <div class="range-head"><label for="service">Cost of missed demand</label><output id="service-display">100%</output></div>
+            <input id="service" type="range" min="50" max="200" value="100" step="10">
+            <div class="range-captions"><span>Lower priority</span><span>Higher priority</span></div>
+            <p class="control-hint">Changing an input does not change the saved outcome until the analysis is run again. All allocations are calculated locally.</p>
+            <button type="button" class="button primary" id="run-optimisation"><span class="play-triangle">▶</span> Calculate best allocation</button>
+            <button type="button" class="button light" id="reset">Restore example</button>
+            <p class="update-note" id="update-note" aria-live="polite">Ready to run.</p>
+          </aside>
+          <div class="output">
+            <div class="kpis">
+              <article class="kpi"><span>EXPECTED CONTRIBUTION UPLIFT</span><strong id="kpi-gain">—</strong><small>vs transparent replenishment rule</small></article>
+              <article class="kpi"><span>EXPECTED DEMAND COVERED</span><strong id="kpi-fill">—</strong><small id="kpi-fill-compare">Share fulfilled across scenarios</small></article>
+              <article class="kpi"><span>PURCHASING ALLOCATION</span><strong id="kpi-spend">—</strong><small id="kpi-budget">Within available cash</small></article>
+              <article class="kpi"><span>ADDITIONAL STORAGE</span><strong id="kpi-space">—</strong><small id="kpi-capacity">Within capacity</small></article>
+            </div>
+            <section class="graph-card allocation-card">
+              <div class="graph-head"><div><span class="mini-label">RECOMMENDED PURCHASE MIX</span><h3>Where the next investment goes</h3><p>The solver chooses order quantities in 10-unit increments under both constraints.</p></div><button id="export-plan" type="button" class="text-button">↓ Export purchase plan</button></div>
+              <div class="chart-key"><span><i class="swatch actual"></i> Reference policy</span><span><i class="swatch projected"></i> Optimised allocation</span><span class="right-legend">Orders are additional units, not existing stock</span></div>
+              <div id="bar-chart" class="bar-chart" aria-label="Purchasing plan by product" role="img"></div>
+              <div class="graph-foot"><span>Reference = equal-coverage replenishment heuristic</span><span>Solver = exact discrete programme</span></div>
+            </section>
+            <div class="twocol">
+              <section class="panel result-comparison">
+                <div class="panel-top"><div><span class="mini-label">DECISION COMPARISON</span><h3>Does the plan improve the outcome?</h3></div><span class="pill good" id="constraint-badge">Constraints respected</span></div>
+                <div class="compare-rows">
+                  <div class="compare-heading"><span>METRIC</span><span>REFERENCE</span><span>OPTIMISED</span></div>
+                  <div><span>Expected contribution</span><strong id="comparison-contribution">—</strong><strong id="optimal-contribution">—</strong></div>
+                  <div><span>Demand covered</span><strong id="comparison-fill">—</strong><strong id="optimal-fill">—</strong></div>
+                  <div><span>Purchasing investment</span><strong id="comparison-spend">—</strong><strong id="optimal-spend">—</strong></div>
+                  <div><span>Expected unfilled units</span><strong id="comparison-lost">—</strong><strong id="optimal-lost">—</strong></div>
+                </div>
+                <p class="subtle">These are modelled outcomes under identical synthetic demand assumptions, not realised savings or a client performance claim.</p>
+              </section>
+              <section class="panel practical">
+                <div class="panel-top"><div><span class="mini-label">EXECUTIVE TAKEAWAYS</span><h3>What changes for the business?</h3></div></div>
+                <div id="insights" class="insights"></div>
+                <div class="footnote">Contributions combine expected fulfilled demand, missed-demand penalties, stock carry and an illustrative financing charge.</div>
+              </section>
+            </div>
+            <section class="panel sku-table">
+              <div class="panel-top"><div><span class="mini-label">PURCHASING DECISION</span><h3>Line-by-line replenishment</h3><p class="table-explainer">Each row shows why the allocation differs from a simple equal-coverage policy.</p></div></div>
+              <div class="table-scroller"><table><thead><tr><th>Product line</th><th>Expected demand</th><th>Stock on hand</th><th>Reference order</th><th>Optimised order</th><th>Change</th></tr></thead><tbody id="allocation-table"></tbody></table></div>
+            </section>
+            <section class="panel stress-panel">
+              <div class="panel-top"><div><span class="mini-label">DECISION ROBUSTNESS</span><h3>What happens if demand moves?</h3><p class="table-explainer">Keep the chosen purchasing plan fixed and evaluate it across three market outcomes.</p></div></div>
+              <div id="stress-rows" class="stress-rows"></div>
+              <p class="subtle">Scenario cards re-evaluate the current allocation; they do not re-optimise separately for each future.</p>
+            </section>
+          </div>
+        </div>
+        <section class="panel executive-brief" id="optimisation-brief" aria-label="Executive optimisation report">
+          <div class="panel-top">
+            <div><span class="mini-label">CLIENT-FACING DELIVERABLE / EURO</span><h3>Executive inventory decision brief</h3>
+              <p class="table-explainer">Current allocation, constraints, benchmark comparison and actions, with honest assumptions.</p></div>
+            <div class="brief-buttons"><button type="button" id="download-optimisation-brief" class="text-button">↓ Download HTML report</button><button type="button" id="print-optimisation-brief" class="text-button">↗ Print / save PDF</button></div>
+          </div>
+          <div class="brief-metrics" id="brief-metrics"></div>
+          <div class="brief-analysis">
+            <div><span class="mini-label">01 / DECISION</span><h4 id="brief-headline">A constraint-aware purchase plan</h4><p id="brief-summary">A synthetic allocation built from a discrete optimisation solver.</p></div>
+            <div><span class="mini-label">02 / EVIDENCE & NEXT ACTION</span><p id="brief-evidence">Quantified scenario comparisons and a transparent baseline.</p><p>Validate product demand, procurement assumptions and carrying costs against real ERP records before using any recommendation.</p></div>
+          </div>
+          <p class="brief-disclaimer">Illustrative business scenario, not realised client savings. All records are fictional, and there are no ERP, banking or supplier integrations.</p>
+        </section>
+      </section>
+      <section data-panel="method" hidden>
+        <div class="section-kicker"><span>REFERENCE NOTES</span><span>ASSUMPTIONS / SOLVER</span></div>
+        <div class="section-heading"><div><h2>Transparent by design</h2><p>Every result is derived from a defined calculation, rather than an unexplained recommendation or a scripted number.</p></div></div>
+        <div class="method-grid">
+          <article class="panel method-card"><span class="mini-label">01 / INPUT DATA</span><h3>Four fictional product lines</h3><p>Each line has a demand estimate, on-hand inventory, per-unit cost, contribution margin, shortage penalty, holding cost and maximum order. These are illustrative assumptions, not measurements from a real business.</p></article>
+          <article class="panel method-card"><span class="mini-label">02 / OBJECTIVE</span><h3>Expected business contribution</h3><p>Maximise modelled contribution from fulfilled demand, less an explicit penalty for missed demand, expected stock-carry cost and a small financing charge on purchased units. Purchase cost is not counted again as a profit expense because the unit contribution already reflects sold-unit costs.</p></article>
+          <article class="panel method-card"><span class="mini-label">03 / CONSTRAINTS</span><h3>Budget and capacity</h3><p>Purchases cannot exceed the available investment or additional storage capacity, and each product has a maximum order. Orders move in multiples of ten units; no fractional replenishment is allowed.</p></article>
+          <article class="panel method-card"><span class="mini-label">04 / SOLVER</span><h3>Exact within the stated increments</h3><p>Multiple-choice dynamic programming explores feasible choices for every SKU, with budget tracked in €50 units and storage in 10-unit batches. It selects the highest objective value from the feasible states, not a heuristic guess.</p></article>
+          <article class="panel method-card"><span class="mini-label">05 / COMPARISON</span><h3>A clear reference policy</h3><p>The benchmark adds replenishment batches to the currently least-covered product until it runs out of feasible budget or capacity. This is a disclosed comparison rule—not a claim about how any real client currently operates.</p></article>
+          <article class="panel method-card"><span class="mini-label">06 / UNCERTAINTY</span><h3>Illustrative demand distributions</h3><p>Expected demand uses five symmetric, weighted scenarios. Demand volatility and missed-demand sensitivity are adjustable. The scenario cards test the same optimised plan under different market conditions; they are not probability-calibrated forecasts.</p></article>
+        </div>
+        <div class="method-banner"><div><span class="mini-label">AN ACTUAL DELIVERY WOULD INCLUDE</span><h3>Real data, calibrated constraints and operational integration.</h3><p>ERP data extraction · Demand calibration · Operational rules · Solver validation · Scenario testing · Deployment · Monitoring.</p></div><a href="https://www.sc-analytics.io/" target="_blank" rel="noopener">Discuss a project ↗</a></div>
+      </section>
+      <section class="runbook" aria-label="Optimisation workflow">
+        <div class="runbook-header"><div><span class="mini-label">EXECUTION LOG</span><h3>Decision workflow</h3></div><span id="run-status" class="pill neutral" aria-live="polite">Ready</span></div>
+        <div class="run-steps optimisation-steps">
+          <div class="step" data-step="0"><span class="step-icon">1</span><div><strong>Check constraints</strong><small>Validate planning limits and chosen scenario</small></div></div>
+          <div class="step" data-step="1"><span class="step-icon">2</span><div><strong>Evaluate reference</strong><small>Calculate the comparison allocation</small></div></div>
+          <div class="step" data-step="2"><span class="step-icon">3</span><div><strong>Solve allocation</strong><small>Run the discrete optimisation algorithm</small></div></div>
+          <div class="step" data-step="3"><span class="step-icon">4</span><div><strong>Stress test</strong><small>Evaluate the same plan in alternative markets</small></div></div>
+          <div class="step" data-step="4"><span class="step-icon">5</span><div><strong>Review outcome</strong><small>Reconcile constraints and publish the decision</small></div></div>
+        </div>
+        <p class="workflow-disclaimer">All calculations run in your browser. The staged progress animation makes the method understandable; it is not a remote live ERP workflow.</p>
+      </section>
+    </main>
+    <footer class="footer"><span>© 2026 SC-Analytics · Fictional operational inputs and calculated outputs</span><a href="https://www.sc-analytics.io/" target="_blank" rel="noopener">sc-analytics.io ↗</a></footer>
+  </div>
+</div>
+</body></html>

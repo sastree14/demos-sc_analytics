@@ -1,4 +1,5 @@
 import {cases,byId,initial,controlSpecs,runCase,formatNum,formatCompact,currency} from "./studio-engine.js";
+import {installDecisionExperience} from "../shared/experience.js";
 
 const $=id=>document.getElementById(id);
 const fmt=n=>formatNum(n);
@@ -6,6 +7,12 @@ const pct=n=>(n*100).toFixed(1)+"%";
 const delay=ms=>new Promise(resolve=>setTimeout(resolve,ms));
 const ns="http://www.w3.org/2000/svg";
 let active="demand",inputs={...initial.demand},result=null,running=false;
+const experience=installDecisionExperience({
+ family:"predictive-models",
+ read:()=>({id:active,label:byId(active).name,question:byId(active).short,result,params:{...inputs},controls:controlDescriptor(byId(active).kind)}),
+ apply:async values=>{inputs={...values};controlsForCase();dirty();},
+ run:()=>execute()
+});
 const safe=(value)=>String(value??"").replace(/[&<>"']/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[char]));
 const signed=(x,digits=0)=>(x>0?"+":"")+(digits?Number(x).toFixed(digits):formatNum(x));
 const put=(id,value)=>{$(id).textContent=String(value)};
@@ -233,6 +240,7 @@ function renderCase(r){
  const actions=$("decision-actions");actions.replaceChildren();
  r.decision.actions.forEach((a,i)=>{const row=dom("div","action-item");row.append(dom("span","action-icon",i+1),dom("span","",a));actions.append(row)});
  renderReport(r);
+ experience.refresh();
 }
 function renderReport(r){
  const idx=String(cases.findIndex(x=>x.id===r.case.id)+1).padStart(2,"0");
@@ -315,10 +323,12 @@ async function execute(){
   for(let i=0;i<5;i++){
    const step=document.querySelector('.workflow-step[data-step="'+i+'"]');step.classList.add("running");
    put("workflow-status",["● Preparing illustrative records","● Checking structure and valid ranges","● Computing model outputs","● Constructing decision view","● Reconciling metrics and report"][i]);
-   await delay(i===2?80:140);
+   await delay(document.getElementById("sc-fast-mode")?.checked?100:1900);
    if(i===2){result=runCase(chosen,parameters);if(!result?.metrics?.length)throw Error("No model output");}
    if(i===3)renderCase(result);
-   step.classList.remove("running");step.classList.add("done");step.querySelector(".workflow-icon").textContent="✓";
+   step.classList.remove("running");
+   const warn=i===3&&experience.getDecision()?.level==="review";
+   step.classList.add(warn?"warning":"done");step.querySelector(".workflow-icon").textContent=warn?"!":"✓";
   }
   put("workflow-status","✓ Example analysis complete · results calculated locally");
   put("update-status","Updated · model metrics and executive report are current.");$("update-status").classList.remove("dirty");

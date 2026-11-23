@@ -35,34 +35,34 @@ export const modules=[
    seed:204,inputs:[spec("count","Orders per period",100,1000,50),spec("late","Escalation after",1,7,1," days"),spec("inventory","Safety stock buffer",0,30,5,"%"),spec("threshold","Automated approval ceiling",500,9000,500," €"),spec("time","Minutes saved per routine order",2,15,1," min"),spec("hourRate","Hourly operating cost",18,65,1," €")],
    defaults:{count:450,late:6,inventory:5,threshold:8500,time:8,hourRate:32}},
   {id:"service-routing",label:"Assisted service routing",short:"Score sample requests and send uncertain or sensitive cases to a human.",category:"CUSTOMER OPERATIONS",categoryShort:"AI-ASSISTED PROTOTYPE",
-   seed:399,inputs:[spec("count","Incoming service requests",100,800,50),spec("confidence","Auto-routing score threshold",60,95,5,"%"),spec("handling","Minutes avoided on routine cases",3,17,1," min"),spec("hourRate","Hourly support cost",18,75,1," €"),spec("fee","Illustrative operating overhead",0,2200,100," €")],
+   seed:399,inputs:[spec("count","Incoming service requests",100,800,50),spec("confidence","Auto-routing score threshold",60,95,5,"%"),spec("handling","Minutes avoided on routine cases",3,17,1," min"),spec("hourRate","Hourly support cost",18,75,1," €"),spec("fee","Illustrative operating overhead",0,2200,50," €")],
    defaults:{count:400,confidence:80,handling:7,hourRate:33,fee:350}}
  ]},
  {id:"modelling-scenarios",label:"Modelling & Scenarios",tag:"FINANCE / STRATEGIC DECISIONS",headline:"Compare possible futures before you commit.",intro:"Explore the economics of pricing, investment and recurring revenue. Adjustable assumptions turn strategy into measurable trade-offs.",focus:"Sensitivity, profitability and risk",cases:[
   {id:"pricing",label:"Price & volume strategy",short:"See how price elasticity, costs and capacity change contribution.",category:"PRICING",categoryShort:"ECONOMIC MODEL",
-   inputs:[spec("price","Current selling price",40,190,5," €"),spec("volume","Baseline monthly demand",500,12000,250),spec("elasticity","Demand elasticity",0.5,3,0.1),spec("cost","Unit variable cost",15,100,5," €"),spec("capacity","Monthly supply capacity",1000,12000,250),spec("lift","Marketing demand uplift",-20,30,5,"%")],
+   inputs:[spec("price","Current selling price",40,190,5," €"),spec("volume","Baseline monthly demand",500,12000,250),spec("elasticity","Demand elasticity",0.5,3,2.7755575615628914e-17),spec("cost","Unit variable cost",15,100,5," €"),spec("capacity","Monthly supply capacity",1000,12000,250),spec("lift","Marketing demand uplift",-20,30,5,"%")],
    defaults:{price:100,volume:6000,elasticity:1.6,cost:45,capacity:8000,lift:0}},
   {id:"investment",label:"Investment business case",short:"Evaluate NPV, payback and downside sensitivity for a proposed initiative.",category:"CAPITAL ALLOCATION",categoryShort:"FINANCIAL MODEL",
    inputs:[spec("outlay","Upfront investment",50000,500000,10000," €"),spec("savings","Year-one annual gross benefit",30000,240000,5000," €"),spec("opex","Annual running cost",5000,80000,2500," €"),spec("growth","Annual benefit growth",-15,30,1,"%"),spec("discount","Discount rate",3,18,1,"%"),spec("adoption","Realised adoption assumption",40,100,5,"%")],
    defaults:{outlay:210000,savings:95000,opex:20000,growth:5,discount:9,adoption:85}},
   {id:"recurring",label:"Recurring revenue economics",short:"Understand how churn, acquisition cost and conversion drive sustainable growth.",category:"SUBSCRIPTION GROWTH",categoryShort:"COHORT MODEL",
-   inputs:[spec("customers","Existing paying accounts",100,5000,100),spec("arpa","Average monthly revenue/account",40,300,10," €"),spec("churn","Monthly churn rate",0.5,9,0.5,"%"),spec("leads","Qualified prospects each month",50,800,25),spec("conversion","Conversion rate",2,25,1,"%"),spec("cac","Acquisition cost per account",200,2200,100," €"),spec("margin","Gross margin",40,90,5,"%")],
+   inputs:[spec("customers","Existing paying accounts",100,5000,100),spec("arpa","Average monthly revenue/account",40,300,5," €"),spec("churn","Monthly churn rate",0.5,9,0.5,"%"),spec("leads","Qualified prospects each month",50,800,25),spec("conversion","Conversion rate",2,25,1,"%"),spec("cac","Acquisition cost per account",200,2200,50," €"),spec("margin","Gross margin",40,90,1,"%")],
    defaults:{customers:900,arpa:125,churn:3,leads:200,conversion:9,cac:750,margin:72}}
  ]},
  {id:"simulations",label:"Simulation & Risk",tag:"MONTE CARLO / OPERATIONAL UNCERTAINTY",headline:"Understand the range of outcomes. Not only the average.",intro:"Test thousands of repeatable operational scenarios to quantify service levels, waiting times and delivery uncertainty.",focus:"Probability, service levels and contingencies",cases:[
   {id:"stock-risk",label:"Inventory resilience",short:"Run demand trials to quantify stockout probability and expected cost.",category:"INVENTORY",categoryShort:"MONTE CARLO",
-   seed:808,inputs:[spec("demand","Expected monthly demand",300,3000,100),spec("volatility","Demand standard deviation",8,40,2,"%"),spec("stock","Starting available stock",100,2800,100),spec("order","Incoming replenishment",0,1800,100),spec("lead","Lead time exposure",1,6,1," weeks"),spec("penalty","Lost-sale cost per unit",5,80,5," €")],
+   seed:808,inputs:[spec("demand","Expected monthly demand",300,3000,100),spec("volatility","Demand standard deviation",8,40,1,"%"),spec("stock","Starting available stock",100,2800,50),spec("order","Incoming replenishment",0,1800,100),spec("lead","Lead time exposure",1,6,1," weeks"),spec("penalty","Lost-sale cost per unit",5,80,1," €")],
    defaults:{demand:1500,volatility:19,stock:1150,order:500,lead:2,penalty:24}},
   {id:"queue-risk",label:"Service capacity & queues",short:"Model arrival peaks, staff utilisation and customer waiting times.",category:"CUSTOMER SERVICE",categoryShort:"DISCRETE-EVENT SIMULATION",
-   seed:244,inputs:[spec("arrivals","Requests arriving per hour",10,75,5),spec("agents","Available agents",2,15,1),spec("handling","Average handling time",4,16,1," min"),spec("sla","Target maximum waiting time",2,35,1," min"),spec("cost","Daily cost per agent",90,240,10," €")],
+   seed:244,inputs:[spec("arrivals","Requests arriving per hour",10,75,1),spec("agents","Available agents",2,15,1),spec("handling","Average handling time",4,16,1," min"),spec("sla","Target maximum waiting time",2,35,1," min"),spec("cost","Daily cost per agent",90,240,5," €")],
    defaults:{arrivals:32,agents:6,handling:9,sla:12,cost:145}},
   {id:"delivery-risk",label:"Project delivery uncertainty",short:"Estimate deadline confidence and contingency cost before committing.",category:"PROJECT DELIVERY",categoryShort:"MONTE CARLO",
-   seed:918,inputs:[spec("planned","Base project duration",30,160,5," days"),spec("uncertainty","Task duration uncertainty",10,60,5,"%"),spec("deadline","Contractual deadline",35,240,5," days"),spec("cost","Daily team expense",300,2500,100," €"),spec("budget","Approved cost budget",25000,230000,5000," €"),spec("contingency","Cost contingency allowance",0,35,5,"%")],
+   seed:918,inputs:[spec("planned","Base project duration",30,160,5," days"),spec("uncertainty","Task duration uncertainty",10,60,5,"%"),spec("deadline","Contractual deadline",35,240,1," days"),spec("cost","Daily team expense",300,2500,100," €"),spec("budget","Approved cost budget",25000,230000,1000," €"),spec("contingency","Cost contingency allowance",0,35,5,"%")],
    defaults:{planned:85,uncertainty:25,deadline:86,cost:900,budget:76000,contingency:5}}
  ]},
  {id:"bi-reporting",label:"Business Intelligence & Reporting",tag:"DASHBOARDS / EXECUTIVE CONTROL",headline:"One version of performance. Clear next decisions.",intro:"Explore management reporting with consistent KPIs, segment filters, reconciled summaries and driver analysis.",focus:"Commercial performance and operational visibility",cases:[
   {id:"sales-bi",label:"Revenue performance",short:"Compare periods, regions and targets using reconciled synthetic transactions.",category:"COMMERCIAL INTELLIGENCE",categoryShort:"EXECUTIVE DASHBOARD",
-   seed:559,inputs:[option("region","Reporting region",[["All","All regions"],["North","North"],["East","East"],["South","South"],["West","West"]]),spec("months","Months in reporting window",3,12,3),spec("target","Target adjustment",-20,30,5,"%"),spec("cost","Variable cost ratio",35,75,5,"%"),spec("returns","Return / credit adjustment",0,9,1,"%")],
+   seed:559,inputs:[option("region","Reporting region",[["All","All regions"],["North","North"],["East","East"],["South","South"],["West","West"]]),spec("months","Months in reporting window",3,12,3),spec("target","Target adjustment",-20,30,1,"%"),spec("cost","Variable cost ratio",35,75,1,"%"),spec("returns","Return / credit adjustment",0,9,1,"%")],
    defaults:{region:"All",months:12,target:8,cost:53,returns:2}},
   {id:"logistics-bi",label:"Delivery service dashboard",short:"Analyse on-time performance, carriers, cost and operational exceptions.",category:"LOGISTICS INTELLIGENCE",categoryShort:"SERVICE SCORECARD",
    seed:557,inputs:[option("region","Operating region",[["All","All regions"],["North","North"],["East","East"],["South","South"],["West","West"]]),option("carrier","Carrier",[["All","All carriers"],["Atlas","Atlas"],["Faro","Faro"],["Nexa","Nexa"]]),spec("goal","On-time service target",80,98,1,"%"),spec("lateCost","Financial exposure per late order",10,130,5," €")],
@@ -93,25 +93,25 @@ modules.find(m=>m.id==="automation-ai").cases.push({
 modules.find(m=>m.id==="modelling-scenarios").cases.push({
  id:"hire-outsource",label:"Hire, outsource or wait?",short:"Compare internal staffing, flexible outsourcing and unmet-demand exposure before committing to fixed capacity.",
  category:"CAPACITY / MAKE OR BUY",categoryShort:"BREAK-EVEN MODEL",
- inputs:[spec("volume","Monthly operating workload",100,1500,50),spec("productivity","Cases per employee / month",80,260,20),spec("salary","Loaded monthly cost / employee",2200,6600,200," €"),spec("outsourced","Outsourced cost per case",10,65,5," €"),spec("limit","Maximum new employees",0,8,1)],
+ inputs:[spec("volume","Monthly operating workload",100,1500,50),spec("productivity","Cases per employee / month",80,260,10),spec("salary","Loaded monthly cost / employee",2200,6600,100," €"),spec("outsourced","Outsourced cost per case",10,65,1," €"),spec("limit","Maximum new employees",0,8,1)],
  defaults:{volume:850,productivity:170,salary:3900,outsourced:32,limit:6}
 });
 modules.find(m=>m.id==="simulations").cases.push({
  id:"business-stress",label:"Business capacity stress test",short:"Estimate the probability that workload peaks and staff absences overwhelm available capacity.",
  category:"RESILIENCE / CONTINGENCY",categoryShort:"MONTE CARLO",
- inputs:[spec("demand","Average weekly demand",200,1500,50),spec("volatility","Demand variability",5,45,5,"%"),spec("capacity","Nominal weekly capacity",300,1700,50),spec("absence","Expected capacity outage",0,25,5,"%"),spec("penalty","Cost of unmet work",10,110,10," €")],
+ inputs:[spec("demand","Average weekly demand",200,1500,50),spec("volatility","Demand variability",5,45,1,"%"),spec("capacity","Nominal weekly capacity",300,1700,50),spec("absence","Expected capacity outage",0,25,5,"%"),spec("penalty","Cost of unmet work",10,110,5," €")],
  defaults:{demand:900,volatility:24,capacity:1050,absence:10,penalty:45}
 });
 modules.find(m=>m.id==="bi-reporting").cases.push({
  id:"executive-bi",label:"Executive command centre",short:"Combine commercial performance, margin and operational service into a board-level decision view.",
  category:"EXECUTIVE / CROSS-FUNCTION",categoryShort:"MANAGEMENT SCORECARD",
- inputs:[option("region","Business area",[["All","All business areas"],["North","North"],["East","East"],["South","South"],["West","West"]]),spec("target","Revenue target adjustment",-20,25,5,"%"),spec("cost","Variable cost ratio",30,75,5,"%"),spec("service","Target service quality",80,98,2,"%"),spec("penalty","Exposure per late delivery",20,140,10," €")],
+ inputs:[option("region","Business area",[["All","All business areas"],["North","North"],["East","East"],["South","South"],["West","West"]]),spec("target","Revenue target adjustment",-20,25,1,"%"),spec("cost","Variable cost ratio",30,75,1,"%"),spec("service","Target service quality",80,98,2,"%"),spec("penalty","Exposure per late delivery",20,140,10," €")],
  defaults:{region:"All",target:8,cost:53,service:92,penalty:70}
 });
 modules.find(m=>m.id==="custom-apps").cases.push({
  id:"fleet-assets",label:"Fleet maintenance & renewal",short:"Inspect synthetic assets, compare repair and renewal costs, and identify vehicles needing a decision.",
  category:"ASSETS / LIFE CYCLE",categoryShort:"FLEET DECISION WORKSPACE",
- inputs:[spec("age","Replacement consideration from",3,12,1," years"),spec("repair","Estimated annual repair cost",2000,13000,500," €"),spec("replacement","Annualised replacement cost",5000,17000,500," €"),spec("downtime","Estimated annual downtime cost",1000,12000,500," €"),spec("buffer","Minimum value difference before action",0,5000,500," €")],
+ inputs:[spec("age","Replacement consideration from",3,12,1," years"),spec("repair","Estimated annual repair cost",2000,13000,500," €"),spec("replacement","Annualised replacement cost",5000,17000,500," €"),spec("downtime","Estimated annual downtime cost",1000,12000,100," €"),spec("buffer","Minimum value difference before action",0,5000,500," €")],
  defaults:{age:7,repair:6500,replacement:9500,downtime:4800,buffer:1500}
 });
 export const moduleById=id=>modules.find(m=>m.id===id)||modules[0];
@@ -182,6 +182,7 @@ function modellingPricing(p){
  const demand=price=>baseQ*Math.pow(price/base,-elas)*lift;
  const outcome=price=>{const d=demand(price),sold=Math.min(d,cap);return {price,demand:d,sold,revenue:sold*price,profit:sold*(price-c)}};
  const trials=range(31,i=>outcome(Math.max(c*1.03,base*(.60+i*.028))));
+ trials.push(outcome(base));trials.sort((a,b)=>a.price-b.price);
  const best=trials.reduce((a,b)=>a.profit>b.profit?a:b);
  const current=outcome(base),delta=best.profit-current.profit,missed=Math.max(0,current.demand-cap);
  return result({metrics:[measure("CURRENT CONTRIBUTION",money(current.profit),"monthly after variable cost"),measure("MODEL OPTIMAL PRICE",money(best.price),"best candidate in tested price grid"),measure("UPSIDE VS CURRENT",money(Math.max(0,delta)),"assumption-based contribution difference"),measure("UNMET BASE DEMAND",num(missed),"units above stated capacity")],
@@ -226,7 +227,7 @@ function modellingRecurring(p){
  }
  const ltv=p.arpa*(p.margin/100)/(p.churn/100),payback=p.cac/(p.arpa*p.margin/100),multiple=ltv/p.cac;
  return result({metrics:[measure("ENDING MRR",money(monthly.at(-1).a),"modelled month 12"),measure("LTV / CAC",round(multiple,1)+"×","simple churn-based economics"),measure("CAC PAYBACK",round(payback,1)+" months","at current contribution / account"),measure("ANNUAL NET CONTRIBUTION",money(gmProfit),"gross profit less acquisition spend")],
-  chart:chartLine(monthly,"Monthly recurring revenue outlook","Cohort-level additions and expected churn alter the account base.",["Revenue €","Active accounts"]),
+  chart:chartLine(monthly.map(x=>row(x.label,x.a,x.c)),"Monthly recurring revenue and contribution","Recurring revenue and gross contribution after acquisition spend, in euros.",["Revenue €","Contribution €"]),
   comparison:chartBar([row("Starting accounts",p.customers),row("New accounts",round(acquired)),row("Ending accounts",round(active))],"Account base bridge","Gross acquisitions are offset by losses from monthly churn."),
   table:{columns:["Period","Active accounts","MRR","Contribution after CAC"],rows:monthly.map(x=>[x.label,num(x.b),money(x.a),money(x.c)])},
   impact:{value:money(ltv),label:"Illustrative gross profit LTV per account",formula:"Monthly revenue × gross margin ÷ monthly churn rate.",note:"Simplified steady-state customer value, not audited cohort LTV. Forecast omits seasonality, discounts, retention heterogeneity and fixed overhead."},
@@ -238,6 +239,12 @@ function modellingRecurring(p){
  });
 }
 function gaussian(random){const a=Math.max(1e-10,random()),b=random();return Math.sqrt(-2*Math.log(a))*Math.cos(2*Math.PI*b)}
+function frequencyBins(values, suffix=""){
+ const low=Math.floor(Math.min(...values)),width=Math.max(1,Math.ceil((Math.max(...values)-low+1)/10));
+ const bins=range(10,i=>row(num(low+i*width)+"–<"+num(low+(i+1)*width)+suffix,0));
+ for(const value of values)bins[Math.floor((value-low)/width)].a++;
+ return bins;
+}
 function simulateStock(p){
  const random=rnd(808),n=1100,results=[],leadFactor=.65+p.lead/6;
  for(let i=0;i<n;i++){
@@ -246,7 +253,7 @@ function simulateStock(p){
   results.push({need,shortage,cost:shortage*p.penalty+left*2.5,fill:need?Math.min(1,available/need):1});
  }
  const stockout=results.filter(x=>x.shortage>0).length/n,avgFill=avg(results.map(x=>x.fill)),loss=avg(results.map(x=>x.cost)),p95=percentile(results.map(x=>x.need),.95);
- const bins=range(10,i=>{const bottom=0+i*p.demand*.18,top=bottom+p.demand*.18;return row(num(bottom)+"–"+num(top),results.filter(x=>x.need>=bottom&&x.need<top).length)});
+ const bins=frequencyBins(results.map(x=>x.need));
  return result({metrics:[measure("STOCKOUT PROBABILITY",percent(stockout),"across 1,100 demand trials"),measure("EXPECTED FILL RATE",percent(avgFill),"average service across trials"),measure("95TH PERCENTILE DEMAND",unit(round(p95),"units"),"lead-exposure demand distribution"),measure("EXPECTED EXPOSURE",money(loss),"shortage and remaining-stock costs")],
   chart:chartDistribution(bins,"Demand uncertainty: simulated distribution","1,100 deterministic Monte Carlo trials, each with a separate demand shock."),
   comparison:chartBar([row("Available stock",p.stock+p.order),row("Expected need",round(p.demand*leadFactor)),row("95th percentile",round(p95))],"How much inventory is enough?","Comparison for the selected replenishment lead-time window."),
@@ -263,12 +270,13 @@ function queueRun(p,r,agents=p.agents){
  const available=Array(agents).fill(0),waits=[];let arrivals=0,busy=0,over=0;
  for(let minute=0;minute<480;minute+=5){
   const n=poissonArrival(r,p.arrivals/12);
-  for(let j=0;j<n;j++){
-   const arrival=minute+r()*5,service=-Math.log(Math.max(1e-9,1-r()))*p.handling;
+  const arrivalTimes=range(n,()=>minute+r()*5).sort((a,b)=>a-b);
+  for(const arrival of arrivalTimes){
+   const service=-Math.log(Math.max(1e-9,1-r()))*p.handling;
    let idx=0;for(let k=1;k<available.length;k++)if(available[k]<available[idx])idx=k;
    const start=Math.max(arrival,available[idx]);const wait=start-arrival;
    available[idx]=start+service;
-   waits.push(wait);arrivals++;busy+=service;if(wait>p.sla)over++;
+   waits.push(wait);arrivals++;busy+=Math.max(0,Math.min(480,start+service)-Math.min(480,start));if(wait>p.sla)over++;
   }
  }
  return {arrivals,wait:avg(waits),p90:percentile(waits,.9),within:arrivals?(arrivals-over)/arrivals:1,util:busy/(agents*480),waits};
@@ -276,8 +284,8 @@ function queueRun(p,r,agents=p.agents){
 function simulateQueue(p){
  const r=rnd(244),runs=240,all=range(runs,()=>queueRun(p,r)),waits=all.flatMap(x=>x.waits);
  const avgWait=avg(all.map(x=>x.wait)),p90=percentile(waits,.9),sla=avg(all.map(x=>x.within)),util=avg(all.map(x=>x.util));
- const alternative=range(90,()=>queueRun(p,r,p.agents+1));
- const bins=[0,2,5,10,20,35,60,120,240].map((bottom,i,edges)=>row(bottom+"–"+(edges[i+1]??"240+")+" min",waits.filter(w=>w>=bottom&&(edges[i+1]!==undefined?w<edges[i+1]:true)).length));
+ const paired=rnd(244),alternative=range(runs,()=>queueRun(p,paired,p.agents+1));
+ const bins=[0,2,5,10,20,35,60,120,240].map((bottom,i,edges)=>row((edges[i+1]===undefined?bottom+"+":bottom+"–"+edges[i+1])+" min",waits.filter(w=>w>=bottom&&(edges[i+1]!==undefined?w<edges[i+1]:true)).length));
  const dailyCost=p.agents*p.cost,extra=p.cost;
  return result({metrics:[measure("SERVICE WITHIN SLA",percent(sla),"average per shift simulation"),measure("AVERAGE WAIT",round(avgWait,1)+" min","mean across 240 shifts"),measure("P90 WAIT",round(p90,1)+" min","90th percentile of requests"),measure("AGENT UTILISATION",percent(util),"mean simulated busy time")],
   chart:chartDistribution(bins,"Customer wait-time distribution","Queue outcomes across repeated eight-hour simulated shifts."),
@@ -298,7 +306,7 @@ function simulateDelivery(p){
   durations.push(days);expenses.push(days*p.cost*(1+.08*Math.max(0,days/p.planned-1)));
  }
  const ontime=durations.filter(d=>d<=p.deadline).length/n,p90=percentile(durations,.9),p95cost=percentile(expenses,.95),allowed=p.budget*(1+p.contingency/100),overspend=expenses.filter(c=>c>allowed).length/n;
- const bins=range(10,i=>{const min=p.planned*(.60+i*.09),max=min+p.planned*.09;return row(num(min)+"–"+num(max)+"d",durations.filter(d=>d>=min&&d<max).length)});
+ const bins=frequencyBins(durations,"d");
  return result({metrics:[measure("ON-TIME PROBABILITY",percent(ontime),"1,000 simulated project schedules"),measure("P90 PROJECT DURATION",round(p90,1)+" days","one in ten runs lasted longer"),measure("P95 DELIVERY COST",money(p95cost),"upper-tail estimated operating cost"),measure("BUDGET OVERRUN RISK",percent(overspend),"compared with budget + contingency")],
   chart:chartDistribution(bins,"Possible project completion dates","Repeated draws of five linked activity durations."),
   comparison:chartBar([row("Baseline plan",p.planned),row("Contractual deadline",p.deadline),row("P90 duration",round(p90))],"Commitment and contingency","Durations in calendar-equivalent working days under assumptions."),
@@ -342,7 +350,7 @@ function biSales(p){
 }
 function logisticsSource(){
  return seedData(700,557,(i,r)=>{
-  const region=regionNames[i%4],carrier=["Atlas","Faro","Nexa"][i%3],month=i%12;
+  const region=regionNames[i%4],carrier=["Atlas","Faro","Nexa"][i%3],month=Math.floor(i/12)%12;
   const delay=r()<(.105+.023*(i%4)+.016*(i%3)),cost=35+r()*110+12*(i%3),exception=delay||r()<.07;
   return {id:"SHIP-"+(10001+i),region,carrier,month,delay,cost,exception};
  });
@@ -356,7 +364,7 @@ function biLogistics(p){
   chart:chartLine(months,"Service level by operating month","Observed synthetic share on time compared with the selected target.",["On-time %","Target %"]),
   comparison:chartBar(carrierRows,"On-time delivery by carrier","Performance is recalculated after the selected filters."),
   table:{columns:["Shipment","Region","Carrier","Operational status"],rows:shipments.slice(0,10).map(x=>[x.id,x.region,x.carrier,x.delay?"Late":"On time"])},
-  impact:{value:money(late*p.lateCost),label:"Illustrative service exposure",formula:"Late shipments in the filtered set × the assumed commercial cost per late order.",note:"Synthetic service records; exposure is not an actual penalty, lost revenue or validated contractual damages. Priority-share control is an exploratory assumption, not a carrier change."},
+  impact:{value:money(late*p.lateCost),label:"Illustrative service exposure",formula:"Late shipments in the filtered set × the assumed commercial cost per late order.",note:"Synthetic service records; exposure is not an actual penalty, lost revenue or validated contractual damages."},
   decision:{title:ontime<p.goal/100?"Service is below the selected target":"Service exceeds the selected target",summary:"On-time rate is "+percent(ontime)+" across "+num(total)+" selected shipments.",actions:["Investigate lanes, causes and carriers with high delay concentrations.","Validate promised delivery windows and consistent timestamp definitions.","Link service exceptions to claims or remedial processes in an integrated system."]},
   quality:[["Full register","700 synthetic shipment rows"],["Applied region",p.region],["Applied carrier",p.carrier],["On-time denominator",num(total)]],
   scope:"Shipment log → canonical service metrics → segment filters → exception actions",
@@ -510,7 +518,7 @@ function businessStress(p){
   rows.push({demand,capacity,shortfall,cost:shortfall*p.penalty});
  }
  const fails=rows.filter(x=>x.shortfall>0).length,expected=avg(rows.map(x=>x.cost)),p95=percentile(rows.map(x=>x.shortfall),.95);
- const ranges=range(10,i=>{const a=i*100,b=(i+1)*100;return row(a+"-"+b,rows.filter(x=>x.shortfall>=a&&(i===9||x.shortfall<b)).length)});
+ const ranges=range(10,i=>{const a=i*100,b=(i+1)*100;return row(i===9?a+"+":a+"–<"+b,rows.filter(x=>x.shortfall>=a&&(i===9||x.shortfall<b)).length)});
  return result({
   metrics:[measure("SERVICE CAPACITY BREACH",percent(fails/count),"across 1,200 workload trials"),measure("EXPECTED EXPOSURE",money(expected),"mean simulated shortfall cost"),measure("P95 SHORTFALL",num(p95),"upper-tail weekly unserved work"),measure("AVERAGE COVERAGE",percent(1-avg(rows.map(x=>x.shortfall/Math.max(1,x.demand)))),"average demand served")],
   chart:chartDistribution(ranges,"Distribution of unmet workload","Simulated demand and staff availability shocks in each scenario."),

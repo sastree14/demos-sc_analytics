@@ -5,7 +5,6 @@ const $=id=>document.getElementById(id),create=(tag,cl,txt)=>{const el=document.
 const svgNS="http://www.w3.org/2000/svg",svg=(tag,attrs={},txt)=>{const el=document.createElementNS(svgNS,tag);for(const [k,v] of Object.entries(attrs))el.setAttribute(k,String(v));if(txt!==undefined)el.textContent=String(txt);return el;};
 const number=n=>new Intl.NumberFormat("es-ES",{maximumFractionDigits:1}).format(n);
 const compact=n=>Math.abs(n)>=1000000?number(n/1000000)+" M":Math.abs(n)>=10000?number(n/1000)+" k":number(n);
-const escape=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const isOptimization=document.body.dataset.module==="optimization";
 const module=isOptimization?optimizationModule:moduleById(document.body.dataset.module),isWorkflow=module.id==="automation-ai"||module.id==="custom-apps";
 const getCase=id=>isOptimization?optimizationCase(id):caseById(module.id,id);
@@ -14,6 +13,7 @@ const runModule=(id,p)=>isOptimization?runOptimizationCase(id,p):run(module.id,i
 let active=module.cases[0].id,inputs=getInitial(active),snapshot=null,busy=false,reviewed=new Set();
 const experience=installDecisionExperience({
  family:module.id,
+ simulate:runModule,
  read:()=>({id:active,label:getCase(active).label,question:getCase(active).short,result:snapshot,params:{...(snapshot?.params||inputs)},controls:getCase(active).inputs}),
  apply:async values=>{inputs={...values};paintControls();dirty();},
  run:()=>execute()
@@ -30,7 +30,7 @@ function paintCases(){
  });
 }
 function displayValue(value,c){
- if(c.unit.includes("€"))return number(value)+" €";
+ if(c.unit?.includes("€"))return number(value)+" €";
  if(c.unit==="%")return number(value)+"%";
  if(c.unit==="")return number(value);
  return number(value)+c.unit;
@@ -60,13 +60,13 @@ function paintControls(){
 function dirty(){set("input-status","Scenario modified · run analysis to update results.");$("input-status").classList.add("dirty");}
 function choose(id,scroll=false){
  if(busy)return;
- active=caseById(module.id,id).id;inputs=getInitial(active);reviewed=new Set();
+ active=getCase(id).id;inputs=getInitial(active);reviewed=new Set();
  paintCases();paintControls();
  const c=getCase(active);
  const deep=document.getElementById("optimization-advanced-link");if(deep)deep.hidden=c.id!=="inventory-allocation";
  set("current-category",c.category+" / "+c.categoryShort);
  set("current-case",c.label);set("current-copy",c.short);
- resetWorkflow();
+ resetSteps();
  try{paint(runModule(active,inputs));set("input-status","Example calculated from synthetic records. Change assumptions to experiment.");$("input-status").classList.remove("dirty");}
  catch(e){set("input-status","Unable to calculate this case: "+e.message);}
  if(scroll)document.querySelector("#workbench").scrollIntoView({behavior:"smooth",block:"start"});
@@ -170,25 +170,26 @@ function paint(out){
  experience.refresh();
 }
 function resetSteps(){
- document.querySelectorAll(".workflow-step").forEach((element,i)=>{element.classList.remove("done","running");element.querySelector("i").textContent=String(i+1).padStart(2,"0")});
+ document.querySelectorAll(".workflow-step").forEach((element,i)=>{element.classList.remove("done","running","warning");element.querySelector("i").textContent=String(i+1).padStart(2,"0")});
  set("workflow-status","Ready to calculate a new scenario.");
 }
 function delay(n){return new Promise(r=>setTimeout(r,n))}
 async function execute(){
  if(busy)return;busy=true;$("calculate").disabled=true;resetSteps();const params={...inputs},c=active;
+ let computed;
  try{
   const messages=["Preparing synthetic business records","Checking assumptions and input constraints","Calculating models and operational rules","Summarising implications for decision-makers","Verifying the current reporting output"];
   for(let i=0;i<5;i++){
    const step=document.querySelector('[data-step="'+i+'"]');step.classList.add("running");set("workflow-status",messages[i]);await delay(document.getElementById("sc-fast-mode")?.checked?110:1900);
-   if(i===2){const computed=run(module.id,c,params);if(computed.metrics.length!==4)throw Error("Model did not return a complete result");snapshot=computed;}
-   if(i===3)paint(snapshot);
+   if(i===2){computed=runModule(c,params);if(computed.metrics.length!==4)throw Error("Model did not return a complete result");}
+   if(i===3){reviewed.clear();paint(computed)}
    step.classList.remove("running");
    const warn=i===3&&experience.getDecision()?.level==="review";
    step.classList.add(warn?"warning":"done");step.querySelector("i").textContent=warn?"!":"✓";
   }
   set("workflow-status","✓ Calculation complete · report and sample register refreshed");set("input-status","Scenario updated successfully.");$("input-status").classList.remove("dirty");
  }catch(error){set("workflow-status","Unable to calculate: "+error.message);set("input-status","Check your inputs: "+error.message);$("input-status").classList.add("dirty")}
- finally{busy=false;$("calculate").disabled=false}
+ finally{busy=false;$("calculate").disabled=false;if(JSON.stringify(inputs)!==JSON.stringify(params))dirty()}
 }
 function csvCell(x){return '"'+String(x??"").replaceAll('"','""')+'"'}
 function download(filename,body,type){
@@ -199,14 +200,8 @@ $("download-csv").addEventListener("click",()=>{
  if(!snapshot)return;const rows=[["SC-Analytics / Synthetic operating example"],["Module",module.label],["Use case",snapshot.case.label],[],["Metric","Value","Meaning"],...snapshot.metrics.map(m=>[m.label,m.value,m.hint]),[],[...snapshot.table.columns,...(isWorkflow?["Locally reviewed"] :[])],...snapshot.table.rows.map((row,i)=>[...row,...(isWorkflow?[reviewed.has(i)?"yes":"no"]:[])])];
  download("SC-Analytics-"+active+"-sample.csv",rows.map(r=>r.map(csvCell).join(",")).join("\r\n"),"text/csv;charset=utf-8");
 });
-$("reset").addEventListener("click",()=>{inputs=getInitial(active);reviewed=new Set();paintControls();execute()});
+$("reset").addEventListener("click",()=>{if(busy)return;inputs=getInitial(active);reviewed=new Set();paintControls();execute()});
 $("calculate").addEventListener("click",()=>{reviewed=new Set();execute()});
-$("print").addEventListener("click",()=>{if(snapshot)window.print()});
-$("download-report").addEventListener("click",()=>{
- if(!snapshot)return;
- const sheet=$("report-sheet").outerHTML;
- const css="body{font:13px/1.7 Arial,Helvetica,sans-serif;color:#1d4835;max-width:900px;margin:32px auto;padding:0 22px}.report-sheet{background:white}.report-top,.report-footer{display:flex;justify-content:space-between;gap:20px;border-bottom:2px solid #275d42;padding:0 0 16px}.report-top b{font-size:18px}.report-top span,.report-id,.eyebrow{font-size:10px;letter-spacing:.1em;font-weight:800;color:#508368}.report-title{padding:20px 0}.report-title h3{font:normal 32px Georgia,serif;margin:9px 0}.report-title p{font-size:12px;color:#839688}.report-metrics{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid #dce6df}.report-metric{padding:13px;border-right:1px solid #dce6df}.report-metric span{display:block;font-size:10px;color:#72907e}.report-metric strong{display:block;font-size:19px;margin:9px 0;overflow-wrap:anywhere}.report-metric small{font-size:9px;color:#94a597}.report-columns,.report-method{display:grid;grid-template-columns:1fr 1fr;gap:34px;padding:24px 0}.report-columns p,.report-columns li,.report-method p{font-size:12px;line-height:1.7}.report-columns h4{font-size:17px}.report-method{border-top:1px solid #dce6dc}.quality-row{display:flex;justify-content:space-between;gap:12px;padding:7px 0;border-bottom:1px solid #eef3ed;font-size:10px}.report-footer{border-top:1px solid #dce6dc;border-bottom:0;padding-top:12px;font-size:9px;color:#8b9d8d}@media print{@page{size:A4;margin:15mm}body{padding:0;margin:0}.report-columns,.report-method,.report-metrics{break-inside:avoid}}";
- const html='<!doctype html><html lang="en"><head><meta charset="utf-8"><title>'+escape(module.label)+" — "+escape(snapshot.case.label)+'</title><style>'+css+'</style></head><body>'+sheet+'<p style="font-size:10px;color:#6a8e73">Independent illustrative example. No customer data or guaranteed commercial impact.</p></body></html>';
- download("SC-Analytics-"+active+"-Executive-Brief.html",html,"text/html;charset=utf-8");
-});
+$("print").addEventListener("click",experience.printFullReport);
+$("download-report").addEventListener("click",experience.downloadFullReport);
 paintCases();choose(active,false);

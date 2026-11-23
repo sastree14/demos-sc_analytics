@@ -90,3 +90,46 @@ test("Decision Guide explains current facts and does not pretend to run a real L
  const compare=answerGuide("Compare alternatives",ctx);
  assert.ok(compare.includes("Save Alternative"));
 });
+
+test("stock and delivery histograms retain every draw including both tails",()=>{
+ for(const [id,total] of [["stock-risk",1100],["delivery-risk",1000]]){
+  const c=modules.find(m=>m.id==="simulations").cases.find(c=>c.id===id);
+  for(const p of [c.defaults,Object.fromEntries(c.inputs.map(x=>[x.key,x.max??x.values?.at(-1)[0]]))]){
+   const out=run("simulations",id,p);
+   assert.equal(out.chart.series.reduce((sum,bin)=>sum+bin.a,0),total);
+  }
+ }
+});
+
+test("workforce, fleet and production satisfy all displayed resource limits",()=>{
+ for(const c of optimizationModule.cases.slice(1,4)){
+  for(const key of ["min","max","default"]){
+   const params=key==="default"?c.defaults:Object.fromEntries(c.inputs.map(x=>[x.key,x[key]]));
+   const out=runOptimizationCase(c.id,params),rows=out.table.rows;
+   const count=text=>Number(String(text).replace(/[^0-9-]/g,""));
+   if(c.id==="production-mix"){
+    const units=rows.map(row=>count(row[1]));
+    assert.ok(rows.every((row,i)=>units[i]%10===0&&units[i]<=count(row[2])));
+    assert.ok(units.reduce((n,x,i)=>n+x*[.9,1.8,1.1][i],0)<=params.hours+1e-8);
+    assert.ok(units.reduce((n,x,i)=>n+x*[6,12,9][i],0)<=params.material);
+   }else{
+    const allocated=rows.reduce((n,row)=>n+count(row[2]),0);
+    assert.ok(allocated<=(params.staff??params.fleet));
+    assert.ok(allocated*(params.wage??params.vehicleCost)<=params.budget);
+   }
+  }
+ }
+});
+
+test("every portfolio and optimisation control has a valid default and changes model evidence",()=>{
+ for(const family of [...modules,optimizationModule])for(const model of family.cases){
+  const calculate=params=>family===optimizationModule?runOptimizationCase(model.id,params):run(family.id,model.id,params);
+  const evidence=out=>JSON.stringify([out.metrics,out.chart,out.table,out.comparison,out.impact,out.quality]);
+  for(const c of model.inputs){
+   if(c.kind!=="choice")assert.ok(Number.isInteger((model.defaults[c.key]-c.min)/c.step),model.id+"/"+c.key);
+   const lo=calculate({[c.key]:c.values?.[0][0]??c.min}),hi=calculate({[c.key]:c.values?.at(-1)[0]??c.max});
+   assert.notEqual(evidence(lo),evidence(hi),model.id+"/"+c.key);
+   assert.doesNotMatch(evidence(lo)+evidence(hi),/NaN|Infinity/);
+  }
+ }
+});

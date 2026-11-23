@@ -72,7 +72,7 @@ export const controlSpecs={
   {key:"sensitivity",label:"Alert sensitivity",kind:"choice",choices:[[2.0,"Higher"],[2.7,"Balanced"],[3.5,"Lower"]]},
   {key:"shift",label:"Operating load change",kind:"slider",min:-20,max:30,step:2,unit:"%"},
   {key:"efficiency",label:"Assumed response effectiveness",kind:"slider",min:10,max:60,step:5,unit:"%"},
-  {key:"incidentCost",label:"Cost per disruption",kind:"slider",min:1500,max:15000,step:500,unit:"€"}
+  {key:"incidentCost",label:"Cost per disruption",kind:"slider",min:1500,max:15000,step:100,unit:"€"}
  ]
 };
 const monthAt=(start,i)=>new Date(Date.UTC(start.getUTCFullYear(),start.getUTCMonth()+i,1));

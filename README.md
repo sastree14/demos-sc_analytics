@@ -1,63 +1,37 @@
-# SC-Analytics — Solutions Lab
+# SC-Analytics | Solutions Lab
 
-Independent, interactive, executive-facing demonstrations of SC-Analytics services. Each module uses actual algorithms with synthetic, reproducible data—not scripted results or confidential client records.
+Seven independent public demonstrations for commercial discovery and executive presentations. Every example uses synthetic business data, transparent scenario assumptions and working calculation engines. Financial displays use **euros (€)** throughout.
 
-## Live demonstrations
+## Open the demonstrations
 
-- [Predictive Intelligence Studio](./predictive-models/) — seven business applications with editable controls, model-quality indicators, executive decision guidance and self-contained reporting
-- [Inventory Optimisation](./optimization/) — constraint-aware replenishment with a real discrete allocation solver
+- [Predictive Intelligence](https://sastree14.github.io/demos-sc_analytics/predictive-models/) — Seven forecasting, regression, risk, anomaly and workforce applications
+- [Automation & AI](https://sastree14.github.io/demos-sc_analytics/automation-ai/) — Three operational workflows with exception routing and human review
+- [Modelling & Scenarios](https://sastree14.github.io/demos-sc_analytics/modelling-scenarios/) — Three numerical models for pricing, investment and subscription economics
+- [Optimisation](https://sastree14.github.io/demos-sc_analytics/optimization/) — Exact inventory replenishment allocation under real resource limits
+- [Simulation & Risk](https://sastree14.github.io/demos-sc_analytics/simulations/) — Three Monte Carlo and event-driven simulations
+- [BI & Reporting](https://sastree14.github.io/demos-sc_analytics/bi-reporting/) — Three management reporting and financial analyses
+- [Custom CRM / ERP](https://sastree14.github.io/demos-sc_analytics/custom-apps/) — Three simulated application workspaces with inspectable sample records
 
-## Service roadmap
+## What works
 
-1. Automation & AI — planned
-2. Predictive Models — **available**
-3. Modelling & Scenario Analysis — planned
-4. Optimisation — **available**
-5. Simulation — planned
-6. BI & Reporting — planned
-7. Custom CRM / ERP — planned
+The five new modules share an executive workbench with 15 distinct scenario engines. You can switch business cases, change assumptions, execute calculations, inspect sample business records and download calculated executive briefs as standalone HTML or browser-generated PDFs. Each module supports CSV export. Automation and CRM/ERP demonstrate **local, nonpersistent** sample record reviews only. No real payment, approval, CRM action, email, agent invocation or external data integration occurs.
 
-## GitHub Pages deployment
+The predictive models have seven use cases, out-of-sample checks and risk threshold trade-offs; the optimisation example solves a discrete, constrained inventory allocation problem.
 
-Source: GitHub Actions under Settings → Pages. The workflow runs all analytical tests with Node.js 22 before publishing static assets. Everything is hosted in a single repository, with separate routes:
+## Reproducibility and integrity
 
-- https://sastree14.github.io/demos-sc_analytics/
-- https://sastree14.github.io/demos-sc_analytics/predictive-models/
-- https://sastree14.github.io/demos-sc_analytics/optimization/
+- All entities, datasets and transactions are fictional and constructed deterministically.
+- Prices, targets, cost estimates, impact values, margins and penalties are assumptions, not realised customer results.
+- Forecast error bands are not statistically calibrated confidence intervals.
+- Probabilistic simulation distributions require validation on real operational history.
+- LLM-like routing in this showcase is a **synthetic policy and confidence-score demonstration**, not a real connected LLM API.
+- Numerical models and report tables calculate in-browser; model outputs are not hardcoded.
+- Live customer integrations, legal permissions, security reviews and monitoring belong in the subsequent project.
 
-## Predictive Intelligence Studio — technical integrity
+## Developer instructions
 
-Built as a static app with native SVG charts, no paid dependencies or external model APIs. Seven reproducible synthetic applications:
+From the repository root, use `python -m http.server 8000`, then open `http://localhost:8000/`. Run `npm test` to validate core models and scenario invariants.
 
-- **Demand, revenue and workload**: seasonal baseline, trend-seasonal and weighted ensemble methods, assessed on six held-out months. WAPE, bias and MAE are calculated. Scenario forecasts and uncertainty bands derive from forecast outputs and historical holdout error. Bands are *illustrative*, not statistically calibrated confidence intervals.
-- **Retention and delivery risk**: locally fitted logistic classification, with 470 training examples and 130 separate holdout records. Adjustable action thresholds, probability distributions, confusion matrices and precision/recall trade-offs.
-- **Cost estimation**: locally fitted multiple linear regression on 420 synthetic jobs, 100 held out; scope controls, numerical uncertainty, input sensitivity and illustrative pricing assumptions.
-- **Production anomalies**: rolling median/MAD detector using prior observations; sensitivity adjustment and detection precision/recall against *injected synthetic events*.
+GitHub Pages deployment runs tests and copies all seven service directories and the `shared/` module in the workflow `.github/workflows/pages.yml`. GitHub Pages must have GitHub Actions selected as its source.
 
-The impact section never reports realised customer savings. All financial values are planning scenarios derived from explicit assumptions (error costs, hypothetical intervention effectiveness, events found or proposed commercial margin).
-
-The **executive brief is functional**: it can be downloaded as standalone HTML or printed/saved as a PDF by the browser. The underlying synthetic calculations can be exported as CSV.
-
-A user-requested, visibly paced workflow illustrates preparation → validation → calculation → interpretation → monitoring. It does **not** imply the app is connecting to a live ERP, running remote data pipelines or continuously improving models.
-
-## Inventory Optimisation
-
-A discrete, constrained solver allocates purchasing quantities to four synthetic product lines. It respects total budget, warehouse capacity and SKU limits, maximising a defined expected contribution metric. A disclosed reference heuristic provides comparison; scenarios stress-test the same plan. Any calculated uplift is illustrative.
-
-## Run locally
-
-From the repository root:
-
-```sh
-python -m http.server 8000
-```
-
-Open `http://localhost:8000/predictive-models/`.
-
-Run regression tests using:
-
-```sh
-npm test
-```
-
-© 2026 SC-Analytics. All rights reserved. No general code licence is granted by default.
+© 2026 SC-Analytics. All rights reserved. No general licence granted by default.

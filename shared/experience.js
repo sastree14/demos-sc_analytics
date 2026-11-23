@@ -13,7 +13,7 @@ const PAGE_NAMES=["Decision brief","Business analysis","Compare scenarios","Acti
 export function installDecisionExperience({family,read,apply,run}){
  const canonical=familyColors[family]?family:"predictive-models";
  document.body.dataset.family=canonical;
- const state={saved:new Map(),lastId:null,context:null,decision:null,reportPage:0,printing:false};
+ const state={saved:new Map(),lastId:null,context:null,decision:null,reportPage:0,printing:false,clientLabel:""};
  const stylesheet=document.createElement("link");
  stylesheet.rel="stylesheet";stylesheet.href=new URL("./experience.css",import.meta.url).href;
  document.head.append(stylesheet);
@@ -37,7 +37,7 @@ export function installDecisionExperience({family,read,apply,run}){
  const toolbarActions=el("div","sc-toolbar-actions");
  toolbarActions.append(makeButton("Open full report ↗",()=>openReport(0),"sc-action sc-action-primary"),
   makeButton("Compare scenarios",()=>openReport(2)),
-  makeButton("Ask Decision Guide",()=>toggleGuide(true)));
+  makeButton("Ask Decision Guide",()=>toggleGuide(true)),makeButton("Preview client branding",()=>previewBrand()));
  toolbar.append(toolbarCopy,toolbarActions);
  const root=document.querySelector(".body,.main-column main,.workspace main,main")||document.body;
  const hero=root.querySelector(".hero,.intro");
@@ -106,6 +106,15 @@ export function installDecisionExperience({family,read,apply,run}){
  prompts.forEach(x=>quick.append(makeButton(x,()=>ask(x))));
  const whatif=makeButton("Try +10% in a selected input",()=>proposeWhatIf());
  quick.append(whatif);
+ function previewBrand(){
+  const answer=window.prompt("Optional company name for this browser-only white-label preview. Leave blank to restore SC-Analytics.",state.clientLabel);
+  if(answer===null)return;
+  state.clientLabel=answer.trim().slice(0,48);
+  toolbarCopy.querySelector("h3").textContent=state.clientLabel?state.clientLabel+" · Decision workspace":"Decision workspace";
+  guideTitle.querySelector("b").textContent=state.clientLabel?state.clientLabel+" · Decision Guide":"Decision Guide";
+  guideTitle.querySelector("small").textContent=state.clientLabel?"Powered by SC-Analytics · Local decision explanations":"SC-Analytics · Contextual explanation (not a connected LLM)";
+  if(dialog.open)reportBuilder();
+ }
  function toggleGuide(force){
   const open=force===undefined?guide.hidden:Boolean(force);
   guide.hidden=!open;floating.setAttribute("aria-expanded",String(open));
@@ -150,7 +159,7 @@ export function installDecisionExperience({family,read,apply,run}){
  window.addEventListener("afterprint",()=>document.body.classList.remove("sc-report-print"));
  function paper(parent,pageIndex,title,eyebrow){
   const page=el("article","sc-report-page"+(pageIndex===state.reportPage?" active":""));page.dataset.page=String(pageIndex);
-  const top=el("div","sc-report-paper-top");top.append(el("b","","SC-ANALYTICS"),el("span","","EXECUTIVE DECISION INTELLIGENCE / MODELLED EXAMPLE"));
+  const top=el("div","sc-report-paper-top");top.append(el("b","",state.clientLabel||"SC-ANALYTICS"),el("span","","EXECUTIVE DECISION INTELLIGENCE / MODELLED EXAMPLE"));
   page.append(top,el("div","sc-report-eyebrow",eyebrow),el("h2","",title));parent.append(page);return page;
  }
  function foot(page,n){page.append(el("div","sc-report-paper-foot","SC-ANALYTICS · SYNTHETIC DATA · NO VERIFIED CLIENT OUTCOMES · "+(n+1)+" / 4"));}

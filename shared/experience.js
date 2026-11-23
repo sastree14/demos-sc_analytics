@@ -292,7 +292,7 @@ export function installDecisionExperience({family,read,apply,run}){
   }
  }
  function refresh(){
-  const ctx=state.context;if(!ctx?.result)return;
+  const ctx=read();if(!ctx?.result)return;
   if(state.context?.id!==ctx.id)log.replaceChildren();
   log.querySelectorAll(".sc-guide-quick").forEach(row=>row.remove());
   state.context=ctx;

@@ -145,3 +145,8 @@ body[data-family] .logo .monogram,body[data-family] .brand-monogram{letter-spaci
 .sc-input-help{border:1px solid var(--sc-border);background:var(--sc-soft);color:var(--sc-accent);font:800 10px Arial;width:20px;height:20px;min-width:20px;border-radius:50%;display:inline-grid;place-items:center;cursor:pointer;margin:0 5px}.sc-input-help:hover{background:var(--sc-pastel)}
 
 .kpi-grid .kpi[data-sc-explain=yes]{cursor:pointer;transition:border-color .14s,background .14s}.kpi-grid .kpi[data-sc-explain=yes]:hover,.kpi-grid .kpi[data-sc-explain=yes]:focus-visible{border-color:var(--sc-accent)!important;background:var(--sc-soft)!important;outline-offset:2px}
+
+@keyframes sc-progress-spin{to{transform:rotate(360deg)}}
+.workflow-step.running .workflow-icon,.workflow-step.running i,.step.active .step-icon{position:relative}
+.workflow-step.running .workflow-icon::after,.workflow-step.running i::after,.step.active .step-icon::after{content:"";position:absolute;inset:-7px;border:2px solid transparent;border-top-color:var(--sc-accent);border-right-color:var(--sc-accent);border-radius:50%;animation:sc-progress-spin 1.05s linear infinite;pointer-events:none}
+@media(prefers-reduced-motion:reduce){.workflow-step.running .workflow-icon::after,.workflow-step.running i::after,.step.active .step-icon::after{animation:none}}

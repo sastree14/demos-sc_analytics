@@ -25,7 +25,7 @@ export const cases=[
 export const byId=id=>cases.find(c=>c.id===id)||cases[0];
 export const initial={
  demand:{horizon:6,outlook:0,confidence:90,method:"ensemble",unitCost:13,capacity:1650},
- revenue:{horizon:6,outlook:4,confidence:90,method:"ensemble",unitCost:700,capacity:300},
+ revenue:{horizon:6,outlook:4,confidence:90,method:"ensemble",unitCost:70,capacity:300},
  workforce:{horizon:6,outlook:0,confidence:90,method:"ensemble",unitCost:16,capacity:1050},
  churn:{threshold:50,portfolio:650,effectiveness:30,cost:2400,spend:145,tenure:18,support:4,engagement:55},
  delivery:{threshold:50,portfolio:650,effectiveness:30,cost:950,backlog:62,distance:580,reliability:87,priority:0},
@@ -37,7 +37,7 @@ export const controlSpecs={
   {key:"horizon",label:"Planning horizon",kind:"choice",choices:[[3,"3 months"],[6,"6 months"],[12,"12 months"]]},
   {key:"outlook",label:"Business outlook",kind:"slider",min:-25,max:25,step:1,unit:"%",hint:"Scenario growth applied progressively across the horizon"},
   {key:"confidence",label:"Uncertainty range",kind:"choice",choices:[[80,"80%"],[90,"90%"],[95,"95%"]]},
-  {key:"unitCost",label:"Cost per planning error",kind:"slider",min:5,max:80,step:1,unit:"£",hint:"For revenue, £k errors are converted into a monetary value"},
+  {key:"unitCost",label:"Cost per planning error",kind:"slider",min:5,max:80,step:1,unit:"£",hint:"Assumption: business cost assigned to one unit of absolute error"},
   {key:"capacity",label:"Available capacity / month",kind:"slider",min:100,max:2500,step:50,unit:"",hint:"Compare upcoming demand with current operational capacity"}
  ],
  churn:[
@@ -47,7 +47,8 @@ export const controlSpecs={
   {key:"engagement",label:"Account engagement",kind:"slider",min:10,max:100,step:5,unit:"%"},
   {key:"threshold",label:"Intervention threshold",kind:"slider",min:20,max:85,step:5,unit:"%"},
   {key:"portfolio",label:"Accounts monitored",kind:"slider",min:100,max:1600,step:50,unit:""},
-  {key:"effectiveness",label:"Assumed action effectiveness",kind:"slider",min:10,max:60,step:5,unit:"%"}
+  {key:"effectiveness",label:"Assumed action effectiveness",kind:"slider",min:10,max:60,step:5,unit:"%"},
+  {key:"cost",label:"Cost per lost account",kind:"slider",min:500,max:6000,step:100,unit:"£"}
  ],
  delivery:[
   {key:"backlog",label:"Orders in queue",kind:"slider",min:10,max:105,step:1,unit:""},
@@ -56,7 +57,8 @@ export const controlSpecs={
   {key:"priority",label:"Urgent consignment",kind:"choice",choices:[[0,"Standard"],[1,"Priority"]]},
   {key:"threshold",label:"Review threshold",kind:"slider",min:20,max:85,step:5,unit:"%"},
   {key:"portfolio",label:"Shipments monitored",kind:"slider",min:100,max:1600,step:50,unit:""},
-  {key:"effectiveness",label:"Assumed mitigation",kind:"slider",min:10,max:60,step:5,unit:"%"}
+  {key:"effectiveness",label:"Assumed mitigation",kind:"slider",min:10,max:60,step:5,unit:"%"},
+  {key:"cost",label:"Cost per late delivery",kind:"slider",min:150,max:3000,step:50,unit:"£"}
  ],
  cost:[
   {key:"volume",label:"Order size",kind:"slider",min:50,max:650,step:10,unit:" units"},
@@ -126,7 +128,7 @@ export function runForecastStudio(c,raw={}){
  const sumFuture=sum(future.map(x=>x.value)),avgFuture=sumFuture/horizon;
  const comparison=forecastStats(actual,predict(training,6,"seasonal"));
  const improvement=Math.max(0,comparison.mae-selected.mae);
- const perUnit=Number(params.unitCost),scaleMoney=c.id==="revenue"?1000:1;
+ const perUnit=Number(params.unitCost),scaleMoney=1;
  const planningValue=improvement*horizon*perUnit*scaleMoney;
  const monthlyUnits=avgFuture;
  const beyond=Math.max(0,monthlyUnits-Number(params.capacity));

@@ -22,8 +22,8 @@ const weights=[.10,.20,.40,.20,.10];
 const shocks=[-1.5,-.75,0,.75,1.5];
 const sum = values => values.reduce((a,b)=>a+b,0);
 const clamp = (x,min,max)=>Math.max(min,Math.min(max,x));
-export const money=x=>new Intl.NumberFormat("en-GB",{style:"currency",currency:"GBP",maximumFractionDigits:0}).format(x);
-export const integer=x=>new Intl.NumberFormat("en-GB",{maximumFractionDigits:0}).format(Math.round(x));
+export const money=x=>new Intl.NumberFormat("es-ES",{style:"currency",currency:"EUR",maximumFractionDigits:0}).format(x);
+export const integer=x=>new Intl.NumberFormat("es-ES",{maximumFractionDigits:0}).format(Math.round(x));
 export const percent=x=>(x*100).toFixed(1)+"%";
 export function settings(raw={}){
   return {
@@ -89,7 +89,7 @@ function possibilities(p,s){
 }
 /**
  * Multiple-choice exact 2-constraint knapsack on discrete order batches.
- * DP state is (spent GBP/50, used 10-unit slots).
+ * DP state is (spent EUR/50, used 10-unit slots).
  * At most one order decision per SKU, with predecessor chain for reconstruction.
  * No invented solver outputs; all displayed results derive from these states.
  */
@@ -121,7 +121,7 @@ export function optimise(raw={}){
   const choices=Array(catalogue.length).fill(0);
   let current=winner;
   for(let i=catalogue.length-1;i>=0;i--){choices[i]=current.choice;current=current.prev;}
-  return {quantities:choices,evaluation:evaluate(choices,s),explored,states:frontier.size,method:"Exact discrete dynamic programme (10-unit batches; £50 budget steps)"};
+  return {quantities:choices,evaluation:evaluate(choices,s),explored,states:frontier.size,method:"Exact discrete dynamic programme (10-unit batches; €50 budget steps)"};
 }
 /**
  * Transparent, deliberately simple benchmark: share each replenishment batch

@@ -4,6 +4,8 @@
 
 **Public hub:** https://sastree14.github.io/demos-sc_analytics/
 
+These are interactive examples built by [SC-Analytics](https://www.sc-analytics.io/), a data-science and mathematical-optimisation consultancy. For the corresponding professional services, see [demand planning and forecasting](https://www.sc-analytics.io/services/demand-planning), [inventory optimisation](https://www.sc-analytics.io/services/inventory-optimization), and [AI automation](https://www.sc-analytics.io/services/ai-automation). The demos use synthetic data; they are not client results.
+
 ## Seven service families
 
 | Discipline | Demo | Questions |

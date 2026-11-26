@@ -444,7 +444,7 @@ function risk(p){
  const reviewCost=(tp+fp)*p.reviewCost+fn*p.missedCost;
  return output([
   metric("tp",tp),metric("fp",fp),metric("fn",fn),metric("precision",precision,"pct")
- ],chart("bar",["VP","FP","FN","VN"],[series("cases",[tp,fp,fn,tn])]),
+ ],chart("matrix",["VP","FP","FN","VN"],[series("cases",[tp,fp,fn,tn])]),
  "risk","risk","risk",
  [["Sensibilidad ilustrativa (%)",rnd(sensitivity*100,1)],["Especificidad ilustrativa (%)",rnd(specificity*100,1)],["Coste supuesto de revisión y omisión",rnd(reviewCost,0)]],
  "Curva de rendimiento hipotética: NO es un clasificador entrenado, validado ni apto para decisiones reales."

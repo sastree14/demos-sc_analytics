@@ -204,7 +204,11 @@ const translatedLabels={
  "Proveedor A":["Proveïdor A","Vendor A"],"Proveedor B":["Proveïdor B","Vendor B"],"Proveedor C":["Proveïdor C","Vendor C"],
  "Climatización":["Climatització","HVAC"],"Cubierta":["Coberta","Roof"],
  "Iluminación":["Il·luminació","Lighting"],"Ascensores":["Ascensors","Lifts"],
- "Sensórica":["Sensors","Sensors"],"Vacantes":["Vacants","Vacant units"]
+ "Sensórica":["Sensors","Sensors"],"Vacantes":["Vacants","Vacant units"],
+ "Sin reglas":["Sense regles","Without rules"],"Con reglas":["Amb regles","With rules"],
+ "Completos":["Complets","Complete"],"Pendientes de documentos":["Pendents de documents","Missing documents"],
+ "Base":["Base","Baseline"],"Frecuencia alta":["Freqüència alta","Higher frequency"],
+ "Estrés combinado":["Estrès combinat","Combined stress"],"VP":["VP","TP"],"VN":["VN","TN"]
 };
 const labelFor=x=>language==="es"?x:(translatedLabels[x]?.[language==="ca"?0:1]||x);
 function setChartLegend(segments){

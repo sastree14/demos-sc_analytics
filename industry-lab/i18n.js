@@ -790,6 +790,10 @@ export const UI = {
   }
 };
 export const EXPLANATIONS = {
+  "routeMargin": ["Cálculo de ingresos por ruta menos coste por kilómetros totales y esperas, con comparación frente a un trayecto sin kilómetros en vacío.","Càlcul d'ingressos per ruta menys costos de quilòmetres totals i esperes, comparat amb un trajecte sense quilòmetres en buit.","Revenue from services less total loaded/empty-kilometre and waiting costs, compared with a no-empty-mile reference."],
+  "backhaul": ["Simulación de cargas de retorno: ingreso adicional por distancia cargada menos coste adicional de preparación, sin asumir ahorro de kilómetros.","Simulació de retorns carregats: ingrés addicional menys cost de preparació, sense suposar estalvi de quilòmetres.","Illustrative backhaul contribution: extra revenue on loaded returns minus incremental handling costs, without assuming fewer kilometres."],
+  "incident": ["Capacidad de entrega tras indisponibilidad de vehículos y pedidos urgentes; una regla compara coste externo y penalización por servicio no atendido.","Capacitat de lliurament després de perdre vehicles i rebre urgències; una regla compara cost extern i penalització.","Remaining delivery capacity after vehicle loss and urgent orders; external work is chosen only when its assumed unit cost beats the missed-service penalty."],
+  "subcontract": ["Búsqueda de un reparto de entregas entre capacidad propia y externa que minimiza coste bajo un objetivo de servicio factible.","Cerca d'una assignació entre capacitat pròpia i externa que minimitza el cost amb un objectiu de servei factible.","Cost-minimising allocation between in-house and external delivery capacity subject to a feasible minimum service target."],
   "fleet": [
     "Asignación exacta de recursos enteros entre tres áreas, minimizando coste operativo y penalización por demanda no servida.",
     "Assignació exacta de recursos enters entre tres àrees, minimitzant cost operatiu i penalització per demanda no atesa.",
@@ -872,6 +876,10 @@ export const EXPLANATIONS = {
   ]
 };
 export const CONSTRAINTS = {
+  "routeMargin": ["No incorpora peajes, combustible real, seguros, condiciones de conductores ni precios contratados.","No incorpora peatges, combustible real, assegurances, conductors ni preus contractats.","Excludes real fuel, tolls, insurance, labour constraints and contracted rates."],
+  "backhaul": ["No detecta cargas reales ni calcula una ruta geográfica; el vehículo recorre el retorno en ambos escenarios.","No detecta càrregues reals ni calcula rutes geogràfiques; el vehicle recorre el retorn en tots dos casos.","No actual freight matching or geographic routing; the vehicle drives the return trip in both cases."],
+  "incident": ["No representa tráfico, ventanas horarias, disponibilidad real de subcontratas ni tiempos de descanso.","No representa trànsit, franges de lliurament, disponibilitat externa ni descansos.","Excludes actual traffic, time windows, subcontractor availability and legal driving hours."],
+  "subcontract": ["No modela acuerdos reales, disponibilidad por zona, flota heterogénea ni costes fijos.","No modela acords reals, disponibilitat per zona, flota heterogènia ni costos fixos.","Excludes real carrier agreements, zone-specific capacity, mixed fleet and fixed costs."],
   "fleet": [
     "No incorpora tiempos de viaje, descansos legales ni rutas de calles.",
     "No incorpora temps de viatge, descansos legals ni rutes de carrer.",

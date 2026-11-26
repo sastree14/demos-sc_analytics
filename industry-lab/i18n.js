@@ -1200,6 +1200,102 @@ export const DETAIL_TRANSLATIONS = {
   "Escenario retrasado: unidades": [
     "Escenari amb retard: unitats",
     "Delayed scenario: units"
+  ],
+  "Lotes fuera de rango (esperados)": [
+    "Lots fora de rang (esperats)",
+    "Expected out-of-range batches"
+  ],
+  "Coste si el proceso estuviera centrado (€)": [
+    "Cost amb el procés centrat (€)",
+    "Cost with centred process (€)"
+  ],
+  "Límite inferior simulado": [
+    "Límit inferior simulat",
+    "Simulated lower limit"
+  ],
+  "Límite superior simulado": [
+    "Límit superior simulat",
+    "Simulated upper limit"
+  ],
+  "Cola final sin refuerzo": [
+    "Cua final sense reforç",
+    "Final backlog without staffing boost"
+  ],
+  "Cola final con refuerzo": [
+    "Cua final amb reforç",
+    "Final backlog with staffing boost"
+  ],
+  "Lotes menos pendientes": [
+    "Lots menys pendents",
+    "Fewer batches awaiting review"
+  ],
+  "Horas esperadas por lote": [
+    "Hores esperades per lot",
+    "Expected review hours per batch"
+  ],
+  "Stock liberado tras vencimiento": [
+    "Estoc alliberat després de venciment",
+    "Released stock after assumed expiry"
+  ],
+  "Stock pendiente potencialmente liberable": [
+    "Estoc pendent potencialment alliberable",
+    "Pending stock potentially releasable"
+  ],
+  "Falta si llega": [
+    "Manca si arriba",
+    "Shortfall if shipment arrives"
+  ],
+  "Falta si se demora": [
+    "Manca si es retarda",
+    "Shortfall if shipment is delayed"
+  ],
+  "Coste secuencia de referencia (€)": [
+    "Cost de seqüència de referència (€)",
+    "Reference sequence cost (€)"
+  ],
+  "Coste secuencia elegida (€)": [
+    "Cost de seqüència escollida (€)",
+    "Chosen sequence cost (€)"
+  ],
+  "Orden seleccionado": [
+    "Ordre escollit",
+    "Selected order"
+  ],
+  "Horas de retraso de referencia": [
+    "Hores de retard de referència",
+    "Reference delay hours"
+  ],
+  "Nivel central de referencia": [
+    "Nivell central de referència",
+    "Reference central level"
+  ],
+  "Promedio observado sintético": [
+    "Mitjana observada sintètica",
+    "Synthetic observed mean"
+  ],
+  "Límite superior": [
+    "Límit superior",
+    "Upper limit"
+  ],
+  "Límite inferior": [
+    "Límit inferior",
+    "Lower limit"
+  ],
+  "Registros a revisar inicialmente": [
+    "Registres inicials a revisar",
+    "Records initially requiring review"
+  ],
+  "Excepciones conciliadas con reglas": [
+    "Excepcions conciliades amb regles",
+    "Rules-matched exceptions"
+  ],
+  "Coste manual restante (€)": [
+    "Cost manual restant (€)",
+    "Remaining manual review cost (€)"
+  ],
+  "Umbral de alerta": [
+    "Llindar d'alerta",
+    "Alert threshold"
   ]
 };
 export const WARNING_TRANSLATIONS = {
@@ -1230,6 +1326,14 @@ export const WARNING_TRANSLATIONS = {
   "No se cubre toda la producción prevista bajo los supuestos de suministro.": [
     "No es cobreix tota la producció prevista amb aquests supòsits de subministrament.",
     "Not all planned production can be fulfilled under these supply assumptions."
+  ],
+  "La planificación muestra faltantes esperados; revisar disponibilidades y autorizaciones reales antes de producir.": [
+    "La planificació mostra mancances esperades; revisar disponibilitat i autoritzacions reals abans de produir.",
+    "The plan shows expected shortages; check actual availability and authorisations before producing."
+  ],
+  "El número simulado de excepciones supera el umbral; requiere revisión documental especializada.": [
+    "El nombre simulat d'excepcions supera el llindar; cal revisió documental especialitzada.",
+    "The simulated exception backlog exceeds the alert threshold and requires specialist document review."
   ]
 };
 export const SECTOR_CONTEXT = {
@@ -1240,5 +1344,9 @@ export const SECTOR_CONTEXT = {
   "SC04": {
     "ca": "Demanda diària, estoc per lot, caducitats, minves i capacitat productiva en un sol lloc.",
     "en": "Daily demand, batch-level stock, expiry dates, waste and production capacity in one place."
+  },
+  "SC05": {
+    "ca": "Estat dels lots, evidències de traçabilitat, colls d'ampolla de revisió i límits del procés, sempre sota control expert.",
+    "en": "Batch status, document traceability, review bottlenecks and process control limits, always subject to expert oversight."
   }
 };

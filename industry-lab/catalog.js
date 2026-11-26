@@ -350,7 +350,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Ocupación y cancelaciones",
           "example_controls": "Pick-up, lead time y temporada",
           "indicative_kpi": "Ocupación y riesgo de cancelación",
-          "model": "forecast",
+          "model": "htOccupancy",
           "scenario_seed": 1643
         },
         {
@@ -358,7 +358,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Precio y mix de canales",
           "example_controls": "ADR, comisiones y demanda",
           "indicative_kpi": "RevPAR y margen por canal",
-          "model": "pricing",
+          "model": "htChannels",
           "scenario_seed": 1684
         },
         {
@@ -366,7 +366,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Personal de limpieza",
           "example_controls": "Check-outs, habitaciones y turnos",
           "indicative_kpi": "Tiempo de preparación y horas extra",
-          "model": "queue",
+          "model": "htHousekeeping",
           "scenario_seed": 1725
         },
         {
@@ -374,7 +374,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Sobrecarga en recepción",
           "example_controls": "Llegadas, turnos y canales",
           "indicative_kpi": "Espera y cumplimiento",
-          "model": "queue",
+          "model": "htReception",
           "scenario_seed": 1766
         },
         {
@@ -382,7 +382,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Costes de energía por ocupación",
           "example_controls": "Ocupación y tarifa energética",
           "indicative_kpi": "€/habitación ocupada",
-          "model": "energy",
+          "model": "htEnergy",
           "scenario_seed": 1807
         },
         {
@@ -390,7 +390,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Reservas de grupos y capacidad",
           "example_controls": "Bloques, cancelaciones y opciones",
           "indicative_kpi": "Desplazamiento de demanda y rentabilidad",
-          "model": "capacity",
+          "model": "htGroupBooking",
           "scenario_seed": 1848
         }
       ]

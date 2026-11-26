@@ -574,7 +574,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Vacancia y rotación",
           "example_controls": "Entrada/salida, plazos, mercado simulado",
           "indicative_kpi": "Vacancia y NOI",
-          "model": "forecast",
+          "model": "reVacancy",
           "scenario_seed": 2647
         },
         {
@@ -582,7 +582,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Mantenimiento reactivo",
           "example_controls": "Incidencias, coste y criticidad",
           "indicative_kpi": "Tiempo de resolución y coste",
-          "model": "maintenance",
+          "model": "reMaintenance",
           "scenario_seed": 2688
         },
         {
@@ -590,7 +590,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Rentabilidad por activo",
           "example_controls": "Renta, OPEX y CAPEX",
           "indicative_kpi": "NOI y rendimiento",
-          "model": "cash",
+          "model": "reAssets",
           "scenario_seed": 2729
         },
         {
@@ -598,7 +598,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Planificación de CAPEX",
           "example_controls": "Presupuestos, vida útil, prioridades",
           "indicative_kpi": "VAN y retorno por activo",
-          "model": "portfolio",
+          "model": "reCapex",
           "scenario_seed": 2770
         },
         {
@@ -606,7 +606,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Morosidad agregada de alquileres",
           "example_controls": "Vencimientos y cobros agregados",
           "indicative_kpi": "Saldo pendiente y previsión de caja",
-          "model": "cash",
+          "model": "reArrears",
           "scenario_seed": 2811
         },
         {
@@ -614,7 +614,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Proveedores de mantenimiento",
           "example_controls": "Disponibilidad, coste y SLA",
           "indicative_kpi": "Cumplimiento y coste por intervención",
-          "model": "queue",
+          "model": "reVendors",
           "scenario_seed": 2852
         }
       ]

@@ -238,7 +238,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Desviaciones de lote y rendimiento",
           "example_controls": "Datos de proceso y lotes sintéticos",
           "indicative_kpi": "Yield y no conformidades",
-          "model": "quality",
+          "model": "phBatch",
           "scenario_seed": 1141
         },
         {
@@ -246,7 +246,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Liberación y cuellos QA",
           "example_controls": "Cola de lotes, tiempo de revisión",
           "indicative_kpi": "Tiempo de liberación y WIP",
-          "model": "queue",
+          "model": "phRelease",
           "scenario_seed": 1182
         },
         {
@@ -254,7 +254,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Materias primas críticas",
           "example_controls": "Caducidad, proveedor y lead time",
           "indicative_kpi": "Riesgo de ruptura y stock",
-          "model": "inventory",
+          "model": "phCritical",
           "scenario_seed": 1223
         },
         {
@@ -262,7 +262,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Programación de campañas",
           "example_controls": "Equipos, limpiezas y órdenes",
           "indicative_kpi": "Capacidad, tiempos de cambio",
-          "model": "production",
+          "model": "phCampaign",
           "scenario_seed": 1264
         },
         {
@@ -270,7 +270,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Anomalías de proceso",
           "example_controls": "Tendencias multivariantes sintéticas",
           "indicative_kpi": "Señales para revisión experta",
-          "model": "quality",
+          "model": "phAnomaly",
           "scenario_seed": 1305
         },
         {
@@ -278,7 +278,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Trazabilidad documental",
           "example_controls": "Eventos y excepciones por lote",
           "indicative_kpi": "Tiempo de búsqueda e incidencias",
-          "model": "reconcile",
+          "model": "phTrace",
           "scenario_seed": 1346
         }
       ]

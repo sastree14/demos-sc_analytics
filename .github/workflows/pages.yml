@@ -27,6 +27,12 @@ jobs:
         with:
           node-version: "22"
       - run: npm test
+      - name: Validate Industry Lab prototype syntax
+        run: |
+          node --check industry-lab/app.js
+          test -f industry-lab/index.html
+          test -f industry-lab/app.css
+          grep -q 'SC18' industry-lab/app.js
       - name: Exercise all 32 cases in Chrome
         run: |
           python -m venv "$RUNNER_TEMP/lab-qa"
@@ -44,7 +50,7 @@ jobs:
         run: |
           mkdir -p dist
           cp index.html .nojekyll dist/
-          cp -R predictive-models optimization automation-ai modelling-scenarios simulations bi-reporting custom-apps shared dist/
+          cp -R predictive-models optimization automation-ai modelling-scenarios simulations bi-reporting custom-apps shared industry-lab dist/
       - name: Upload Pages release
         if: github.ref == 'refs/heads/main'
         uses: actions/upload-pages-artifact@v4

@@ -13,6 +13,7 @@ import {retailModels,retailCalculators} from "./retail-models.js";
 import {clinicModels,clinicCalculators} from "./clinic-models.js";
 import {constructionModels,constructionCalculators} from "./construction-models.js";
 import {realEstateModels,realEstateCalculators} from "./real-estate-models.js";
+import {financeInsuranceModels,financeInsuranceCalculators} from "./finance-insurance-models.js";
 const L=(es,ca,en)=>({es,ca,en});
 const field=(key,label,min,max,step,value,unit="number")=>({key,label,min,max,step,value,unit});
 const metric=(key,value,unit="number")=>({key,value:Number.isFinite(value)?value:0,unit});
@@ -23,6 +24,11 @@ const chart=(type,labels,series,unit="number")=>({type,labels,series,unit});
 const output=(metrics,visual,insight,formula,limitations,table=[],warning="")=>({metrics,visual,insight,formula,limitations,table,warning});
 const f=(key,es,ca,en,min,max,step,value,unit)=>field(key,L(es,ca,en),min,max,step,value,unit);
 const metricTitles={
+ exposure:L("Exposición en seguimiento","Exposició en seguiment","Aggregate exposure on watch"),
+ loss:L("Pérdida agregada ilustrativa","Pèrdua agregada il·lustrativa","Illustrative aggregate loss"),
+ reserve:L("Reserva agregada de estrés ilustrativo","Reserva agregada d'estrès il·lustratiu","Illustrative stressed aggregate reserve"),
+ frequencyCount:L("Siniestros esperados","Sinistres esperats","Expected claim count"),
+
  noi:L("Resultado neto de explotación (NOI)","Resultat net d'explotació (NOI)","Net operating income (NOI)"),
  vacant:L("Unidades vacantes","Unitats vacants","Vacant units"),
  yield:L("Rendimiento anual sin apalancamiento","Rendiment anual sense palanquejament","Unlevered annual yield"),
@@ -119,7 +125,7 @@ selected:L("Iniciativas seleccionadas","Iniciatives seleccionades","Selected ini
 export const metricLabel=(key,language="es")=>(metricTitles[key]||L(key,key,key))[language]||key;
 const series=(key,values)=>({key,values:values.map(x=>rnd(x,2))});
 const minPrice=1;
-const models={...logisticsModels,...wholesaleModels,...manufacturingModels,...foodModels,...pharmaModels,...restaurantModels,...hotelModels,...retailModels,...clinicModels,...constructionModels,...realEstateModels,
+const models={...logisticsModels,...wholesaleModels,...manufacturingModels,...foodModels,...pharmaModels,...restaurantModels,...hotelModels,...retailModels,...clinicModels,...constructionModels,...realEstateModels,...financeInsuranceModels,
 fleet:{
 title:L("Planificación de recursos y demanda","Planificació de recursos i demanda","Resource and demand planning"),
 inputs:[
@@ -591,7 +597,7 @@ function portfolio(p){
  [["Presupuesto comprometido",rnd(best.money,0)],["Capacidad usada",best.hours],["Combinaciones evaluadas",64]]
  );
 }
-const runners={...logisticsCalculators,...wholesaleCalculators,...manufacturingCalculators,...foodCalculators,...pharmaCalculators,...restaurantCalculators,...hotelCalculators,...retailCalculators,...clinicCalculators,...constructionCalculators,...realEstateCalculators,fleet,forecast,pricing,inventory,queue,production,maintenance,quality,energy,reconcile,capacity,risk,cohort,cost,cash,portfolio};
+const runners={...logisticsCalculators,...wholesaleCalculators,...manufacturingCalculators,...foodCalculators,...pharmaCalculators,...restaurantCalculators,...hotelCalculators,...retailCalculators,...clinicCalculators,...constructionCalculators,...realEstateCalculators,...financeInsuranceCalculators,fleet,forecast,pricing,inventory,queue,production,maintenance,quality,energy,reconcile,capacity,risk,cohort,cost,cash,portfolio};
 export function calculate(kind,values={}){
  const definition=getDefinition(kind),p={};
  for(const x of definition.inputs){

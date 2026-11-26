@@ -190,8 +190,8 @@ function acquisition(p){
  ],vis("bar",["Adquisición","Primera compra","Recompra"],[ser("value",[cac,first,repeat])],"eur"),
  "Clientes estimados = visitas atribuidas × conversión. CAC = inversión/clientes. Contribución estimada = primera compra y recompras con retención y margen supuesto, menos gasto.",
  "La atribución de visitas, conversión y retención no está verificada; no es LTV estadístico, previsión de ventas ni prueba de incrementalidad publicitaria.",
- [["Clientes nuevos estimados",rnd(customers)],["Margen neto supuesto (%)",rnd(netMargin*100)],["Contribución por primera compra (€)",rnd(first)],["Meses de recuperación","No calculados: horizonte no temporal"]],
- total<0?"La contribución total estimada no cubre la inversión con estos supuestos.":"");
+ [["Clientes nuevos estimados",rnd(customers)],["Margen neto supuesto (%)",rnd(netMargin*100)],["Contribución por primera compra (€)",rnd(first)],["Compras equivalentes de contribución",rnd(payback)]],
+ total<0?"La contribución total estimada no cubre la inversión con estos supuestos.":first<=0?"La primera compra no genera contribución positiva; la recuperación por este canal no es estimable.":"");
 }
 function assortment(p){
  const slowSkus=p.sku*p.slowShare/100,units=slowSkus*p.units;

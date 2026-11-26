@@ -189,7 +189,11 @@ const translatedLabels={
  "Online":["En línia","Online"],"Tienda":["Botiga","Store"],"Tienda A":["Botiga A","Store A"],
  "Tienda B":["Botiga B","Store B"],"Web":["Web","Website"],"Precio habitual":["Preu habitual","Full price"],
  "Rebaja":["Rebaixa","Markdown"],"Sin promoción":["Sense promoció","No promotion"],"Con promoción":["Amb promoció","Promotion"],
- "Adquisición":["Captació","Acquisition"],"Primera compra":["Primera compra","First purchase"],"Recompra":["Recompra","Repeat purchase"]
+ "Adquisición":["Captació","Acquisition"],"Primera compra":["Primera compra","First purchase"],"Recompra":["Recompra","Repeat purchase"],
+ "Confirmación y lista":["Confirmació i llista","Confirmation and waiting list"],
+ "General":["General","General"],"Equipada":["Equipada","Equipped"],
+ "Proceso manual":["Procés manual","Manual process"],"Reglas + revisión":["Regles + revisió","Rules + review"],
+ "Atendidos":["Atesos","Served"],"Solicitados":["Sol·licitats","Requested"],"Capacidad":["Capacitat","Capacity"]
 };
 const labelFor=x=>language==="es"?x:(translatedLabels[x]?.[language==="ca"?0:1]||x);
 function setChartLegend(segments){

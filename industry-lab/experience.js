@@ -168,7 +168,13 @@ const translatedLabels={
  "Detectados":["Detectats","Detected"],"Falsos rechazos":["Rebuigs falsos","False rejects"],
  "Familia A":["Família A","Family A"],"Familia B":["Família B","Family B"],
  "Punta":["Punta","Peak"],"Valle":["Vall","Off-peak"],"Due":["Data límit","Due time"],
- "Setup":["Preparació","Setup"],"A":["A","A"],"B":["B","B"]
+ "Setup":["Preparació","Setup"],"A":["A","A"],"B":["B","B"],
+ "FEFO":["FEFO","FEFO"],"Orden de llegada":["Ordre d'arribada","Arrival order"],
+ "Pedido base":["Comanda base","Baseline order"],"Plan calculado":["Pla calculat","Calculated plan"],
+ "Sin promoción":["Sense promoció","No promotion"],"Promoción":["Promoció","Promotion"],
+ "Suministro normal":["Subministrament normal","On-time supply"],"Con retraso":["Amb retard","Delayed"],
+ "Promedio ponderado":["Mitjana ponderada","Weighted average"],
+ "Defectos":["Defectes","Defects"],"Orden llegada":["Ordre d'arribada","Arrival order"]
 };
 const labelFor=x=>language==="es"?x:(translatedLabels[x]?.[language==="ca"?0:1]||x);
 function setChartLegend(segments){

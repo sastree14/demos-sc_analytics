@@ -406,7 +406,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Promociones que erosionan margen",
           "example_controls": "Descuento, uplift y costes",
           "indicative_kpi": "Margen incremental y ROI",
-          "model": "pricing",
+          "model": "rtPromo",
           "scenario_seed": 1894
         },
         {
@@ -414,7 +414,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Roturas de talla/SKU",
           "example_controls": "Demanda, inventario y distribución",
           "indicative_kpi": "Ventas perdidas y fill rate",
-          "model": "inventory",
+          "model": "rtSizes",
           "scenario_seed": 1935
         },
         {
@@ -422,7 +422,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Devoluciones por canal",
           "example_controls": "Motivos, tasas y costes logísticos",
           "indicative_kpi": "Margen neto por SKU/canal",
-          "model": "risk",
+          "model": "rtReturns",
           "scenario_seed": 1976
         },
         {
@@ -430,7 +430,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Stock omnicanal",
           "example_controls": "Disponibilidad, tiendas y pedidos",
           "indicative_kpi": "Transferencias y stockouts",
-          "model": "fleet",
+          "model": "rtOmnichannel",
           "scenario_seed": 2017
         },
         {
@@ -438,7 +438,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Rentabilidad de adquisición",
           "example_controls": "CAC, margen, recompra y devoluciones",
           "indicative_kpi": "Contribución neta y payback",
-          "model": "cohort",
+          "model": "rtAcquisition",
           "scenario_seed": 2058
         },
         {
@@ -446,7 +446,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Surtido y productos lentos",
           "example_controls": "Estacionalidad, rotación y demanda",
           "indicative_kpi": "Stock muerto y conversión",
-          "model": "forecast",
+          "model": "rtAssortment",
           "scenario_seed": 2099
         }
       ]

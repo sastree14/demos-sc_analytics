@@ -630,7 +630,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Finanzas | Alertas de fraude",
           "example_controls": "Umbral, revisión humana y prevalencia simulada",
           "indicative_kpi": "Falsos positivos, recall y carga de revisión",
-          "model": "risk",
+          "model": "fiAlerts",
           "scenario_seed": 2898
         },
         {
@@ -638,7 +638,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Finanzas | Deterioro de cartera",
           "example_controls": "Exposición y escenarios de impago",
           "indicative_kpi": "Pérdida esperada ilustrativa",
-          "model": "risk",
+          "model": "fiPortfolio",
           "scenario_seed": 2939
         },
         {
@@ -646,7 +646,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Finanzas | Conciliación y excepciones",
           "example_controls": "Cobros, partidas y reglas",
           "indicative_kpi": "Diferencias y tiempo de resolución",
-          "model": "reconcile",
+          "model": "fiReconcile",
           "scenario_seed": 2980
         },
         {
@@ -654,7 +654,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Seguros | Triaje de siniestros",
           "example_controls": "Complejidad, cola y prioridad",
           "indicative_kpi": "Tiempo a primera revisión",
-          "model": "queue",
+          "model": "fiClaimsDocs",
           "scenario_seed": 3021
         },
         {
@@ -662,7 +662,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Seguros | Reservas y frecuencia",
           "example_controls": "Frecuencia, coste y desarrollo sintético",
           "indicative_kpi": "Coste medio y reservas simuladas",
-          "model": "risk",
+          "model": "fiReserve",
           "scenario_seed": 3062
         },
         {
@@ -670,7 +670,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Seguros | Capacidad de tramitación",
           "example_controls": "Dotación y volúmenes",
           "indicative_kpi": "Cola y SLA",
-          "model": "queue",
+          "model": "fiCapacity",
           "scenario_seed": 3103
         }
       ]

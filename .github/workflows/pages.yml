@@ -50,6 +50,7 @@ jobs:
           node industry-lab/construction.test.mjs
           node industry-lab/real-estate.test.mjs
           node industry-lab/finance-insurance.test.mjs
+          node industry-lab/problem-copy.test.mjs
       - name: Exercise all 32 cases in Chrome
         run: |
           python -m venv "$RUNNER_TEMP/lab-qa"

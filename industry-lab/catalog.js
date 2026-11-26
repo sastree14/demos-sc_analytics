@@ -462,7 +462,7 @@ export const INDUSTRY_CATALOG = {
           "title": "No-shows y huecos en agenda",
           "example_controls": "Probabilidades agregadas, avisos y franjas",
           "indicative_kpi": "Huecos recuperables y ocupación",
-          "model": "queue",
+          "model": "clNoShow",
           "scenario_seed": 2145
         },
         {
@@ -470,7 +470,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Listas de espera y prioridades",
           "example_controls": "Duraciones, disponibilidad y recursos",
           "indicative_kpi": "Espera media por servicio",
-          "model": "queue",
+          "model": "clWaitlist",
           "scenario_seed": 2186
         },
         {
@@ -478,7 +478,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Asignación de salas",
           "example_controls": "Especialidades, equipamiento y turnos",
           "indicative_kpi": "Utilización de salas",
-          "model": "queue",
+          "model": "clRooms",
           "scenario_seed": 2227
         },
         {
@@ -486,7 +486,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Carga administrativa",
           "example_controls": "Tipos de trámite y tiempos",
           "indicative_kpi": "Horas de gestión y errores",
-          "model": "reconcile",
+          "model": "clAdmin",
           "scenario_seed": 2268
         },
         {
@@ -494,7 +494,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Picos en recepción",
           "example_controls": "Llegadas, recursos y duración",
           "indicative_kpi": "Tiempo de espera",
-          "model": "queue",
+          "model": "clReception",
           "scenario_seed": 2309
         },
         {
@@ -502,7 +502,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Coste y utilización por servicio",
           "example_controls": "Costes agregados, citas y disponibilidad",
           "indicative_kpi": "Margen de servicio agregado",
-          "model": "pricing",
+          "model": "clUnitCost",
           "scenario_seed": 2350
         }
       ]

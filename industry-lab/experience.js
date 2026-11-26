@@ -177,7 +177,10 @@ const translatedLabels={
  "Defectos":["Defectes","Defects"],"Orden llegada":["Ordre d'arribada","Arrival order"],
  "Con llegada":["Amb arribada","On-time arrival"],"Con demora":["Amb demora","Delayed"],
  "Sin reglas":["Sense regles","Without rules"],"Con reglas":["Amb regles","With rules"],
- "Referencia":["Referència","Reference"],"Centro":["Centre","Centre"]
+ "Referencia":["Referència","Reference"],"Centro":["Centre","Centre"],
+ "Local A":["Local A","Store A"],"Local B":["Local B","Store B"],"Local C":["Local C","Store C"],
+ "Plato A":["Plat A","Dish A"],"Plato B":["Plat B","Dish B"],"Plato C":["Plat C","Dish C"],
+ "Plato A":["Plat A","Dish A"],"Tickets":["Tiquets","Tickets"],"Pedido":["Comanda","Order"]
 };
 const labelFor=x=>language==="es"?x:(translatedLabels[x]?.[language==="ca"?0:1]||x);
 function setChartLegend(segments){

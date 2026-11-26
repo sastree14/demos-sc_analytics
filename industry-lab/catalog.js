@@ -21,7 +21,7 @@ export const INDUSTRY_CATALOG = {
           "indicative_kpi": "Margen por ruta, €/entrega",
           "example_controls": "Tarifa, kilómetros, esperas y costes",
           "analytical_capability": "optimización + BI",
-          "model": "fleet",
+          "model": "routeMargin",
           "scenario_seed": 137,
           "sector_index": 0,
           "problem_index": 0
@@ -34,7 +34,7 @@ export const INDUSTRY_CATALOG = {
           "indicative_kpi": "Km sin carga y coste total",
           "example_controls": "Capacidad y posibilidades de retorno",
           "analytical_capability": "optimización",
-          "model": "fleet",
+          "model": "backhaul",
           "scenario_seed": 178,
           "sector_index": 0,
           "problem_index": 1
@@ -60,7 +60,7 @@ export const INDUSTRY_CATALOG = {
           "indicative_kpi": "Entregas a tiempo y coste de contingencia",
           "example_controls": "Vehículo no disponible, retraso, urgencia",
           "analytical_capability": "simulación + optimización",
-          "model": "fleet",
+          "model": "incident",
           "scenario_seed": 260,
           "sector_index": 0,
           "problem_index": 3
@@ -86,7 +86,7 @@ export const INDUSTRY_CATALOG = {
           "indicative_kpi": "Margen contractual y alternativa viable",
           "example_controls": "Coste propio, tarifa, margen mínimo",
           "analytical_capability": "modelización financiera",
-          "model": "pricing",
+          "model": "subcontract",
           "scenario_seed": 342,
           "sector_index": 0,
           "problem_index": 5

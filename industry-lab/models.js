@@ -3,6 +3,7 @@
  * observed customer savings, regulated decisions, or production recommendations.
  */
 import {logisticsModels, logisticsCalculators} from "./logistics-models.js";
+import {wholesaleModels, wholesaleCalculators} from "./wholesale-models.js";
 const L=(es,ca,en)=>({es,ca,en});
 const field=(key,label,min,max,step,value,unit="number")=>({key,label,min,max,step,value,unit});
 const metric=(key,value,unit="number")=>({key,value:Number.isFinite(value)?value:0,unit});
@@ -13,6 +14,7 @@ const chart=(type,labels,series,unit="number")=>({type,labels,series,unit});
 const output=(metrics,visual,insight,formula,limitations,table=[],warning="")=>({metrics,visual,insight,formula,limitations,table,warning});
 const f=(key,es,ca,en,min,max,step,value,unit)=>field(key,L(es,ca,en),min,max,step,value,unit);
 const metricTitles={
+transferUnits:L("Unidades transferidas","Unitats transferides","Transferred units"),
 external:L("Entregas subcontratadas","Lliuraments subcontractats","Subcontracted deliveries"),
 emptyKm:L("Kilómetros en vacío","Quilòmetres en buit","Empty kilometres"),
 backhaulShare:L("Retornos cargados","Retorns carregats","Loaded backhaul share"),
@@ -58,7 +60,7 @@ selected:L("Iniciativas seleccionadas","Iniciatives seleccionades","Selected ini
 export const metricLabel=(key,language="es")=>(metricTitles[key]||L(key,key,key))[language]||key;
 const series=(key,values)=>({key,values:values.map(x=>rnd(x,2))});
 const minPrice=1;
-const models={...logisticsModels,
+const models={...logisticsModels,...wholesaleModels,
 fleet:{
 title:L("Planificación de recursos y demanda","Planificació de recursos i demanda","Resource and demand planning"),
 inputs:[
@@ -530,7 +532,7 @@ function portfolio(p){
  [["Presupuesto comprometido",rnd(best.money,0)],["Capacidad usada",best.hours],["Combinaciones evaluadas",64]]
  );
 }
-const runners={...logisticsCalculators,fleet,forecast,pricing,inventory,queue,production,maintenance,quality,energy,reconcile,capacity,risk,cohort,cost,cash,portfolio};
+const runners={...logisticsCalculators,...wholesaleCalculators,fleet,forecast,pricing,inventory,queue,production,maintenance,quality,energy,reconcile,capacity,risk,cohort,cost,cash,portfolio};
 export function calculate(kind,values={}){
  const definition=getDefinition(kind),p={};
  for(const x of definition.inputs){

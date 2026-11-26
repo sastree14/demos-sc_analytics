@@ -1920,6 +1920,94 @@ export const DETAIL_TRANSLATIONS = {
   "Coste plan de referencia (€)": [
     "Cost del pla de referència (€)",
     "Reference plan cost (€)"
+  ],
+  "Casos relevantes supuestos": [
+    "Casos rellevants suposats",
+    "Assumed relevant cases"
+  ],
+  "Alertas generadas": [
+    "Alertes generades",
+    "Alerts generated"
+  ],
+  "Alertas revisadas": [
+    "Alertes revisades",
+    "Alerts reviewed"
+  ],
+  "Alertas pendientes": [
+    "Alertes pendents",
+    "Alerts pending review"
+  ],
+  "Casos relevantes sin revisar (supuesto)": [
+    "Casos rellevants sense revisar (supòsit)",
+    "Assumed relevant cases not reviewed"
+  ],
+  "Exposición inicial al día (€)": [
+    "Exposició inicial al corrent (€)",
+    "Initially performing exposure (€)"
+  ],
+  "Exposición en seguimiento mes 6 (€)": [
+    "Exposició en seguiment mes 6 (€)",
+    "Month-six watched exposure (€)"
+  ],
+  "Severidad supuesta (%)": [
+    "Severitat suposada (%)",
+    "Assumed severity (%)"
+  ],
+  "Escenarios mensuales": [
+    "Escenaris mensuals",
+    "Monthly periods"
+  ],
+  "Registros inconsistentes esperados": [
+    "Registres inconsistents esperats",
+    "Expected inconsistent records"
+  ],
+  "Registros resueltos por reglas": [
+    "Registres resolts per regles",
+    "Rules-matched records"
+  ],
+  "Coste de trabajo restante (€)": [
+    "Cost de treball restant (€)",
+    "Remaining review workload cost (€)"
+  ],
+  "Capacidad de revisión (h)": [
+    "Capacitat de revisió (h)",
+    "Review capacity (hours)"
+  ],
+  "Documentación recuperada tras solicitud": [
+    "Documentació recuperada després de requeriment",
+    "Documentation recovered after request"
+  ],
+  "Expedientes aún incompletos": [
+    "Expedients encara incomplets",
+    "Still-incomplete files"
+  ],
+  "Horas adicionales necesarias": [
+    "Hores addicionals necessàries",
+    "Extra hours required"
+  ],
+  "Número de siniestros escenario alto": [
+    "Nombre de sinistres en escenari alt",
+    "Higher-frequency scenario claims"
+  ],
+  "Coste unitario de severidad alto (€)": [
+    "Cost unitari de severitat alta (€)",
+    "High-severity unit amount (€)"
+  ],
+  "Coste escenario alto (€)": [
+    "Cost d'escenari alt (€)",
+    "High-stress scenario cost (€)"
+  ],
+  "Colchón ilustrativo (€)": [
+    "Coixí il·lustratiu (€)",
+    "Illustrative buffer (€)"
+  ],
+  "Capacidad semanal por escenario": [
+    "Capacitat setmanal per escenari",
+    "Weekly capacity per scenario"
+  ],
+  "Personas asignadas": [
+    "Persones assignades",
+    "Staff assigned"
   ]
 };
 export const WARNING_TRANSLATIONS = {
@@ -2022,6 +2110,10 @@ export const WARNING_TRANSLATIONS = {
   "No existe suficiente capacidad ofertada para completar todos los trabajos.": [
     "No hi ha prou capacitat de proveïdors per fer tota la feina.",
     "Available supplier capacity cannot cover all maintenance jobs."
+  ],
+  "Capacidad humana de revisión insuficiente para todas las alertas generadas.": [
+    "La capacitat de revisió humana és insuficient per a totes les alertes.",
+    "Not enough human review capacity for all generated alerts."
   ]
 };
 export const SECTOR_CONTEXT = {
@@ -2060,5 +2152,9 @@ export const SECTOR_CONTEXT = {
   "SC11": {
     "ca": "Cartera d'immobles, ocupació, NOI, CAPEX, caixa de rendes i serveis de manteniment amb dades agregades.",
     "en": "Asset portfolio, occupancy, NOI, capital projects, aggregate rent receipts and maintenance."
+  },
+  "SC12": {
+    "ca": "Anàlisi agregada d'excepcions, capacitat de revisió, riscos suposats i reserves il·lustratives, sense decisions automàtiques.",
+    "en": "Aggregate exceptions, review capacity, hypothetical risk and illustrative reserves without automated decisions."
   }
 };

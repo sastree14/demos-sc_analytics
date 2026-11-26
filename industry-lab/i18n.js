@@ -1411,7 +1411,7 @@ export const DETAIL_TRANSLATIONS = {
   ],
   "Coste con refuerzo (€)": [
     "Cost amb reforç (€)",
-    "Cost with extra staffing (€)"
+    "Cost with additional staff (€)"
   ],
   "Pedidos recibidos": [
     "Comandes rebudes",
@@ -1427,7 +1427,7 @@ export const DETAIL_TRANSLATIONS = {
   ],
   "Coste de referencia (€)": [
     "Cost de referència (€)",
-    "Reference cost (€)"
+    "Baseline cost (€)"
   ],
   "Descuento aplicado (%)": [
     "Descompte aplicat (%)",
@@ -1487,7 +1487,7 @@ export const DETAIL_TRANSLATIONS = {
   ],
   "¿Cola estable?": [
     "És estable la cua?",
-    "Stable queue?"
+    "Is the queue stable?"
   ],
   "Habitaciones ocupadas (estimadas)": [
     "Habitacions ocupades (estimades)",
@@ -1612,6 +1612,90 @@ export const DETAIL_TRANSLATIONS = {
   "Compras equivalentes de contribución": [
     "Compres equivalents de contribució",
     "Equivalent first-order contributions"
+  ],
+  "Huecos esperados inicialmente": [
+    "Buits esperats inicialment",
+    "Expected initial gaps"
+  ],
+  "Ausencias tras confirmación": [
+    "Absències després de confirmar",
+    "No-shows after confirmations"
+  ],
+  "Huecos aceptados desde lista": [
+    "Buits acceptats de la llista",
+    "Accepted openings from availability list"
+  ],
+  "Horas administrativas": [
+    "Hores administratives",
+    "Administrative hours"
+  ],
+  "Cola sin plazas adicionales": [
+    "Cua sense places addicionals",
+    "Backlog without additional slots"
+  ],
+  "Cola con plazas adicionales": [
+    "Cua amb places addicionals",
+    "Backlog with additional slots"
+  ],
+  "Cupos ofertables/semana": [
+    "Cups ofertables/setmana",
+    "Available slots per week"
+  ],
+  "Semanas simuladas": [
+    "Setmanes simulades",
+    "Weeks simulated"
+  ],
+  "Sesiones equipadas asignadas": [
+    "Sessions equipades assignades",
+    "Equipped room sessions assigned"
+  ],
+  "Sesiones generales asignadas": [
+    "Sessions generals assignades",
+    "General sessions assigned"
+  ],
+  "Capacidad sala equipada": [
+    "Capacitat de sales equipades",
+    "Equipped room capacity"
+  ],
+  "Sesiones no asignables": [
+    "Sessions no assignables",
+    "Sessions that cannot be allocated"
+  ],
+  "Horas antes de simplificar": [
+    "Hores abans de simplificar",
+    "Hours before streamlining"
+  ],
+  "Horas después de reglas": [
+    "Hores després de regles",
+    "Hours after rules"
+  ],
+  "Horas disponibles": [
+    "Hores disponibles",
+    "Available hours"
+  ],
+  "Trámites simplificados (esperados)": [
+    "Tràmits simplificats (esperats)",
+    "Expected simplified cases"
+  ],
+  "Llegadas presenciales/h": [
+    "Arribades presencials/h",
+    "In-person arrivals per hour"
+  ],
+  "Servicios no programables": [
+    "Serveis no programables",
+    "Services that cannot be scheduled"
+  ],
+  "Capacidad calculada": [
+    "Capacitat calculada",
+    "Calculated capacity"
+  ],
+  "Coste total escenario (€)": [
+    "Cost total de l'escenari (€)",
+    "Total scenario cost (€)"
+  ],
+  "Ingreso calculado (€)": [
+    "Ingrés calculat (€)",
+    "Calculated revenue (€)"
   ]
 };
 export const WARNING_TRANSLATIONS = {
@@ -1686,6 +1770,14 @@ export const WARNING_TRANSLATIONS = {
   "La primera compra no genera contribución positiva; la recuperación por este canal no es estimable.": [
     "La primera compra no genera contribució positiva; no es pot estimar la recuperació d'inversió.",
     "The first order has no positive contribution; acquisition payback cannot be estimated."
+  ],
+  "La cola administrativa supera la capacidad de servicio; el tiempo mostrado es un límite visual, no una espera estable.": [
+    "La cua administrativa supera la capacitat de servei; el temps mostrat és només un límit visual.",
+    "The administrative queue exceeds capacity; the displayed wait is a visual cap, not a stable estimate."
+  ],
+  "La demanda de servicios excede la capacidad disponible bajo estos parámetros.": [
+    "La demanda de serveis supera la capacitat disponible amb aquests paràmetres.",
+    "Service demand exceeds available capacity under these assumptions."
   ]
 };
 export const SECTOR_CONTEXT = {
@@ -1712,5 +1804,9 @@ export const SECTOR_CONTEXT = {
   "SC08": {
     "ca": "Vendes i devolucions per canal, ruptures de talles, estoc compartit i marge net.",
     "en": "Channel sales and returns, size-level availability, shared stock and net contribution."
+  },
+  "SC09": {
+    "ca": "Gestió agregada de cites, buits d'agenda, sales habilitades i càrrega administrativa. Sense dades de pacients.",
+    "en": "Aggregate appointment access, empty slots, suitable rooms and administrative workload. No patient data."
   }
 };

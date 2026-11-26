@@ -1,6 +1,6 @@
 import {INDUSTRY_CATALOG} from "./catalog.js";
 import {MODELS,modelNames,calculate,defaultInputs,metricLabel} from "./models.js";
-import {UI,sectorText,EXPLANATIONS,CONSTRAINTS} from "./i18n.js";
+import {UI,sectorText,EXPLANATIONS,CONSTRAINTS,DETAIL_TRANSLATIONS,WARNING_TRANSLATIONS,SECTOR_CONTEXT} from "./i18n.js";
 
 const $=id=>document.getElementById(id);
 const query=new URLSearchParams(location.search);
@@ -48,7 +48,7 @@ function applyLanguage(next){
  document.querySelectorAll("[data-locale]").forEach(btn=>btn.setAttribute("aria-pressed",String(btn.dataset.locale===next)));
  $("sector-code").textContent=sector.code;
  $("industry-name").textContent=sectorName();
- $("industry-context").textContent=language==="es"?sector.first_screen_hypothesis:(language==="ca"?"Explora sis decisions habituals de "+sectorName().toLowerCase()+".":"Explore six illustrative decisions in "+sectorName().toLowerCase()+".");
+ $("industry-context").textContent=language==="es"?sector.first_screen_hypothesis:(SECTOR_CONTEXT[sector.code]?.[language]||(language==="ca"?"Explora sis decisions habituals de "+sectorName().toLowerCase()+".":"Explore six illustrative decisions in "+sectorName().toLowerCase()+"."));
  document.title=sectorName()+" · SC-Analytics Industry Decision Lab";
  buildNav();
  renderCase(true);
@@ -126,7 +126,7 @@ function renderResults(){
  $("warnings").replaceChildren();
  const warnings=[result.warning];if(["SC05","SC09","SC12","SC16"].includes(sector.code))warnings.push(t("noRegulated"));
  for(const warning of warnings.filter(Boolean)){
-  const alert=document.createElement("div");alert.className="warning";alert.textContent=warning;$("warnings").append(alert);
+  const alert=document.createElement("div");alert.className="warning";alert.textContent=language==="es"?warning:(WARNING_TRANSLATIONS[warning]?.[language==="ca"?0:1]||warning);$("warnings").append(alert);
  }
  $("chart-unit").textContent=result.visual.unit==="eur"?"EUR":result.visual.unit==="minutes"?t("wait"):result.visual.unit==="number"?"":result.visual.unit;
  $("explanation").textContent=(language==="es"?"Para «"+caseName(problem)+"», este resultado se ha calculado con las condiciones que acabas de ejecutar. ":language==="ca"?"Per a «"+caseName(problem)+"», el resultat s'ha calculat amb els supòsits que has executat. ":"For “"+caseName(problem)+"”, this outcome uses the assumptions you just ran. ")+EXPLANATIONS[problem.model][language==="es"?0:language==="ca"?1:2];
@@ -135,7 +135,7 @@ function renderResults(){
  const tbody=$("detail-rows");tbody.replaceChildren();
  for(const [name,value] of result.table){
   const row=document.createElement("tr");
-  const label=document.createElement("td");label.textContent=name;
+  const label=document.createElement("td");label.textContent=language==="es"?name:(DETAIL_TRANSLATIONS[name]?.[language==="ca"?0:1]||name);
   const data=document.createElement("td");data.textContent=typeof value==="number"?format(value):String(value);
   row.append(label,data);tbody.append(row);
  }
@@ -162,7 +162,13 @@ const translatedLabels={
  "Retorno vacío":["Retorn buit","Empty return"],"Propio":["Propi","In-house"],
  "Externo":["Extern","External"],"Pendiente":["Pendent","Pending"],
  "Almacén A":["Magatzem A","Warehouse A"],"Almacén B":["Magatzem B","Warehouse B"],
- "VP":["VP","TP"],"FP":["FP","FP"],"FN":["FN","FN"],"VN":["VN","TN"]
+ "VP":["VP","TP"],"FP":["FP","FP"],"FN":["FN","FN"],"VN":["VN","TN"],
+ "Demanda":["Demanda","Demand"],"Base":["Base","Baseline"],"Con horas extra":["Amb hores extres","With overtime"],
+ "Defectos base":["Defectes base","Baseline defects"],"Defectos escenario":["Defectes escenari","Scenario defects"],
+ "Detectados":["Detectats","Detected"],"Falsos rechazos":["Rebuigs falsos","False rejects"],
+ "Familia A":["Família A","Family A"],"Familia B":["Família B","Family B"],
+ "Punta":["Punta","Peak"],"Valle":["Vall","Off-peak"],"Due":["Data límit","Due time"],
+ "Setup":["Preparació","Setup"],"A":["A","A"],"B":["B","B"]
 };
 const labelFor=x=>language==="es"?x:(translatedLabels[x]?.[language==="ca"?0:1]||x);
 function setChartLegend(segments){

@@ -294,7 +294,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Turnos frente a demanda por hora",
           "example_controls": "Tickets previstos y personal disponible",
           "indicative_kpi": "Coste laboral y tiempo de espera",
-          "model": "queue",
+          "model": "rsShifts",
           "scenario_seed": 1392
         },
         {
@@ -302,7 +302,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Desperdicio y mise en place",
           "example_controls": "Recetas, ventas y preparación",
           "indicative_kpi": "Merma y disponibilidad",
-          "model": "inventory",
+          "model": "rsPrep",
           "scenario_seed": 1433
         },
         {
@@ -310,7 +310,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Rentabilidad por local",
           "example_controls": "Ventas, costes, horas y canal",
           "indicative_kpi": "Margen operativo por local",
-          "model": "pricing",
+          "model": "rsStoreProfit",
           "scenario_seed": 1474
         },
         {
@@ -318,7 +318,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Diseño de menú y precios",
           "example_controls": "Mix, coste ingrediente y precio",
           "indicative_kpi": "Contribución por plato",
-          "model": "pricing",
+          "model": "rsMenu",
           "scenario_seed": 1515
         },
         {
@@ -326,7 +326,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Delivery y picos de pedidos",
           "example_controls": "Pedidos por canal y preparación",
           "indicative_kpi": "Tiempo de preparación y servicio",
-          "model": "queue",
+          "model": "rsDelivery",
           "scenario_seed": 1556
         },
         {
@@ -334,7 +334,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Compras multiestablecimiento",
           "example_controls": "Proveedor, frecuencia, volumen",
           "indicative_kpi": "Coste total y roturas",
-          "model": "inventory",
+          "model": "rsPurchasing",
           "scenario_seed": 1597
         }
       ]

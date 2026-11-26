@@ -185,7 +185,11 @@ const translatedLabels={
  "Trabajo requerido":["Feina necessària","Required work"],"Personal actual":["Personal actual","Current staff"],
  "Con refuerzo":["Amb reforç","Extra staffing"],"Sin grupo":["Sense grup","Without group"],
  "Con grupo":["Amb grup","With group"],"Carga fija":["Càrrega fixa","Fixed load"],
- "Habitaciones":["Habitacions","Rooms"],"Lunes":["Dilluns","Monday"]
+ "Habitaciones":["Habitacions","Rooms"],"Lunes":["Dilluns","Monday"],
+ "Online":["En línia","Online"],"Tienda":["Botiga","Store"],"Tienda A":["Botiga A","Store A"],
+ "Tienda B":["Botiga B","Store B"],"Web":["Web","Website"],"Precio habitual":["Preu habitual","Full price"],
+ "Rebaja":["Rebaixa","Markdown"],"Sin promoción":["Sense promoció","No promotion"],"Con promoción":["Amb promoció","Promotion"],
+ "Adquisición":["Captació","Acquisition"],"Primera compra":["Primera compra","First purchase"],"Recompra":["Recompra","Repeat purchase"]
 };
 const labelFor=x=>language==="es"?x:(translatedLabels[x]?.[language==="ca"?0:1]||x);
 function setChartLegend(segments){

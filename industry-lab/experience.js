@@ -199,7 +199,12 @@ const translatedLabels={
  "Coste real":["Cost real","Actual cost"],"Zona A":["Zona A","Area A"],
  "Zona B":["Zona B","Area B"],"Zona C":["Zona C","Area C"],
  "Entrega puntual":["Lliurament puntual","On-time delivery"],"Entrega tardía":["Lliurament tardà","Delayed delivery"],
- "Sin coordinación":["Sense coordinació","Without coordination"],"Con coordinación":["Amb coordinació","With coordination"]
+ "Sin coordinación":["Sense coordinació","Without coordination"],"Con coordinación":["Amb coordinació","With coordination"],
+ "Activo A":["Actiu A","Asset A"],"Activo B":["Actiu B","Asset B"],"Activo C":["Actiu C","Asset C"],
+ "Proveedor A":["Proveïdor A","Vendor A"],"Proveedor B":["Proveïdor B","Vendor B"],"Proveedor C":["Proveïdor C","Vendor C"],
+ "Climatización":["Climatització","HVAC"],"Cubierta":["Coberta","Roof"],
+ "Iluminación":["Il·luminació","Lighting"],"Ascensores":["Ascensors","Lifts"],
+ "Sensórica":["Sensors","Sensors"],"Vacantes":["Vacants","Vacant units"]
 };
 const labelFor=x=>language==="es"?x:(translatedLabels[x]?.[language==="ca"?0:1]||x);
 function setChartLegend(segments){

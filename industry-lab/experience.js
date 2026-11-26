@@ -1,4 +1,5 @@
 import {INDUSTRY_CATALOG} from "./catalog.js";
+import {BUSINESS_QUESTIONS} from "./problem-copy.js";
 import {MODELS,modelNames,calculate,defaultInputs,metricLabel} from "./models.js";
 import {UI,sectorText,EXPLANATIONS,CONSTRAINTS,DETAIL_TRANSLATIONS,WARNING_TRANSLATIONS,SECTOR_CONTEXT} from "./i18n.js";
 
@@ -79,7 +80,8 @@ function chooseProblem(caseId){
 function renderCase(rebuildControls=true){
  $("case-title").textContent=caseName(problem);
  $("case-count").textContent=String(sector.pain_points.indexOf(problem)+1).padStart(2,"0")+" / 06";
- const description=language==="es"?problem.example_controls:(language==="ca"?"Analitza aquest repte amb paràmetres simulats i compara escenaris de "+tr(MODELS[problem.model].title).toLowerCase()+".":"Explore this challenge with synthetic inputs and compare "+tr(MODELS[problem.model].title).toLowerCase()+" scenarios.");
+ const question=BUSINESS_QUESTIONS[sector.code]?.[sector.pain_points.indexOf(problem)];
+ const description=question?(question[language==="es"?0:language==="ca"?1:2]):(language==="es"?problem.example_controls:(language==="ca"?"Analitza aquest repte amb paràmetres simulats i compara escenaris de "+tr(MODELS[problem.model].title).toLowerCase()+".":"Explore this challenge with synthetic inputs and compare "+tr(MODELS[problem.model].title).toLowerCase()+" scenarios."));
  $("case-description").textContent=description;
  if(!result){values=defaultInputs(problem.model,problem.scenario_seed);result=calculate(problem.model,values);lastValues={...values};rebuildControls=true;}
  if(rebuildControls)renderInputs();

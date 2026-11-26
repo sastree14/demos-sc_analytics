@@ -228,7 +228,7 @@ function ingredientSupply(p){
   const baseUnits=Math.min(p.plan,Math.floor(availableX/p.xPer),Math.floor(p.stockY/p.yPer));
   const roomY=Math.max(0,p.stockY/p.yPer-baseUnits);
   const needX=Math.max(0,p.plan-baseUnits)*p.xPer;
-  const affordableEmergency=(p.expediteCost/p.xPer)<p.shortCost;
+  const affordableEmergency=(p.expediteCost*p.xPer)<p.shortCost;
   const emergency=affordableEmergency?Math.min(p.emergency,needX,roomY*p.xPer):0;
   const produced=baseUnits+emergency/p.xPer;
   const missed=Math.max(0,p.plan-produced);
@@ -241,9 +241,6 @@ function ingredientSupply(p){
   missed:normal.missed*(1-weight)+delayed.missed*weight,
   emergency:normal.emergency*(1-weight)+delayed.emergency*weight,
   cost:normal.cost*(1-weight)+delayed.cost*weight
- };
- const noEmergency={
-  ...p,emergency:0
  };
  // Expected baseline cost without emergency procurement for both cases.
  const costNoEmergency=()=>{

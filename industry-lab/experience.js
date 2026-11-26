@@ -151,7 +151,119 @@ function svgEl(tag,attrs,text){
  if(text!==undefined)el.textContent=String(text);
  return el;
 }
+
+/* Decision-specific SVG explanations: more useful than decorative bar charts. */
+const translatedLabels={
+ "Ingresos":["Ingressos","Revenue"],"Kilómetros":["Quilòmetres","Distance"],"Espera":["Espera","Waiting"],
+ "Contribución":["Contribució","Contribution"],"Producto":["Producte","Product cost"],
+ "Operación":["Operació","Operations"],"Devoluciones":["Devolucions","Returns"],
+ "Ida":["Anada","Outbound"],"Retorno cargado":["Retorn carregat","Loaded return"],
+ "Retorno vacío":["Retorn buit","Empty return"],"Propio":["Propi","In-house"],
+ "Externo":["Extern","External"],"Pendiente":["Pendent","Pending"],
+ "Almacén A":["Magatzem A","Warehouse A"],"Almacén B":["Magatzem B","Warehouse B"],
+ "VP":["VP","TP"],"FP":["FP","FP"],"FN":["FN","FN"],"VN":["VN","TN"]
+};
+const labelFor=x=>language==="es"?x:(translatedLabels[x]?.[language==="ca"?0:1]||x);
+function setChartLegend(segments){
+ const legend=$("legend");legend.replaceChildren();
+ for(const [label,color,value,unit] of segments){
+  const el=document.createElement("span");el.className="legend-item";
+  const swatch=document.createElement("span");swatch.className="legend-dot";swatch.style.background=color;
+  el.append(swatch,document.createTextNode(labelFor(label)+(Number.isFinite(value)?" · "+format(value,unit||"number"):"")));
+  legend.append(el);
+ }
+}
+function renderSpecialChart(visual){
+ const {type}=visual;
+ if(!["waterfall","parts","flow","matrix"].includes(type))return false;
+ const svg=$("chart");svg.replaceChildren();
+ const values=visual.series[0].values.map(x=>Number(x)||0);
+ svg.append(svgEl("title",{},t("chart")+" · "+caseName(problem)));
+ svg.append(svgEl("desc",{},visual.labels.map((x,i)=>labelFor(x)+": "+format(values[i]??0,visual.unit)).join("; ")));
+ if(type==="waterfall"){
+  const n=values.length,net=values[n-1];
+  const ceiling=Math.max(1,values[0]*1.08),floor=Math.min(0,net*1.08);
+  const y=v=>245-(v-floor)/(ceiling-floor)*185;
+  const zero=y(0),space=650/n,bar=70;
+  svg.append(svgEl("line",{x1:45,y1:zero,x2:728,y2:zero,stroke:"#98aaa1","stroke-width":1.3}));
+  let balance=0;
+  const legend=[];
+  for(let i=0;i<n;i++){
+   const x=65+i*space,first=i===0,last=i===n-1;
+   const from=first||last?0:balance;
+   const to=first?values[0]:last?net:balance-values[i];
+   const top=Math.min(y(from),y(to)),height=Math.max(2,Math.abs(y(to)-y(from)));
+   const color=first?"#4a8177":last?(net>=0?"#3d6e88":"#ad695e"):"#c79a60";
+   const rect=svgEl("rect",{x,y:top,width:bar,height,rx:3,fill:color});
+   rect.append(svgEl("title",{},labelFor(visual.labels[i])+": "+format(values[i],visual.unit)));
+   svg.append(rect);
+   const valueText=i===0||last?values[i]:-values[i];
+   svg.append(svgEl("text",{x:x+bar/2,y:top-7,"text-anchor":"middle","font-weight":"700"},format(valueText,visual.unit)));
+   svg.append(svgEl("text",{x:x+bar/2,y:276,"text-anchor":"middle"},labelFor(visual.labels[i]).slice(0,15)));
+   if(!last){balance=to;const nextX=65+(i+1)*space;svg.append(svgEl("line",{x1:x+bar,x2:nextX,y1:y(balance),y2:y(balance),stroke:"#9baea5","stroke-dasharray":"3 3"}));}
+   legend.push([visual.labels[i],color,values[i],visual.unit]);
+  }
+  setChartLegend(legend);return true;
+ }
+ if(type==="parts"){
+  const parts=values.map(v=>Math.max(0,v)),total=parts.reduce((a,b)=>a+b,0);
+  const colors=["#4a8177","#7a9dae","#d2a86e","#9b83a1"],start=52,end=708,width=end-start;
+  svg.append(svgEl("text",{x:start,y:60,"font-size":"13","font-weight":"700"},t("chart")));
+  let offset=start;
+  const legend=[];
+  parts.forEach((v,i)=>{
+   const segmentWidth=total>0?width*v/total:width/parts.length;
+   if(segmentWidth>0){
+    const rect=svgEl("rect",{x:offset,y:117,width:segmentWidth,height:74,fill:colors[i%colors.length],rx:2});
+    rect.append(svgEl("title",{},labelFor(visual.labels[i])+": "+format(v,visual.unit)));
+    svg.append(rect);
+    if(segmentWidth>=65)svg.append(svgEl("text",{x:offset+segmentWidth/2,y:155,fill:"#fff","font-size":"15","font-weight":"700","text-anchor":"middle",style:"fill:white"},Math.round(v/Math.max(total,1)*100)+"%"));
+   }
+   offset+=segmentWidth;
+   legend.push([visual.labels[i],colors[i%colors.length],v,visual.unit]);
+  });
+  svg.append(svgEl("text",{x:width/2+start,y:223,"text-anchor":"middle","font-size":"13"},format(total,visual.unit)));
+  setChartLegend(legend);return true;
+ }
+ if(type==="flow"){
+  const demand=visual.series.find(x=>x.key==="target")?.values||[0,0];
+  const stock=visual.series.find(x=>x.key==="actual")?.values||[0,0];
+  const transfer=result?.table?.find(x=>x[0]==="Unidades transferidas")?.[1]||0;
+  const direction=result?.table?.find(x=>x[0]==="Dirección")?.[1]||"";
+  const boxes=[{x:72,name:labelFor(visual.labels[0]),stock:stock[0],demand:demand[0]},
+               {x:485,name:labelFor(visual.labels[1]),stock:stock[1],demand:demand[1]}];
+  for(const box of boxes){
+   const good=box.stock>=box.demand;
+   svg.append(svgEl("rect",{x:box.x,y:56,width:200,height:163,rx:7,fill:good?"#edf5f0":"#fbf1e7",stroke:good?"#9ac3aa":"#d9b68f"}));
+   svg.append(svgEl("text",{x:box.x+17,y:83,"font-size":"14","font-weight":"700"},box.name));
+   svg.append(svgEl("text",{x:box.x+17,y:120,"font-size":"11"},t("stock")));
+   svg.append(svgEl("text",{x:box.x+17,y:147,"font-size":"21","font-weight":"700"},format(box.stock)));
+   svg.append(svgEl("text",{x:box.x+17,y:183,"font-size":"11"},t("target")+": "+format(box.demand)));
+  }
+  svg.append(svgEl("line",{x1:290,y1:135,x2:467,y2:135,stroke:"#477e70","stroke-width":4,"stroke-linecap":"round"}));
+  svg.append(svgEl("path",{d:direction==="B → A"?"M 292 135 l 17 -10 v 20 Z":"M 467 135 l -17 -10 v 20 Z",fill:"#477e70"}));
+  svg.append(svgEl("text",{x:380,y:105,"text-anchor":"middle","font-size":"19","font-weight":"700"},format(Number(transfer))));
+  svg.append(svgEl("text",{x:380,y:168,"text-anchor":"middle","font-size":"11"},direction));
+  setChartLegend([[t("target"),"#d1ab80",null],[t("actual"),"#4b9877",null]]);return true;
+ }
+ if(type==="matrix"){
+  const max=Math.max(1,...values),colors=["#427f6a","#caad6c","#bb7873","#7b9bae"];
+  const positions=[[90,53],[390,53],[90,158],[390,158]];
+  const legend=[];
+  values.forEach((v,i)=>{
+   const [x,y]=positions[i],intensity=Math.max(.24,.35+.65*Math.sqrt(v/max));
+   svg.append(svgEl("rect",{x,y,width:270,height:91,rx:5,fill:colors[i],opacity:intensity}));
+   svg.append(svgEl("text",{x:x+17,y:y+26,"font-size":"13","font-weight":"700",style:"fill:#122f34"},labelFor(visual.labels[i])));
+   svg.append(svgEl("text",{x:x+17,y:y+64,"font-size":"28","font-weight":"800",style:"fill:#122f34"},format(v)));
+   legend.push([visual.labels[i],colors[i],v]);
+  });
+  setChartLegend(legend);return true;
+ }
+ return false;
+}
+
 function renderChart(visual){
+ if(renderSpecialChart(visual))return;
  const svg=$("chart");svg.replaceChildren();
  const width=760,height=300,left=68,right=18,top=19,bottom=50,plotW=width-left-right,plotH=height-top-bottom;
  const data=visual.series.flatMap(s=>s.values).filter(v=>v!==null&&Number.isFinite(v));

@@ -218,7 +218,7 @@ function purchasing(p){
   const q=boxes*pack;
   const discount=central&&q>=p.bulkMin?p.discount/100:0;
   const netCost=q*p.unitCost*(1-discount);
-  const transported=central?3*p.deliveryCost:sum(demand.map(v=>v>0?p.deliveryCost:0));
+  const transported=q===0?0:central?1.5*p.deliveryCost:3*p.deliveryCost;
   const missed=Math.max(0,totalNeed-q);
   return {boxes,q,cost:netCost+transported+missed*p.shortCost,missed,discount};
  };

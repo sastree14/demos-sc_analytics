@@ -42,6 +42,7 @@ jobs:
           node industry-lab/tests.mjs
           node industry-lab/manufacturing.test.mjs
           node industry-lab/food.test.mjs
+          node industry-lab/pharma.test.mjs
       - name: Exercise all 32 cases in Chrome
         run: |
           python -m venv "$RUNNER_TEMP/lab-qa"

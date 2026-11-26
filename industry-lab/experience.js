@@ -194,7 +194,12 @@ const translatedLabels={
  "Confirmación y lista":["Confirmació i llista","Confirmation and waiting list"],
  "General":["General","General"],"Equipada":["Equipada","Equipped"],
  "Proceso manual":["Procés manual","Manual process"],"Reglas + revisión":["Regles + revisió","Rules + review"],
- "Atendidos":["Atesos","Served"],"Solicitados":["Sol·licitats","Requested"],"Capacidad":["Capacitat","Capacity"]
+ "Atendidos":["Atesos","Served"],"Solicitados":["Sol·licitats","Requested"],"Capacidad":["Capacitat","Capacity"],
+ "Planificado":["Planificat","Planned"],"Valor ganado":["Valor guanyat","Earned value"],
+ "Coste real":["Cost real","Actual cost"],"Zona A":["Zona A","Area A"],
+ "Zona B":["Zona B","Area B"],"Zona C":["Zona C","Area C"],
+ "Entrega puntual":["Lliurament puntual","On-time delivery"],"Entrega tardía":["Lliurament tardà","Delayed delivery"],
+ "Sin coordinación":["Sense coordinació","Without coordination"],"Con coordinación":["Amb coordinació","With coordination"]
 };
 const labelFor=x=>language==="es"?x:(translatedLabels[x]?.[language==="ca"?0:1]||x);
 function setChartLegend(segments){

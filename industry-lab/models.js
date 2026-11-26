@@ -22,6 +22,8 @@ const chart=(type,labels,series,unit="number")=>({type,labels,series,unit});
 const output=(metrics,visual,insight,formula,limitations,table=[],warning="")=>({metrics,visual,insight,formula,limitations,table,warning});
 const f=(key,es,ca,en,min,max,step,value,unit)=>field(key,L(es,ca,en),min,max,step,value,unit);
 const metricTitles={
+ variance:L("Desviación restante frente a presupuesto","Desviació restant respecte al pressupost","Budget variance at completion"),
+
  cpi:L("Índice de rendimiento de coste (CPI)","Índex rendiment de cost (CPI)","Cost performance index (CPI)"),
  spi:L("Índice de rendimiento de plazo (SPI)","Índex rendiment del termini (SPI)","Schedule performance index (SPI)"),
 

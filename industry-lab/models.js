@@ -10,6 +10,7 @@ import {pharmaModels, pharmaCalculators} from "./pharma-models.js";
 import {restaurantModels,restaurantCalculators} from "./restaurant-models.js";
 import {hotelModels,hotelCalculators} from "./hotel-models.js";
 import {retailModels,retailCalculators} from "./retail-models.js";
+import {clinicModels,clinicCalculators} from "./clinic-models.js";
 const L=(es,ca,en)=>({es,ca,en});
 const field=(key,label,min,max,step,value,unit="number")=>({key,label,min,max,step,value,unit});
 const metric=(key,value,unit="number")=>({key,value:Number.isFinite(value)?value:0,unit});
@@ -105,7 +106,7 @@ selected:L("Iniciativas seleccionadas","Iniciatives seleccionades","Selected ini
 export const metricLabel=(key,language="es")=>(metricTitles[key]||L(key,key,key))[language]||key;
 const series=(key,values)=>({key,values:values.map(x=>rnd(x,2))});
 const minPrice=1;
-const models={...logisticsModels,...wholesaleModels,...manufacturingModels,...foodModels,...pharmaModels,...restaurantModels,...hotelModels,...retailModels,
+const models={...logisticsModels,...wholesaleModels,...manufacturingModels,...foodModels,...pharmaModels,...restaurantModels,...hotelModels,...retailModels,...clinicModels,
 fleet:{
 title:L("Planificación de recursos y demanda","Planificació de recursos i demanda","Resource and demand planning"),
 inputs:[
@@ -577,7 +578,7 @@ function portfolio(p){
  [["Presupuesto comprometido",rnd(best.money,0)],["Capacidad usada",best.hours],["Combinaciones evaluadas",64]]
  );
 }
-const runners={...logisticsCalculators,...wholesaleCalculators,...manufacturingCalculators,...foodCalculators,...pharmaCalculators,...restaurantCalculators,...hotelCalculators,...retailCalculators,fleet,forecast,pricing,inventory,queue,production,maintenance,quality,energy,reconcile,capacity,risk,cohort,cost,cash,portfolio};
+const runners={...logisticsCalculators,...wholesaleCalculators,...manufacturingCalculators,...foodCalculators,...pharmaCalculators,...restaurantCalculators,...hotelCalculators,...retailCalculators,...clinicCalculators,fleet,forecast,pricing,inventory,queue,production,maintenance,quality,energy,reconcile,capacity,risk,cohort,cost,cash,portfolio};
 export function calculate(kind,values={}){
  const definition=getDefinition(kind),p={};
  for(const x of definition.inputs){

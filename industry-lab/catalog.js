@@ -518,7 +518,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Desviación de plazo",
           "example_controls": "Hitos, dependencias y recursos",
           "indicative_kpi": "Retraso esperado y ruta crítica",
-          "model": "capacity",
+          "model": "coTimeline",
           "scenario_seed": 2396
         },
         {
@@ -526,7 +526,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Coste de obra frente a presupuesto",
           "example_controls": "Certificaciones, horas, compras",
           "indicative_kpi": "Desviación de coste y margen",
-          "model": "cost",
+          "model": "coBudget",
           "scenario_seed": 2437
         },
         {
@@ -534,7 +534,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Asignación de cuadrillas",
           "example_controls": "Competencias, obras y disponibilidad",
           "indicative_kpi": "Horas ociosas y fechas factibles",
-          "model": "queue",
+          "model": "coCrews",
           "scenario_seed": 2478
         },
         {
@@ -542,7 +542,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Materiales críticos tardíos",
           "example_controls": "Lead time, consumo y órdenes",
           "indicative_kpi": "Probabilidad de parar obra",
-          "model": "inventory",
+          "model": "coMaterials",
           "scenario_seed": 2519
         },
         {
@@ -550,7 +550,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Coordinación de subcontratas",
           "example_controls": "Ventanas, dependencias y capacidad",
           "indicative_kpi": "Retrabajos y replanificaciones",
-          "model": "production",
+          "model": "coPartners",
           "scenario_seed": 2560
         },
         {
@@ -558,7 +558,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Caja y pagos por hitos",
           "example_controls": "Cobros, pagos y escenarios de retraso",
           "indicative_kpi": "Caja neta proyectada",
-          "model": "cash",
+          "model": "coCash",
           "scenario_seed": 2601
         }
       ]

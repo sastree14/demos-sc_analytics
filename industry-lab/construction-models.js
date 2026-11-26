@@ -6,7 +6,7 @@ const L=(es,ca,en)=>({es,ca,en});
 const f=(key,es,ca,en,min,max,step,value,unit="number")=>({key,label:L(es,ca,en),min,max,step,value,unit});
 const m=(key,value,unit="number")=>({key,value,unit});
 const ser=(key,values)=>({key,values:values.map(v=>Math.round(v*100)/100)});
-const vis=(type,labels,series,unit="number")=>({type,labels,series,unit});
+const vis=(type,labels,series,unit="number",extra={})=>({type,labels,series,unit,...extra});
 const out=(metrics,visual,formula,limitations,table,warning="")=>({metrics,visual,formula,insight:formula,limitations,table,warning});
 const rnd=v=>Math.round(v*100)/100,sum=a=>a.reduce((x,y)=>x+y,0);
 export const constructionModels={

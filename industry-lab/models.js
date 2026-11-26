@@ -11,6 +11,7 @@ import {restaurantModels,restaurantCalculators} from "./restaurant-models.js";
 import {hotelModels,hotelCalculators} from "./hotel-models.js";
 import {retailModels,retailCalculators} from "./retail-models.js";
 import {clinicModels,clinicCalculators} from "./clinic-models.js";
+import {constructionModels,constructionCalculators} from "./construction-models.js";
 const L=(es,ca,en)=>({es,ca,en});
 const field=(key,label,min,max,step,value,unit="number")=>({key,label,min,max,step,value,unit});
 const metric=(key,value,unit="number")=>({key,value:Number.isFinite(value)?value:0,unit});
@@ -21,6 +22,9 @@ const chart=(type,labels,series,unit="number")=>({type,labels,series,unit});
 const output=(metrics,visual,insight,formula,limitations,table=[],warning="")=>({metrics,visual,insight,formula,limitations,table,warning});
 const f=(key,es,ca,en,min,max,step,value,unit)=>field(key,L(es,ca,en),min,max,step,value,unit);
 const metricTitles={
+ cpi:L("Índice de rendimiento de coste (CPI)","Índex rendiment de cost (CPI)","Cost performance index (CPI)"),
+ spi:L("Índice de rendimiento de plazo (SPI)","Índex rendiment del termini (SPI)","Schedule performance index (SPI)"),
+
  returns:L("Devoluciones esperadas","Devolucions esperades","Expected returns"),
  cac:L("Coste de adquisición por cliente","Cost de captació per client","Customer acquisition cost"),
  ltv:L("Contribución esperada por cliente","Contribució esperada per client","Expected contribution per customer"),
@@ -106,7 +110,7 @@ selected:L("Iniciativas seleccionadas","Iniciatives seleccionades","Selected ini
 export const metricLabel=(key,language="es")=>(metricTitles[key]||L(key,key,key))[language]||key;
 const series=(key,values)=>({key,values:values.map(x=>rnd(x,2))});
 const minPrice=1;
-const models={...logisticsModels,...wholesaleModels,...manufacturingModels,...foodModels,...pharmaModels,...restaurantModels,...hotelModels,...retailModels,...clinicModels,
+const models={...logisticsModels,...wholesaleModels,...manufacturingModels,...foodModels,...pharmaModels,...restaurantModels,...hotelModels,...retailModels,...clinicModels,...constructionModels,
 fleet:{
 title:L("Planificación de recursos y demanda","Planificació de recursos i demanda","Resource and demand planning"),
 inputs:[
@@ -578,7 +582,7 @@ function portfolio(p){
  [["Presupuesto comprometido",rnd(best.money,0)],["Capacidad usada",best.hours],["Combinaciones evaluadas",64]]
  );
 }
-const runners={...logisticsCalculators,...wholesaleCalculators,...manufacturingCalculators,...foodCalculators,...pharmaCalculators,...restaurantCalculators,...hotelCalculators,...retailCalculators,...clinicCalculators,fleet,forecast,pricing,inventory,queue,production,maintenance,quality,energy,reconcile,capacity,risk,cohort,cost,cash,portfolio};
+const runners={...logisticsCalculators,...wholesaleCalculators,...manufacturingCalculators,...foodCalculators,...pharmaCalculators,...restaurantCalculators,...hotelCalculators,...retailCalculators,...clinicCalculators,...constructionCalculators,fleet,forecast,pricing,inventory,queue,production,maintenance,quality,energy,reconcile,capacity,risk,cohort,cost,cash,portfolio};
 export function calculate(kind,values={}){
  const definition=getDefinition(kind),p={};
  for(const x of definition.inputs){

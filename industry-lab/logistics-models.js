@@ -83,8 +83,8 @@ function backhaul(p){
  const contribution=extraRevenue-extraCosts;
  const totalKm=p.trips*(p.outKm+p.backKm);
  return out([
-  m("profit",contribution,"eur"),m("service",p.loaded,"pct"),
-  m("unserved",emptyKm),m("delta",extraRevenue-extraCosts,"eur")
+  m("profit",contribution,"eur"),m("backhaulShare",p.loaded,"pct"),
+  m("emptyKm",emptyKm),m("delta",extraRevenue-extraCosts,"eur")
  ],vis(["Ida","Retorno cargado","Retorno vacío"],[series("actual",[p.trips*p.outKm,loadedKm,emptyKm])],"number"),
  "La carga de retorno genera ingreso adicional por kilómetro y puede generar un coste de manipulación. El trayecto de vuelta se realiza en cualquier caso.",
  "No busca cargas reales, no garantiza disponibilidad de backhauls y no reduce automáticamente kilómetros recorridos: el efecto principal aquí es ingreso adicional por retornos cargados.",
@@ -135,7 +135,7 @@ function subcontract(p){
  const baselineCost=baselineOwn*p.ownCost+(p.orders-baselineOwn)*p.penalty;
  const served=best.own+best.ext,coverage=100*served/p.orders;
  return out([
-  m("service",coverage,"pct"),m("vehicles",best.ext),m("cost",best.cost,"eur"),
+  m("service",coverage,"pct"),m("external",best.ext),m("cost",best.cost,"eur"),
   m("delta",baselineCost-best.cost,"eur")
  ],vis(["Propio","Externo","Pendiente"],[series("actual",[best.own,best.ext,best.missed])],"number"),
  "Enumeración de entregas propias y externas para minimizar costes variables e incumplimientos, imponiendo el nivel de servicio alcanzable bajo los límites de capacidad.",

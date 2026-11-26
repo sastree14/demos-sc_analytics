@@ -111,7 +111,7 @@ function timeline(p){
  return out([
   m("lateness",best.late,"number"),m("makespan",best.finish,"number"),
   m("delta",base.cost-best.cost,"eur"),m("interventions",best.crashDays)
- ],vis("schedule",best.events.map(e=>e.id),[ser("duration",best.events.map(e=>e.finish-e.start))],"number",{events:best.events}),
+ ],vis("schedule",best.events.map(e=>e.id),[ser("duration",best.events.map(e=>e.finish-e.start))],"days",{events:best.events}),
  "Optimización exacta de 32 combinaciones de aceleración limitada (hasta 3 días por actividad) sobre un pequeño grafo de precedencias con dos ramas en paralelo.",
  "La ruta crítica y los retrasos son ilustrativos; no existe programación con recursos y fechas reales, restricciones legales de obra ni certificación técnica.",
  [["Plazo inicial (días)",base.finish],["Plazo calculado (días)",best.finish],["Coste penalización más aceleración (€)",rnd(best.cost)],["Días acelerados",best.crashDays]]);
@@ -122,7 +122,7 @@ function earnedValue(p){
  const estimate=AC+(BAC-EV)/Math.max(.1,CPI)*(1+p.risk/100);
  const over=estimate-BAC;
  return out([
-  m("profit",BAC-estimate,"eur"),m("cost",estimate,"eur"),
+  m("variance",BAC-estimate,"eur"),m("cost",estimate,"eur"),
   m("cpi",CPI),m("spi",SPI)
  ],vis("bar",["Planificado","Valor ganado","Coste real"],[ser("amount",[PV,EV,AC])],"eur"),
  "Valor ganado EV = presupuesto × avance real. CPI=EV/AC, SPI=EV/PV. EAC aproxima el coste final reestimando el trabajo restante mediante CPI y contingencia.",

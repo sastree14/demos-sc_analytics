@@ -1191,7 +1191,7 @@ export const DETAIL_TRANSLATIONS = {
   ],
   "Coste calculado (€)": [
     "Cost calculat (€)",
-    "Calculated route cost (€)"
+    "Calculated cost (€)"
   ],
   "Horas por encima del límite": [
     "Hores per sobre del límit",
@@ -1308,6 +1308,98 @@ export const DETAIL_TRANSLATIONS = {
   "Umbral de alerta": [
     "Llindar d'alerta",
     "Alert threshold"
+  ],
+  "Horas-persona calculadas": [
+    "Hores-persona calculades",
+    "Calculated worker-hours"
+  ],
+  "Coste simulado de la jornada (€)": [
+    "Cost simulat de la jornada (€)",
+    "Simulated daily cost (€)"
+  ],
+  "Tickets esperados": [
+    "Tiquets esperats",
+    "Expected tickets"
+  ],
+  "Tickets atendidos": [
+    "Tiquets atesos",
+    "Tickets served"
+  ],
+  "Lotes de A": [
+    "Lots de A",
+    "A batches"
+  ],
+  "Lotes de B": [
+    "Lots de B",
+    "B batches"
+  ],
+  "Coste sin optimizar (€)": [
+    "Cost sense optimitzar (€)",
+    "Unoptimised cost (€)"
+  ],
+  "Local con menor contribución": [
+    "Local amb menys contribució",
+    "Lowest-contribution location"
+  ],
+  "Coste total (€)": [
+    "Cost total (€)",
+    "Total costs (€)"
+  ],
+  "Venta total (€)": [
+    "Vendes totals (€)",
+    "Total sales (€)"
+  ],
+  "Local con margen superior (%)": [
+    "Local amb millor marge (%)",
+    "Highest store margin (%)"
+  ],
+  "Precio plato A calculado (€)": [
+    "Preu calculat plat A (€)",
+    "Calculated dish A price (€)"
+  ],
+  "Precio plato B calculado (€)": [
+    "Preu calculat plat B (€)",
+    "Calculated dish B price (€)"
+  ],
+  "Precio plato C calculado (€)": [
+    "Preu calculat plat C (€)",
+    "Calculated dish C price (€)"
+  ],
+  "Contribución base (€)": [
+    "Contribució base (€)",
+    "Baseline contribution (€)"
+  ],
+  "Coste sin refuerzo (€)": [
+    "Cost sense reforç (€)",
+    "Cost without extra capacity (€)"
+  ],
+  "Coste con refuerzo (€)": [
+    "Cost amb reforç (€)",
+    "Cost with extra capacity (€)"
+  ],
+  "Pedidos recibidos": [
+    "Comandes rebudes",
+    "Orders received"
+  ],
+  "Máximo de cola": [
+    "Màxim de cua",
+    "Peak order backlog"
+  ],
+  "Cajas compradas": [
+    "Caixes comprades",
+    "Cartons purchased"
+  ],
+  "Coste de referencia (€)": [
+    "Cost de referència (€)",
+    "Reference cost (€)"
+  ],
+  "Descuento aplicado (%)": [
+    "Descompte aplicat (%)",
+    "Applied discount (%)"
+  ],
+  "Presupuesto (€)": [
+    "Pressupost (€)",
+    "Budget (€)"
   ]
 };
 export const WARNING_TRANSLATIONS = {
@@ -1346,6 +1438,18 @@ export const WARNING_TRANSLATIONS = {
   "El número simulado de excepciones supera el umbral; requiere revisión documental especializada.": [
     "El nombre simulat d'excepcions supera el llindar; cal revisió documental especialitzada.",
     "The simulated exception backlog exceeds the alert threshold and requires specialist document review."
+  ],
+  "La capacidad máxima indicada deja demanda sin atender.": [
+    "La capacitat màxima deixa demanda sense atendre.",
+    "Maximum staffing capacity leaves some demand unserved."
+  ],
+  "Queda cola sin procesar al cierre de la jornada simulada.": [
+    "Queda cua sense processar al tancament de la jornada simulada.",
+    "Some orders remain outstanding at the end of the simulated day."
+  ],
+  "La compra calculada deja una parte de la demanda sin cubrir.": [
+    "La compra calculada deixa una part de la demanda sense cobrir.",
+    "The purchasing plan does not cover all projected demand."
   ]
 };
 export const SECTOR_CONTEXT = {
@@ -1360,5 +1464,9 @@ export const SECTOR_CONTEXT = {
   "SC05": {
     "ca": "Estat dels lots, evidències de traçabilitat, colls d'ampolla de revisió i límits del procés, sempre sota control expert.",
     "en": "Batch status, document traceability, review bottlenecks and process control limits, always subject to expert oversight."
+  },
+  "SC06": {
+    "ca": "Vista de restaurants, tiquets per franja, personal, cues i minva amb escenaris de costos.",
+    "en": "Store-level view of hourly tickets, staffing, backlogs, waste and cost scenarios."
   }
 };

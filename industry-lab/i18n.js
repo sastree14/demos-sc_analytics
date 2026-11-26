@@ -1816,6 +1816,98 @@ export const DETAIL_TRANSLATIONS = {
   "Coste total del periodo (€)": [
     "Cost total del període (€)",
     "Total period cost (€)"
+  ],
+  "Ingresos operativos de seis meses (€)": [
+    "Ingressos operatius de sis mesos (€)",
+    "Six-month operating income (€)"
+  ],
+  "Último mes: unidades ocupadas": [
+    "Últim mes: unitats ocupades",
+    "Last month: occupied units"
+  ],
+  "Unidades vacantes último mes": [
+    "Unitats vacants últim mes",
+    "Last-month vacant units"
+  ],
+  "Renta mensual esperada (€)": [
+    "Renda mensual esperada (€)",
+    "Expected monthly rent (€)"
+  ],
+  "Trabajos externalizados": [
+    "Treballs externalitzats",
+    "Outsourced maintenance tasks"
+  ],
+  "Capacidad semanal propia": [
+    "Capacitat setmanal pròpia",
+    "In-house weekly capacity"
+  ],
+  "Coste sin externalizar (€)": [
+    "Cost sense externalització (€)",
+    "Cost without outsourcing (€)"
+  ],
+  "Coste con externalización (€)": [
+    "Cost amb externalització (€)",
+    "Cost with outsourcing (€)"
+  ],
+  "NOI activo A (€)": [
+    "NOI actiu A (€)",
+    "Asset A NOI (€)"
+  ],
+  "NOI activo B (€)": [
+    "NOI actiu B (€)",
+    "Asset B NOI (€)"
+  ],
+  "NOI activo C (€)": [
+    "NOI actiu C (€)",
+    "Asset C NOI (€)"
+  ],
+  "Valor cartera supuesto (€)": [
+    "Valor suposat de la cartera (€)",
+    "Assumed portfolio value (€)"
+  ],
+  "CAPEX comprometido (€)": [
+    "CAPEX compromès (€)",
+    "Committed CAPEX (€)"
+  ],
+  "Horas asignadas": [
+    "Hores assignades",
+    "Assigned hours"
+  ],
+  "Iniciativas seleccionadas": [
+    "Iniciatives seleccionades",
+    "Selected initiatives"
+  ],
+  "Combinaciones exploradas": [
+    "Combinacions explorades",
+    "Combinations evaluated"
+  ],
+  "Renta contractual del periodo (€)": [
+    "Renda contractual del període (€)",
+    "Contract rent for the period (€)"
+  ],
+  "Cobros agregados en seis meses (€)": [
+    "Cobraments agregats de sis mesos (€)",
+    "Aggregate six-month receipts (€)"
+  ],
+  "Saldo retrasado al cierre (€)": [
+    "Saldo ajornat al tancament (€)",
+    "Delayed amount outstanding at closing (€)"
+  ],
+  "Gastos operativos seis meses (€)": [
+    "Despeses operatives sis mesos (€)",
+    "Six-month operating costs (€)"
+  ],
+  "Trabajos asignados A/B/C": [
+    "Treballs assignats A/B/C",
+    "Jobs allocated A/B/C"
+  ],
+  "Capacidad total ofertada": [
+    "Capacitat total ofertada",
+    "Total vendor capacity"
+  ],
+  "Coste plan de referencia (€)": [
+    "Cost del pla de referència (€)",
+    "Reference plan cost (€)"
   ]
 };
 export const WARNING_TRANSLATIONS = {
@@ -1910,6 +2002,14 @@ export const WARNING_TRANSLATIONS = {
   "Aparece un saldo de caja negativo en al menos un mes; es una alerta ilustrativa de liquidez.": [
     "Hi ha saldo de caixa negatiu en almenys un mes; és una alerta il·lustrativa.",
     "At least one month has a negative cash balance; this is an illustrative liquidity warning."
+  ],
+  "El escenario presenta caja negativa en algún periodo; revisar financiación y calendarios reales.": [
+    "L'escenari presenta caixa negativa en algun període; revisar finançament i calendaris reals.",
+    "The scenario has a negative cash balance in one or more periods; review real financing and payment schedules."
+  ],
+  "No existe suficiente capacidad ofertada para completar todos los trabajos.": [
+    "No hi ha prou capacitat de proveïdors per fer tota la feina.",
+    "Available supplier capacity cannot cover all maintenance jobs."
   ]
 };
 export const SECTOR_CONTEXT = {
@@ -1944,5 +2044,9 @@ export const SECTOR_CONTEXT = {
   "SC10": {
     "ca": "Progrés de l'obra, fites, recursos, dependències i caixa amb costos i terminis hipotètics.",
     "en": "Project progress, milestones, resources, dependencies and cash flow with assumed costs and dates."
+  },
+  "SC11": {
+    "ca": "Cartera d'immobles, ocupació, NOI, CAPEX, caixa de rendes i serveis de manteniment amb dades agregades.",
+    "en": "Asset portfolio, occupancy, NOI, capital projects, aggregate rent receipts and maintenance."
   }
 };

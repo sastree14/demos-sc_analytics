@@ -126,7 +126,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Secuenciación y cuellos de botella",
           "example_controls": "Órdenes, tiempos de cambio y prioridades",
           "indicative_kpi": "Throughput y retraso de pedidos",
-          "model": "production",
+          "model": "mfSequence",
           "scenario_seed": 639
         },
         {
@@ -134,7 +134,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Capacidad y turnos",
           "example_controls": "Máquinas, personal, turnos y carga",
           "indicative_kpi": "Horas necesarias y uso de capacidad",
-          "model": "queue",
+          "model": "mfCapacity",
           "scenario_seed": 680
         },
         {
@@ -142,7 +142,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Paradas y mantenimiento",
           "example_controls": "Disponibilidad, ventanas y riesgo de fallo",
           "indicative_kpi": "Horas de parada y producción no realizada",
-          "model": "maintenance",
+          "model": "mfMaintenance",
           "scenario_seed": 721
         },
         {
@@ -150,7 +150,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Calidad y rendimiento de proceso",
           "example_controls": "Parámetros y defectos por lote",
           "indicative_kpi": "Scrap, rendimiento y variación",
-          "model": "quality",
+          "model": "mfQuality",
           "scenario_seed": 762
         },
         {
@@ -158,7 +158,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Materias primas y aprovisionamiento",
           "example_controls": "Disponibilidad, plazo y órdenes",
           "indicative_kpi": "Riesgo de parada por material",
-          "model": "inventory",
+          "model": "mfMaterials",
           "scenario_seed": 803
         },
         {
@@ -166,7 +166,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Consumo energético por orden",
           "example_controls": "Horas máquina, picos, precio energético",
           "indicative_kpi": "€/unidad y coste por escenario",
-          "model": "energy",
+          "model": "mfEnergy",
           "scenario_seed": 844
         }
       ]

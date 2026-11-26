@@ -180,7 +180,7 @@ function yieldQuality(p){
  const referenceCost=defectsInitial*p.scrapCost+(p.units-defectsInitial)*p.falsePositive/100*p.rejectCost;
  const yieldPercent=p.units?100*good/p.units:100;
  return output([
-  metric("qualityYield",yieldPercent,"pct"),metric("scrap",defects),
+  metric("qualityYield",yieldPercent,"pct"),metric("missedDefects",missed),
   metric("falseReject",falseReject),metric("delta",referenceCost-scenarioCost,"eur")
  ],chart("bar",["Defectos base","Defectos escenario","Detectados","Falsos rechazos"],
  [series("units",[defectsInitial,defects,detected,falseReject])]),
@@ -212,7 +212,7 @@ function materials(p){
  baseline={a:ra,b:rb,objective:ra*p.profitA+rb*p.profitB};
  const total=p.ordersA+p.ordersB,achieved=best.a+best.b;
  return output([
-  metric("produced",achieved*10),metric("service",total?100*achieved/total:100,"pct"),
+  metric("produced",achieved),metric("service",total?100*achieved/total:100,"pct"),
   metric("profit",best.objective,"eur"),metric("delta",best.objective-baseline.objective,"eur")
  ],chart("bar",["Familia A","Familia B"],
  [series("target",[p.ordersA,p.ordersB]),series("actual",[best.a,best.b])]),

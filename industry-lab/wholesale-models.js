@@ -87,7 +87,7 @@ function transfer(p){
  return out([
   m("service",coverage,"pct"),m("unserved",best.missA+best.missB),
   m("transferUnits",Math.abs(best.t)),m("delta",base.cost-best.cost,"eur")
- ],vis(["Almacén A","Almacén B"],[ser("target",[p.demandA,p.demandB]),ser("actual",[best.stockA,best.stockB])]),
+ ],vis(["Almacén A","Almacén B"],[ser("target",[p.demandA,p.demandB]),ser("actual",[best.stockA,best.stockB])],"number","flow"),
  "Enumeración de movimientos enteros A↔B dentro de stock y límite de traslado. Se minimizan transporte, faltas y exceso de stock con costes supuestos.",
  "No incluye tiempos de tránsito, estado de pedidos, lotes, caducidades ni transferencias entre más de dos almacenes.",
  [["Dirección",best.t>0?"A → B":best.t<0?"B → A":"Sin traslado"],["Unidades transferidas",Math.abs(best.t)],["Coste base",rnd(base.cost)],["Coste con traslado",rnd(best.cost)]]
@@ -156,7 +156,7 @@ function customerMargin(p){
  return out([
   m("revenue",gross,"eur"),m("profit",profit,"eur"),
   m("margin",margin,"pct"),m("cost",costs,"eur")
- ],vis(["Ingresos","Producto","Operación","Devoluciones"],[ser("amount",[gross,p.orders*p.productCost,p.orders*(p.handling+p.delivery),returned*p.refundCost])],"eur"),
+ ],vis(["Ingresos","Producto","Operación","Devoluciones","Contribución"],[ser("amount",[gross,p.orders*p.productCost,p.orders*(p.handling+p.delivery),returned*p.refundCost,profit])],"eur","waterfall"),
  "Contribución del periodo = facturación neta de descuento menos producto, preparación, reparto y gestión de devoluciones esperadas.",
  "No incluye efectos causales de descuentos en demanda, costes fiscales, rentabilidad futura ni datos reales de clientes.",
  [["Pedidos devueltos (esperados)",rnd(returned)],["Ingreso sin descuento",rnd(referenceGross)],["Diferencia por descuento",rnd(referenceProfit-profit)],["Coste operacional",rnd(p.orders*(p.handling+p.delivery))]],

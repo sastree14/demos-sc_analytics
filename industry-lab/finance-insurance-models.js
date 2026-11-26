@@ -95,13 +95,13 @@ function alertCases(p){
  const reviewedTP=TP*coverage,reviewedFP=FP*coverage,unreviewedRelevant=FN+(TP-reviewedTP);
  const cost=reviewed*p.costReview+unreviewedRelevant*p.costMiss;
  return out([
-  m("tp",reviewedTP),m("fp",reviewedFP),m("fn",unreviewedRelevant),
+  m("tp",TP),m("fp",FP),m("fn",FN),
   m("cost",cost,"eur")
  ],vis("matrix",["VP","FP","FN","VN"],
- [ser("cases",[reviewedTP,reviewedFP,unreviewedRelevant,TN])]),
+ [ser("cases",[TP,FP,FN,TN])]),
  "Matriz de confusión con sensibilidad y especificidad INVENTADAS que varían monótonamente con un umbral. Los casos que exceden la capacidad humana quedan pendientes, sin decisiones automáticas.",
  "NO existe clasificador entrenado ni validado, ni etiquetado real, ni autorización para acusar o bloquear operaciones. Ninguna acción se ejecuta en sistemas financieros.",
- [["Casos relevantes supuestos",rnd(relevant)],["Alertas generadas",rnd(candidate)],["Alertas revisadas",rnd(reviewed)],["Alertas pendientes",rnd(candidate-reviewed)]],
+ [["Casos relevantes supuestos",rnd(relevant)],["Alertas generadas",rnd(candidate)],["Alertas revisadas",rnd(reviewed)],["Alertas pendientes",rnd(candidate-reviewed)],["Casos relevantes sin revisar (supuesto)",rnd(unreviewedRelevant)]],
  candidate>p.capacity?"Capacidad humana de revisión insuficiente para todas las alertas generadas.":"");
 }
 function portfolio(p){

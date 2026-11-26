@@ -27,6 +27,7 @@ function format(v,unit="number"){
  if(unit==="eur"||unit==="eur4"){return new Intl.NumberFormat(loc(),{style:"currency",currency:"EUR",maximumFractionDigits:unit==="eur4"?3:Math.abs(v)<20?2:0}).format(v);}
  if(unit==="pct")return new Intl.NumberFormat(loc(),{maximumFractionDigits:1}).format(v)+" %";
  if(unit==="minutes")return new Intl.NumberFormat(loc(),{maximumFractionDigits:1}).format(v)+" min";
+ if(unit==="hours")return new Intl.NumberFormat(loc(),{maximumFractionDigits:1}).format(v)+" h";
  return new Intl.NumberFormat(loc(),options).format(v);
 }
 const escaped=s=>String(s??"").replace(/[&<>"']/g,x=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[x]));
@@ -175,12 +176,43 @@ function setChartLegend(segments){
 }
 function renderSpecialChart(visual){
  const {type}=visual;
- if(!["waterfall","parts","flow","matrix"].includes(type))return false;
+ if(!["waterfall","parts","flow","matrix","schedule"].includes(type))return false;
  const svg=$("chart");svg.replaceChildren();
  const values=visual.series[0].values.map(x=>Number(x)||0);
  svg.append(svgEl("title",{},t("chart")+" · "+caseName(problem)));
  svg.append(svgEl("desc",{},visual.labels.map((x,i)=>labelFor(x)+": "+format(values[i]??0,visual.unit)).join("; ")));
- if(type==="waterfall"){
+ 
+ if(type==="schedule"){
+   const events=visual.events||[];
+   if(!events.length)return true;
+   const maxTime=Math.max(1,...events.map(e=>Math.max(e.finish,e.due)))*1.1;
+   const left=90,right=730,top=48,bottom=258,w=right-left;
+   const pos=time=>left+Math.max(0,time)/maxTime*w;
+   const byType={A:"#437f6a",B:"#7d9eb4"};
+   for(let tick=0;tick<=5;tick++){
+     const h=maxTime*tick/5,x=pos(h);
+     svg.append(svgEl("line",{x1:x,y1:top,x2:x,y2:bottom,stroke:"#e0e9e4","stroke-dasharray":"4 4"}));
+     svg.append(svgEl("text",{x,y:bottom+18,"text-anchor":"middle"},Math.round(h)+" h"));
+   }
+   for(let index=0;index<events.length;index++){
+     const e=events[index],y=top+index*38+5;
+     svg.append(svgEl("text",{x:20,y:y+20,"font-size":"12","font-weight":"700"},e.id+" · "+e.type));
+     if(e.setup>0){
+       const prep=svgEl("rect",{x:pos(e.start-e.setup),y:y+2,width:Math.max(1,pos(e.start)-pos(e.start-e.setup)),height:23,rx:2,fill:"#e4c89a"});
+       prep.append(svgEl("title",{},"Setup: "+format(e.setup)+" h"));
+       svg.append(prep);
+     }
+     const bar=svgEl("rect",{x:pos(e.start),y:y+2,width:Math.max(1,pos(e.finish)-pos(e.start)),height:23,rx:3,fill:byType[e.type]||"#437f6a"});
+     bar.append(svgEl("title",{},e.id+" · "+e.type+" · "+format(e.start)+"–"+format(e.finish)+" h"));
+     svg.append(bar);
+     const dueX=pos(e.due);
+     svg.append(svgEl("line",{x1:dueX,y1:y-1,x2:dueX,y2:y+28,stroke:"#b96866","stroke-width":2,"stroke-dasharray":"3 3"}));
+     if(pos(e.finish)-pos(e.start)>32)svg.append(svgEl("text",{x:(pos(e.start)+pos(e.finish))/2,y:y+18,"text-anchor":"middle","font-size":"10",style:"fill:white"},e.id));
+   }
+   setChartLegend([["A",byType.A,null],["B",byType.B,null],["Setup","#e4c89a",null],["Due","#b96866",null]]);
+   return true;
+ }
+if(type==="waterfall"){
   const n=values.length,net=values[n-1];
   const ceiling=Math.max(1,values[0]*1.08),floor=Math.min(0,net*1.08);
   const y=v=>245-(v-floor)/(ceiling-floor)*185;

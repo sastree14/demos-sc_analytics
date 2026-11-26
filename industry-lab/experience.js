@@ -28,6 +28,7 @@ function format(v,unit="number"){
  if(unit==="pct")return new Intl.NumberFormat(loc(),{maximumFractionDigits:1}).format(v)+" %";
  if(unit==="minutes")return new Intl.NumberFormat(loc(),{maximumFractionDigits:1}).format(v)+" min";
  if(unit==="hours")return new Intl.NumberFormat(loc(),{maximumFractionDigits:1}).format(v)+" h";
+ if(unit==="days")return new Intl.NumberFormat(loc(),{maximumFractionDigits:1}).format(v)+(language==="ca"?" dies":language==="en"?" d":" días");
  return new Intl.NumberFormat(loc(),options).format(v);
 }
 const escaped=s=>String(s??"").replace(/[&<>"']/g,x=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[x]));
@@ -223,7 +224,7 @@ function renderSpecialChart(visual){
    for(let tick=0;tick<=5;tick++){
      const h=maxTime*tick/5,x=pos(h);
      svg.append(svgEl("line",{x1:x,y1:top,x2:x,y2:bottom,stroke:"#e0e9e4","stroke-dasharray":"4 4"}));
-     svg.append(svgEl("text",{x,y:bottom+18,"text-anchor":"middle"},Math.round(h)+" h"));
+     svg.append(svgEl("text",{x,y:bottom+18,"text-anchor":"middle"},Math.round(h)+(visual.unit==="days"?(language==="ca"?" dies":language==="en"?" d":" días"):" h")));
    }
    for(let index=0;index<events.length;index++){
      const e=events[index],y=top+index*38+5;

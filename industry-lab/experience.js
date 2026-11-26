@@ -174,7 +174,10 @@ const translatedLabels={
  "Sin promoción":["Sense promoció","No promotion"],"Promoción":["Promoció","Promotion"],
  "Suministro normal":["Subministrament normal","On-time supply"],"Con retraso":["Amb retard","Delayed"],
  "Promedio ponderado":["Mitjana ponderada","Weighted average"],
- "Defectos":["Defectes","Defects"],"Orden llegada":["Ordre d'arribada","Arrival order"]
+ "Defectos":["Defectes","Defects"],"Orden llegada":["Ordre d'arribada","Arrival order"],
+ "Con llegada":["Amb arribada","On-time arrival"],"Con demora":["Amb demora","Delayed"],
+ "Sin reglas":["Sense regles","Without rules"],"Con reglas":["Amb regles","With rules"],
+ "Referencia":["Referència","Reference"],"Centro":["Centre","Centre"]
 };
 const labelFor=x=>language==="es"?x:(translatedLabels[x]?.[language==="ca"?0:1]||x);
 function setChartLegend(segments){

@@ -182,7 +182,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Demanda volátil y roturas",
           "example_controls": "Calendario, previsión y capacidad",
           "indicative_kpi": "Error de demanda y fill rate",
-          "model": "forecast",
+          "model": "fbDemand",
           "scenario_seed": 890
         },
         {
@@ -190,7 +190,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Merma y caducidad",
           "example_controls": "Vida útil, ritmo de venta y FEFO",
           "indicative_kpi": "Merma € y producto caducado",
-          "model": "inventory",
+          "model": "fbExpiry",
           "scenario_seed": 931
         },
         {
@@ -198,7 +198,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Tamaño óptimo de lote",
           "example_controls": "Pedidos, cambios de línea y stock",
           "indicative_kpi": "Coste de lote y servicio",
-          "model": "production",
+          "model": "fbBatch",
           "scenario_seed": 972
         },
         {
@@ -206,7 +206,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Promociones y picos de demanda",
           "example_controls": "Campaña, uplift y capacidad",
           "indicative_kpi": "Ventas no servidas y merma",
-          "model": "pricing",
+          "model": "fbPromo",
           "scenario_seed": 1013
         },
         {
@@ -214,7 +214,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Distribución refrigerada",
           "example_controls": "Ventanas, vehículos y restricciones térmicas",
           "indicative_kpi": "Coste y cumplimiento de ventanas",
-          "model": "fleet",
+          "model": "fbColdRoute",
           "scenario_seed": 1054
         },
         {
@@ -222,7 +222,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Variabilidad de materias primas",
           "example_controls": "Plazos, recetas, stock de seguridad",
           "indicative_kpi": "Coste de falta y exceso de materia",
-          "model": "inventory",
+          "model": "fbSupply",
           "scenario_seed": 1095
         }
       ]

@@ -1383,11 +1383,11 @@ export const DETAIL_TRANSLATIONS = {
   ],
   "Coste sin refuerzo (€)": [
     "Cost sense reforç (€)",
-    "Cost without extra capacity (€)"
+    "Cost without extra staffing (€)"
   ],
   "Coste con refuerzo (€)": [
     "Cost amb reforç (€)",
-    "Cost with extra capacity (€)"
+    "Cost with extra staffing (€)"
   ],
   "Pedidos recibidos": [
     "Comandes rebudes",
@@ -1412,6 +1412,90 @@ export const DETAIL_TRANSLATIONS = {
   "Presupuesto (€)": [
     "Pressupost (€)",
     "Budget (€)"
+  ],
+  "Habitaciones-noche disponibles": [
+    "Habitacions-nit disponibles",
+    "Available room-nights"
+  ],
+  "Noches-habitación ocupadas previstas": [
+    "Nits-habitació ocupades previstes",
+    "Expected occupied room-nights"
+  ],
+  "Reserva potencial sobre capacidad": [
+    "Reserves potencials sobre capacitat",
+    "Potential bookings over capacity"
+  ],
+  "Ingreso medio diario (€)": [
+    "Ingressos mitjans diaris (€)",
+    "Average daily revenue (€)"
+  ],
+  "Habitaciones-noche vendidas": [
+    "Habitacions-nit venudes",
+    "Room-nights sold"
+  ],
+  "Noches directas": [
+    "Nits directes",
+    "Direct room-nights"
+  ],
+  "Noches intermediadas": [
+    "Nits intermediades",
+    "Intermediated room-nights"
+  ],
+  "Comisión de intermediación (€)": [
+    "Comissió d'intermediació (€)",
+    "Intermediary commission (€)"
+  ],
+  "Minutos de limpieza necesarios": [
+    "Minuts de neteja necessaris",
+    "Required cleaning minutes"
+  ],
+  "Capacidad de plantilla (min)": [
+    "Capacitat de plantilla (min)",
+    "Staff capacity (minutes)"
+  ],
+  "¿Refuerzo elegido?": [
+    "S'ha triat reforç?",
+    "Additional staff selected?"
+  ],
+  "Llegadas para atención presencial/h": [
+    "Arribades a recepció presencial/h",
+    "In-person arrivals per hour"
+  ],
+  "¿Cola estable?": [
+    "És estable la cua?",
+    "Stable queue?"
+  ],
+  "Habitaciones ocupadas (estimadas)": [
+    "Habitacions ocupades (estimades)",
+    "Estimated occupied rooms"
+  ],
+  "Coste diario sin medida (€)": [
+    "Cost diari sense mesura (€)",
+    "Daily cost without improvement (€)"
+  ],
+  "Coste diario con medida (€)": [
+    "Cost diari amb mesura (€)",
+    "Daily cost with improvement (€)"
+  ],
+  "Consumo evitado (kWh)": [
+    "Consum evitat (kWh)",
+    "Energy avoided (kWh)"
+  ],
+  "Ingreso marginal sin grupo (€)": [
+    "Ingrés marginal sense grup (€)",
+    "Contribution without group (€)"
+  ],
+  "Resultado ponderado con grupo (€)": [
+    "Resultat ponderat amb grup (€)",
+    "Expected group-case contribution (€)"
+  ],
+  "Noches individuales desplazadas": [
+    "Nits individuals desplaçades",
+    "Displaced retail room-nights"
+  ],
+  "Habitaciones grupo consideradas": [
+    "Habitacions de grup considerades",
+    "Group rooms considered"
   ]
 };
 export const WARNING_TRANSLATIONS = {
@@ -1462,6 +1546,18 @@ export const WARNING_TRANSLATIONS = {
   "La compra calculada deja una parte de la demanda sin cubrir.": [
     "La compra calculada deixa una part de la demanda sense cobrir.",
     "The purchasing plan does not cover all projected demand."
+  ],
+  "La demanda excede la capacidad de atención de recepción; no se estima una espera estable.": [
+    "La demanda supera la capacitat de recepció; no es pot estimar una espera estable.",
+    "Front-desk demand exceeds stable capacity; a stable wait cannot be estimated."
+  ],
+  "La medida cuesta más que el ahorro energético supuesto.": [
+    "La mesura costa més que l'estalvi energètic suposat.",
+    "The improvement costs more than the assumed energy savings."
+  ],
+  "El grupo reduce la contribución esperada frente a conservar el inventario individual.": [
+    "El grup redueix la contribució esperada davant reservar places per a clients individuals.",
+    "The group reduces expected contribution compared with keeping retail availability."
   ]
 };
 export const SECTOR_CONTEXT = {
@@ -1480,5 +1576,9 @@ export const SECTOR_CONTEXT = {
   "SC06": {
     "ca": "Vista de restaurants, tiquets per franja, personal, cues i minva amb escenaris de costos.",
     "en": "Store-level view of hourly tickets, staffing, backlogs, waste and cost scenarios."
+  },
+  "SC07": {
+    "ca": "Calendari d'ocupació, cancel·lacions, recepció i càrrega de neteja amb cost per habitació.",
+    "en": "Occupancy calendar, cancellation risk, front-desk load, housekeeping and cost per room."
   }
 };

@@ -1708,6 +1708,102 @@ export const DETAIL_TRANSLATIONS = {
   "Ingreso calculado (€)": [
     "Ingrés calculat (€)",
     "Calculated revenue (€)"
+  ],
+  "Plazo inicial (días)": [
+    "Termini inicial (dies)",
+    "Initial duration (days)"
+  ],
+  "Plazo calculado (días)": [
+    "Termini calculat (dies)",
+    "Calculated duration (days)"
+  ],
+  "Coste penalización más aceleración (€)": [
+    "Cost de penalització i acceleració (€)",
+    "Penalty plus acceleration cost (€)"
+  ],
+  "Días acelerados": [
+    "Dies accelerats",
+    "Days accelerated"
+  ],
+  "Coste final estimado (€)": [
+    "Cost final estimat (€)",
+    "Estimated final cost (€)"
+  ],
+  "Desviación frente a presupuesto (€)": [
+    "Desviació respecte al pressupost (€)",
+    "Budget variance (€)"
+  ],
+  "Valor ganado (€)": [
+    "Valor guanyat (€)",
+    "Earned value (€)"
+  ],
+  "Valor previsto (€)": [
+    "Valor previst (€)",
+    "Planned value (€)"
+  ],
+  "Cuadrillas A/B/C": [
+    "Quadrilles A/B/C",
+    "Crews A/B/C"
+  ],
+  "Horas sin cubrir": [
+    "Hores sense cobrir",
+    "Outstanding hours"
+  ],
+  "Coste plan calculado (€)": [
+    "Cost del pla calculat (€)",
+    "Calculated plan cost (€)"
+  ],
+  "Coste reparto uniforme (€)": [
+    "Cost repartiment uniforme (€)",
+    "Uniform allocation cost (€)"
+  ],
+  "Coste esperado sin alternativa (€)": [
+    "Cost esperat sense alternativa (€)",
+    "Expected cost without alternative (€)"
+  ],
+  "Coste alternativo supuesto (€)": [
+    "Cost alternatiu suposat (€)",
+    "Assumed alternative cost (€)"
+  ],
+  "Unidades faltantes si se demora": [
+    "Unitats mancants en cas de retard",
+    "Missing units if delayed"
+  ],
+  "Colchón operativo (días)": [
+    "Marge operatiu (dies)",
+    "Operating buffer (days)"
+  ],
+  "Duración de referencia (días)": [
+    "Durada de referència (dies)",
+    "Reference duration (days)"
+  ],
+  "Duración con coordinación (días)": [
+    "Durada amb coordinació (dies)",
+    "Duration with coordination (days)"
+  ],
+  "Ahorro bruto (€)": [
+    "Estalvi brut (€)",
+    "Gross savings (€)"
+  ],
+  "¿Coordinación seleccionada?": [
+    "Coordinació seleccionada?",
+    "Coordination selected?"
+  ],
+  "Cobros pendientes al cierre (€)": [
+    "Cobraments pendents al tancament (€)",
+    "Outstanding receipts at closing (€)"
+  ],
+  "Ingresos efectivos seis meses (€)": [
+    "Ingressos efectius sis mesos (€)",
+    "Actual receipts over six months (€)"
+  ],
+  "Retención contractual prevista (€)": [
+    "Retenció contractual prevista (€)",
+    "Projected contractual retention (€)"
+  ],
+  "Coste total del periodo (€)": [
+    "Cost total del període (€)",
+    "Total period cost (€)"
   ]
 };
 export const WARNING_TRANSLATIONS = {
@@ -1790,6 +1886,18 @@ export const WARNING_TRANSLATIONS = {
   "La demanda de servicios excede la capacidad disponible bajo estos parámetros.": [
     "La demanda de serveis supera la capacitat disponible amb aquests paràmetres.",
     "Service demand exceeds available capacity under these assumptions."
+  ],
+  "El coste final estimado supera el presupuesto con estos supuestos.": [
+    "El cost final estimat supera el pressupost amb aquests supòsits.",
+    "Projected completion cost exceeds budget under these assumptions."
+  ],
+  "Revisar disponibilidad de alternativa real antes de adoptar decisiones.": [
+    "Cal revisar la disponibilitat real abans de prendre cap decisió.",
+    "Verify real alternative availability before taking any action."
+  ],
+  "Aparece un saldo de caja negativo en al menos un mes; es una alerta ilustrativa de liquidez.": [
+    "Hi ha saldo de caixa negatiu en almenys un mes; és una alerta il·lustrativa.",
+    "At least one month has a negative cash balance; this is an illustrative liquidity warning."
   ]
 };
 export const SECTOR_CONTEXT = {
@@ -1820,5 +1928,9 @@ export const SECTOR_CONTEXT = {
   "SC09": {
     "ca": "Gestió agregada de cites, buits d'agenda, sales habilitades i càrrega administrativa. Sense dades de pacients.",
     "en": "Aggregate appointment access, empty slots, suitable rooms and administrative workload. No patient data."
+  },
+  "SC10": {
+    "ca": "Progrés de l'obra, fites, recursos, dependències i caixa amb costos i terminis hipotètics.",
+    "en": "Project progress, milestones, resources, dependencies and cash flow with assumed costs and dates."
   }
 };

@@ -1596,6 +1596,10 @@ export const DETAIL_TRANSLATIONS = {
   "Ventas sin rebaja": [
     "Vendes sense rebaixa",
     "Full-price sales"
+  ],
+  "Compras equivalentes de contribución": [
+    "Compres equivalents de contribució",
+    "Equivalent first-order contributions"
   ]
 };
 export const WARNING_TRANSLATIONS = {
@@ -1666,6 +1670,10 @@ export const WARNING_TRANSLATIONS = {
   "La contribución total estimada no cubre la inversión con estos supuestos.": [
     "La contribució estimada no cobreix la inversió amb aquests supòsits.",
     "Estimated contribution does not cover investment under these assumptions."
+  ],
+  "La primera compra no genera contribución positiva; la recuperación por este canal no es estimable.": [
+    "La primera compra no genera contribució positiva; no es pot estimar la recuperació d'inversió.",
+    "The first order has no positive contribution; acquisition payback cannot be estimated."
   ]
 };
 export const SECTOR_CONTEXT = {

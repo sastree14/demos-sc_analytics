@@ -68,7 +68,7 @@ function routeMargin(p){
  return out([
   m("profit",contribution,"eur"),m("margin",revenue?100*contribution/revenue:0,"pct"),
   m("cost",costs,"eur"),m("delta",costs-referenceCost,"eur")
- ],vis(["Tarifa","Kilómetros","Espera"],[series("amount",[revenue,travelCost,waitCost])],"eur"),
+ ],vis(["Ingresos","Kilómetros","Espera","Contribución"],[series("amount",[revenue,travelCost,waitCost,contribution])],"eur","waterfall"),
  "Los ingresos son servicios × tarifa. Los costes son kilómetros cargados más vacíos × coste por km, más horas de espera. Margen = contribución / ingresos.",
  "No incluye peajes, seguros, depreciación, impuestos, kilometraje real, restricciones de conductores ni contratos. No son márgenes de clientes.",
  [["Kilómetros totales",rnd(totalKm)],["Km en vacío",rnd(emptyDistance)],["Ingresos ilustrativos",rnd(revenue)],["Coste sin km en vacío",rnd(referenceCost)]],
@@ -85,7 +85,7 @@ function backhaul(p){
  return out([
   m("profit",contribution,"eur"),m("backhaulShare",p.loaded,"pct"),
   m("emptyKm",emptyKm),m("delta",extraRevenue-extraCosts,"eur")
- ],vis(["Ida","Retorno cargado","Retorno vacío"],[series("actual",[p.trips*p.outKm,loadedKm,emptyKm])],"number"),
+ ],vis(["Ida","Retorno cargado","Retorno vacío"],[series("actual",[p.trips*p.outKm,loadedKm,emptyKm])],"number","parts"),
  "La carga de retorno genera ingreso adicional por kilómetro y puede generar un coste de manipulación. El trayecto de vuelta se realiza en cualquier caso.",
  "No busca cargas reales, no garantiza disponibilidad de backhauls y no reduce automáticamente kilómetros recorridos: el efecto principal aquí es ingreso adicional por retornos cargados.",
  [["Trayectos con carga de retorno (esperados)",rnd(loadedTrips)],["Kilómetros totales",rnd(totalKm)],["Ingreso de retornos",rnd(extraRevenue)],["Coste adicional de retornos",rnd(extraCosts)]],
@@ -137,7 +137,7 @@ function subcontract(p){
  return out([
   m("service",coverage,"pct"),m("external",best.ext),m("cost",best.cost,"eur"),
   m("delta",baselineCost-best.cost,"eur")
- ],vis(["Propio","Externo","Pendiente"],[series("actual",[best.own,best.ext,best.missed])],"number"),
+ ],vis(["Propio","Externo","Pendiente"],[series("actual",[best.own,best.ext,best.missed])],"number","parts"),
  "Enumeración de entregas propias y externas para minimizar costes variables e incumplimientos, imponiendo el nivel de servicio alcanzable bajo los límites de capacidad.",
  "No incluye acuerdos con transportistas, disponibilidad por zona, conductor, horarios ni penalizaciones contractuales reales. Son costes unitarios supuestos.",
  [["Entregas con flota propia",best.own],["Entregas externas",best.ext],["Entregas no servidas",best.missed],["Coste plan sin subcontratación",rnd(baselineCost)]],

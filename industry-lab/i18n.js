@@ -1092,6 +1092,102 @@ export const DETAIL_TRANSLATIONS = {
   "Coste de reprogramación (€)": [
     "Cost de reprogramació (€)",
     "Rescheduling cost (€)"
+  ],
+  "Demanda inferior ilustrativa": [
+    "Demanda inferior il·lustrativa",
+    "Illustrative lower demand"
+  ],
+  "Demanda superior ilustrativa": [
+    "Demanda superior il·lustrativa",
+    "Illustrative upper demand"
+  ],
+  "Días con falta de capacidad": [
+    "Dies amb manca de capacitat",
+    "Days with insufficient capacity"
+  ],
+  "Demanda atendida": [
+    "Demanda atesa",
+    "Demand fulfilled"
+  ],
+  "Merma orden de llegada": [
+    "Minva per ordre d'arribada",
+    "Arrival-order waste"
+  ],
+  "Merma FEFO": [
+    "Minva FEFO",
+    "FEFO waste"
+  ],
+  "Demanda semanal": [
+    "Demanda setmanal",
+    "Weekly demand"
+  ],
+  "Unidades FEFO sin vender al final": [
+    "Unitats FEFO pendents al final",
+    "Unsold FEFO units at end"
+  ],
+  "Lotes programados": [
+    "Lots programats",
+    "Scheduled batches"
+  ],
+  "Coste de plan calculado (€)": [
+    "Cost del pla calculat (€)",
+    "Calculated plan cost (€)"
+  ],
+  "Coste de plan base (€)": [
+    "Cost del pla base (€)",
+    "Baseline plan cost (€)"
+  ],
+  "Excedente antes de merma": [
+    "Excedent abans de minva",
+    "Surplus before waste"
+  ],
+  "Contribución sin promoción (€)": [
+    "Contribució sense promoció (€)",
+    "Contribution without promotion (€)"
+  ],
+  "Contribución con promoción (€)": [
+    "Contribució amb promoció (€)",
+    "Contribution with promotion (€)"
+  ],
+  "Precio promocional (€)": [
+    "Preu promocional (€)",
+    "Promotion price (€)"
+  ],
+  "Demanda promocional": [
+    "Demanda promocional",
+    "Promotional demand"
+  ],
+  "Orden sugerido": [
+    "Ordre suggerit",
+    "Suggested stop order"
+  ],
+  "Coste base (€)": [
+    "Cost base (€)",
+    "Baseline route cost (€)"
+  ],
+  "Coste calculado (€)": [
+    "Cost calculat (€)",
+    "Calculated route cost (€)"
+  ],
+  "Horas por encima del límite": [
+    "Hores per sobre del límit",
+    "Hours exceeding the limit"
+  ],
+  "Ingrediente X urgente esperado": [
+    "Ingredient X urgent esperat",
+    "Expected emergency ingredient X"
+  ],
+  "Coste sin urgencias (€)": [
+    "Cost sense urgències (€)",
+    "Cost without emergency sourcing (€)"
+  ],
+  "Escenario puntual: unidades": [
+    "Escenari puntual: unitats",
+    "On-time scenario: units"
+  ],
+  "Escenario retrasado: unidades": [
+    "Escenari amb retard: unitats",
+    "Delayed scenario: units"
   ]
 };
 export const WARNING_TRANSLATIONS = {
@@ -1110,11 +1206,27 @@ export const WARNING_TRANSLATIONS = {
   "Desplazar producción no resulta económico o no existe capacidad adicional en valle.": [
     "Moure producció no surt a compte o no hi ha capacitat addicional en horari vall.",
     "Shifting production is not economical or there is no additional off-peak capacity."
+  ],
+  "La rotación FEFO no mejora la merma con esta configuración simulada.": [
+    "La rotació FEFO no millora la minva amb aquesta configuració simulada.",
+    "FEFO does not reduce waste under these simulated assumptions."
+  ],
+  "La promoción reduce la contribución estimada con estos supuestos.": [
+    "La promoció redueix la contribució estimada amb aquests supòsits.",
+    "The promotion reduces estimated contribution under these assumptions."
+  ],
+  "No se cubre toda la producción prevista bajo los supuestos de suministro.": [
+    "No es cobreix tota la producció prevista amb aquests supòsits de subministrament.",
+    "Not all planned production can be fulfilled under these supply assumptions."
   ]
 };
 export const SECTOR_CONTEXT = {
   "SC03": {
     "ca": "Programació d'ordres visible, estat de les màquines, terminis i recursos de la planta.",
     "en": "Visible work orders, machine status, deadlines and production resources."
+  },
+  "SC04": {
+    "ca": "Demanda diària, estoc per lot, caducitats, minves i capacitat productiva en un sol lloc.",
+    "en": "Daily demand, batch-level stock, expiry dates, waste and production capacity in one place."
   }
 };

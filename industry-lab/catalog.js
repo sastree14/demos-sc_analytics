@@ -78,7 +78,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Reposición entre almacenes",
           "example_controls": "Stock por centro, lead time y demanda",
           "indicative_kpi": "Coste de transferencia y roturas",
-          "model": "fleet",
+          "model": "transfer",
           "scenario_seed": 429
         },
         {
@@ -86,7 +86,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Variabilidad de proveedores",
           "example_controls": "Plazos y fiabilidad de suministro",
           "indicative_kpi": "Nivel de servicio y stock de seguridad",
-          "model": "inventory",
+          "model": "supplierRisk",
           "scenario_seed": 470
         },
         {
@@ -94,7 +94,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Pedidos mínimos y lotes de compra",
           "example_controls": "MOQ, presupuesto y espacio disponible",
           "indicative_kpi": "Inventario y capital comprometido",
-          "model": "inventory",
+          "model": "purchaseLots",
           "scenario_seed": 511
         },
         {
@@ -102,7 +102,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Rentabilidad por cliente y pedido",
           "example_controls": "Tarifa, volumen, logística y devoluciones",
           "indicative_kpi": "Margen de contribución",
-          "model": "pricing",
+          "model": "customerMargin",
           "scenario_seed": 552
         },
         {
@@ -110,7 +110,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Surtido y obsolescencia",
           "example_controls": "Rotación, estacionalidad y caducidad",
           "indicative_kpi": "Valor lento/obsoleto y rotación",
-          "model": "forecast",
+          "model": "assortment",
           "scenario_seed": 593
         }
       ]

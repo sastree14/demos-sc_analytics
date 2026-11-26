@@ -1211,7 +1211,7 @@ export const DETAIL_TRANSLATIONS = {
   ],
   "Coste base (€)": [
     "Cost base (€)",
-    "Baseline route cost (€)"
+    "Baseline cost (€)"
   ],
   "Coste calculado (€)": [
     "Cost calculat (€)",
@@ -1508,6 +1508,94 @@ export const DETAIL_TRANSLATIONS = {
   "Habitaciones grupo consideradas": [
     "Habitacions de grup considerades",
     "Group rooms considered"
+  ],
+  "Contribución de referencia (€)": [
+    "Contribució de referència (€)",
+    "Baseline contribution (€)"
+  ],
+  "Contribución promocional (€)": [
+    "Contribució promocional (€)",
+    "Promotional contribution (€)"
+  ],
+  "Unidades no servidas": [
+    "Unitats no servides",
+    "Unserved units"
+  ],
+  "Precio tras descuento (€)": [
+    "Preu després de descompte (€)",
+    "Discounted price (€)"
+  ],
+  "Stock asignado": [
+    "Estoc assignat",
+    "Stock allocated"
+  ],
+  "Coste de reparto base (€)": [
+    "Cost del repartiment base (€)",
+    "Baseline allocation cost (€)"
+  ],
+  "Coste de reparto calculado (€)": [
+    "Cost del repartiment calculat (€)",
+    "Calculated allocation cost (€)"
+  ],
+  "Talla prioritaria": [
+    "Talla prioritària",
+    "Prioritised size"
+  ],
+  "Devoluciones online esperadas": [
+    "Devolucions en línia esperades",
+    "Expected online returns"
+  ],
+  "Devoluciones tienda esperadas": [
+    "Devolucions de botiga esperades",
+    "Expected store returns"
+  ],
+  "Contribución sin devoluciones (€)": [
+    "Contribució sense devolucions (€)",
+    "Contribution without returns (€)"
+  ],
+  "Coste de devoluciones frente a referencia (€)": [
+    "Cost de devolucions respecte a referència (€)",
+    "Return-related loss vs baseline (€)"
+  ],
+  "Pedidos sin servir sin traslados": [
+    "Comandes no servides sense trasllats",
+    "Unserved orders before transfers"
+  ],
+  "Traslados propuestos": [
+    "Trasllats proposats",
+    "Proposed transfers"
+  ],
+  "Clientes nuevos estimados": [
+    "Clients nous estimats",
+    "Estimated new customers"
+  ],
+  "Margen neto supuesto (%)": [
+    "Marge net suposat (%)",
+    "Assumed net margin (%)"
+  ],
+  "Contribución por primera compra (€)": [
+    "Contribució de primera compra (€)",
+    "First-order contribution (€)"
+  ],
+  "Meses de recuperación": [
+    "Mesos de recuperació",
+    "Payback in months"
+  ],
+  "SKU lentos estimados": [
+    "SKU lents estimats",
+    "Estimated slow SKUs"
+  ],
+  "Unidades en referencias lentas": [
+    "Unitats en referències lentes",
+    "Units held in slow SKUs"
+  ],
+  "Política preferible (supuesto)": [
+    "Política preferida (supòsit)",
+    "Preferred policy (assumption)"
+  ],
+  "Ventas sin rebaja": [
+    "Vendes sense rebaixa",
+    "Full-price sales"
   ]
 };
 export const WARNING_TRANSLATIONS = {
@@ -1570,6 +1658,14 @@ export const WARNING_TRANSLATIONS = {
   "El grupo reduce la contribución esperada frente a conservar el inventario individual.": [
     "El grup redueix la contribució esperada davant reservar places per a clients individuals.",
     "The group reduces expected contribution compared with keeping retail availability."
+  ],
+  "La promoción reduce la contribución bajo estas hipótesis.": [
+    "La promoció redueix la contribució amb aquestes hipòtesis.",
+    "The promotion reduces contribution under these assumptions."
+  ],
+  "La contribución total estimada no cubre la inversión con estos supuestos.": [
+    "La contribució estimada no cobreix la inversió amb aquests supòsits.",
+    "Estimated contribution does not cover investment under these assumptions."
   ]
 };
 export const SECTOR_CONTEXT = {
@@ -1592,5 +1688,9 @@ export const SECTOR_CONTEXT = {
   "SC07": {
     "ca": "Calendari d'ocupació, cancel·lacions, recepció i càrrega de neteja amb cost per habitació.",
     "en": "Occupancy calendar, cancellation risk, front-desk load, housekeeping and cost per room."
+  },
+  "SC08": {
+    "ca": "Vendes i devolucions per canal, ruptures de talles, estoc compartit i marge net.",
+    "en": "Channel sales and returns, size-level availability, shared stock and net contribution."
   }
 };

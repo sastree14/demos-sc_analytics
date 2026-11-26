@@ -23,6 +23,8 @@ def main():
         page.on("pageerror",lambda err: failures.append(str(err)))
         page.goto(base+"index.html",wait_until="networkidle")
         assert page.locator("#industry-grid article").count()==18,"Industry catalog is incomplete"
+        if page.locator("#tour").evaluate("el => el.open"):
+            page.locator("#tour-skip").click()
         assert page.locator("#capabilities").is_hidden(),"Capability view should start hidden"
         page.locator("#tab-capabilities").click()
         assert page.locator("#capability-grid article").count()==7
@@ -60,10 +62,12 @@ def main():
                     page.locator(f"[data-locale={lang}]").click()
                     assert page.locator("html").get_attribute("lang")==lang
                     assert page.locator("#case-nav button").count()==6
+                page.screenshot(path="qa-evidence/industry-lab-sc01-desktop.png",full_page=True)
                 page.set_viewport_size({"width":390,"height":844})
                 assert page.locator("#mobile-case").is_visible()
                 assert page.locator("#input-grid input").count()>=3
                 assert page.locator("#chart").is_visible()
+                page.screenshot(path="qa-evidence/industry-lab-sc01-mobile.png",full_page=True)
                 page.set_viewport_size({"width":1366,"height":850})
             print("PASS",sector,"6 cases",flush=True)
         assert not failures,failures

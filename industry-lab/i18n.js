@@ -983,3 +983,126 @@ export const CONSTRAINTS = {
     "All benefits, risks and options are fictional illustrative inputs."
   ]
 };
+
+export const DETAIL_TRANSLATIONS = {
+  "Coste secuencia inicial (€)": [
+    "Cost de seqüència inicial (€)",
+    "Initial sequence cost (€)"
+  ],
+  "Coste secuencia optimizada (€)": [
+    "Cost de seqüència optimitzada (€)",
+    "Optimised sequence cost (€)"
+  ],
+  "Secuencia calculada": [
+    "Seqüència calculada",
+    "Calculated sequence"
+  ],
+  "Retraso total secuencia inicial (h)": [
+    "Retard total inicial (h)",
+    "Initial total lateness (h)"
+  ],
+  "Máquinas activas": [
+    "Màquines actives",
+    "Active machines"
+  ],
+  "Capacidad sin horas extra": [
+    "Capacitat sense hores extres",
+    "Capacity without overtime"
+  ],
+  "Capacidad con horas extra": [
+    "Capacitat amb hores extres",
+    "Capacity with overtime"
+  ],
+  "Horas extra totales": [
+    "Hores extres totals",
+    "Total overtime hours"
+  ],
+  "Coste esperado sin prevención (€)": [
+    "Cost esperat sense prevenció (€)",
+    "Expected cost without prevention (€)"
+  ],
+  "Coste esperado escenario (€)": [
+    "Cost esperat de l'escenari (€)",
+    "Scenario expected cost (€)"
+  ],
+  "Equipos intervenibles con presupuesto": [
+    "Equips mantenibles amb pressupost",
+    "Assets maintainable under budget"
+  ],
+  "Horas esperadas sin prevención": [
+    "Hores esperades sense prevenció",
+    "Expected downtime without prevention"
+  ],
+  "Defectos no detectados (esperados)": [
+    "Defectes no detectats (esperats)",
+    "Expected undetected defects"
+  ],
+  "Coste base ilustrativo (€)": [
+    "Cost base il·lustratiu (€)",
+    "Illustrative baseline cost (€)"
+  ],
+  "Coste tras intervención (€)": [
+    "Cost després de la intervenció (€)",
+    "Post-intervention cost (€)"
+  ],
+  "Unidades conformes esperadas": [
+    "Unitats conformes esperades",
+    "Expected conforming units"
+  ],
+  "Materia X consumida": [
+    "Material X consumit",
+    "Material X consumed"
+  ],
+  "Materia Y consumida": [
+    "Material Y consumit",
+    "Material Y consumed"
+  ],
+  "Lotes A": [
+    "Lots A",
+    "A batches"
+  ],
+  "Lotes B": [
+    "Lots B",
+    "B batches"
+  ],
+  "Coste energético base (€)": [
+    "Cost energètic base (€)",
+    "Baseline energy cost (€)"
+  ],
+  "Unidades desplazadas": [
+    "Unitats desplaçades",
+    "Shifted units"
+  ],
+  "Energía total (kWh)": [
+    "Energia total (kWh)",
+    "Total energy (kWh)"
+  ],
+  "Coste de reprogramación (€)": [
+    "Cost de reprogramació (€)",
+    "Rescheduling cost (€)"
+  ]
+};
+export const WARNING_TRANSLATIONS = {
+  "No hay operarios suficientes para activar ninguna máquina con la dotación indicada.": [
+    "No hi ha prou operaris per activar cap màquina amb la dotació indicada.",
+    "There are not enough operators to run a machine with the staffing ratio given."
+  ],
+  "La intervención resulta más cara que la referencia con estos supuestos.": [
+    "La intervenció surt més cara que la referència amb aquests supòsits.",
+    "The intervention costs more than the baseline under these assumptions."
+  ],
+  "No es viable cumplir la cobertura mínima deseada de ambas familias con los materiales disponibles.": [
+    "No es pot assolir la cobertura mínima desitjada de les dues famílies amb el material disponible.",
+    "The available materials cannot meet the desired minimum coverage for both product families."
+  ],
+  "Desplazar producción no resulta económico o no existe capacidad adicional en valle.": [
+    "Moure producció no surt a compte o no hi ha capacitat addicional en horari vall.",
+    "Shifting production is not economical or there is no additional off-peak capacity."
+  ]
+};
+export const SECTOR_CONTEXT = {
+  "SC03": {
+    "ca": "Programació d'ordres visible, estat de les màquines, terminis i recursos de la planta.",
+    "en": "Visible work orders, machine status, deadlines and production resources."
+  }
+};

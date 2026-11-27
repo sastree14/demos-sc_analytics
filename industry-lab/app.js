@@ -59,7 +59,9 @@ function renderIndustries(){
  industries.forEach(item=>{
   const code=item[0],pilot=code==="SC01";
   const card=document.createElement("article");card.className="industry-card";
-  const codeEl=document.createElement("span");codeEl.className="code";codeEl.textContent=code;
+  const codeEl=document.createElement("span");codeEl.className="code";codeEl.style.display="flex";codeEl.style.alignItems="center";codeEl.style.gap="10px";
+  const emoji=document.createElement("span");emoji.setAttribute("aria-hidden","true");emoji.style.fontSize="32px";emoji.style.lineHeight="1.2";emoji.style.letterSpacing="0";emoji.textContent=({SC01:"🚚",SC02:"📦",SC03:"🏭",SC04:"🥫",SC05:"🧪",SC06:"🍽️",SC07:"🏨",SC08:"🛍️",SC09:"🏥",SC10:"🏗️",SC11:"🏢",SC12:"💳",SC13:"🤝",SC14:"🛠️",SC15:"💻",SC16:"🎓",SC17:"⚡",SC18:"🎟️"})[code]||"";
+  codeEl.append(emoji,document.createTextNode(code));
   const h=document.createElement("h3");h.textContent=cardTitle(item);
   const p=document.createElement("p");p.textContent=cardDesc(item);
   const status=document.createElement("span");status.className="status"+(pilot?" pilot-status":"");status.textContent=tr("industryAvailable");

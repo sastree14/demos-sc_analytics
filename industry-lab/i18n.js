@@ -2080,6 +2080,278 @@ export const DETAIL_TRANSLATIONS = {
   "Personas asignadas": [
     "Persones assignades",
     "Staff assigned"
+  ],
+  "Coste previsto (€)": [
+    "Cost previst (€)",
+    "Planned cost (€)"
+  ],
+  "Coste realizado (€)": [
+    "Cost realitzat (€)",
+    "Actual cost (€)"
+  ],
+  "Horas totales ejecutadas": [
+    "Hores totals executades",
+    "Total delivery hours"
+  ],
+  "Horas adicionales": [
+    "Hores addicionals",
+    "Additional hours"
+  ],
+  "Demanda de horas": [
+    "Demanda d'hores",
+    "Required hours"
+  ],
+  "Horas cubiertas": [
+    "Hores cobertes",
+    "Covered hours"
+  ],
+  "Coste del refuerzo (€)": [
+    "Cost del reforç (€)",
+    "Additional capacity cost (€)"
+  ],
+  "Proyectos esperados": [
+    "Projectes esperats",
+    "Expected projects"
+  ],
+  "Carga de entrega esperada (h)": [
+    "Càrrega de lliurament esperada (h)",
+    "Expected delivery hours"
+  ],
+  "Horas sin cobertura": [
+    "Hores sense cobertura",
+    "Uncovered hours"
+  ],
+  "Ingreso adicional pactable (€)": [
+    "Ingressos addicionals pactables (€)",
+    "Additional billable revenue (€)"
+  ],
+  "Resultado base (€)": [
+    "Resultat base (€)",
+    "Baseline contribution (€)"
+  ],
+  "Resultado con cambios (€)": [
+    "Resultat amb canvis (€)",
+    "Contribution with changes (€)"
+  ],
+  "Horas antes de reutilizar": [
+    "Hores abans de reutilitzar",
+    "Hours before templates"
+  ],
+  "Horas tras plantillas": [
+    "Hores després de plantilles",
+    "Hours after templates"
+  ],
+  "Horas ahorradas": [
+    "Hores estalviades",
+    "Hours saved"
+  ],
+  "Errores esperados a revisar": [
+    "Errors esperats per revisar",
+    "Expected errors for review"
+  ],
+  "Horas no cubiertas inicialmente": [
+    "Hores inicialment no cobertes",
+    "Initially uncovered hours"
+  ],
+  "Horas cubiertas por partner": [
+    "Hores cobertes pel partner",
+    "Hours covered by partner"
+  ],
+  "Coste con coordinación (€)": [
+    "Cost amb coordinació (€)",
+    "Cost with coordination (€)"
+  ],
+  "Presupuesto disponible (€)": [
+    "Pressupost disponible (€)",
+    "Available budget (€)"
+  ],
+  "Avisos eléctricos pendientes": [
+    "Avisos elèctrics pendents",
+    "Outstanding electrical jobs"
+  ],
+  "Avisos mecánicos pendientes": [
+    "Avisos mecànics pendents",
+    "Outstanding mechanical jobs"
+  ],
+  "Avisos atendidos": [
+    "Avisos atesos",
+    "Jobs serviced"
+  ],
+  "Traslado acumulado ilustrativo (h)": [
+    "Trajectes acumulats il·lustratius (h)",
+    "Illustrative total drive time (h)"
+  ],
+  "Segundas visitas sin mejora": [
+    "Segones visites sense millora",
+    "Repeat visits without intervention"
+  ],
+  "Segundas visitas con mejora": [
+    "Segones visites amb millora",
+    "Repeat visits with intervention"
+  ],
+  "¿Mejora seleccionada?": [
+    "S'ha seleccionat la millora?",
+    "Improvement selected?"
+  ],
+  "Coste sin prevención (€)": [
+    "Cost sense prevenció (€)",
+    "Cost without prevention (€)"
+  ],
+  "Coste tras prevención (€)": [
+    "Cost després de prevenció (€)",
+    "Cost after prevention (€)"
+  ],
+  "Presupuesto restante (€)": [
+    "Pressupost restant (€)",
+    "Remaining budget (€)"
+  ],
+  "Grupos seleccionados": [
+    "Grups seleccionats",
+    "Selected asset groups"
+  ],
+  "Urgencias pendientes": [
+    "Urgències pendents",
+    "Unserved urgent jobs"
+  ],
+  "Planificados pendientes": [
+    "Planificats pendents",
+    "Unserved scheduled jobs"
+  ],
+  "Capacidad diaria": [
+    "Capacitat diària",
+    "Daily capacity"
+  ],
+  "Huecos reservados para urgencias": [
+    "Espais reservats per urgències",
+    "Reserved emergency slots"
+  ],
+  "Coste por contrato (€)": [
+    "Cost per contracte (€)",
+    "Cost per agreement (€)"
+  ],
+  "Visitas mensuales esperadas": [
+    "Visites mensuals esperades",
+    "Expected monthly visits"
+  ],
+  "Ingresos contratos (€)": [
+    "Ingressos de contractes (€)",
+    "Contract revenue (€)"
+  ],
+  "Resultado neto del escenario (€)": [
+    "Resultat net de l'escenari (€)",
+    "Scenario contribution (€)"
+  ],
+  "Espacio total en vehículos": [
+    "Espai total als vehicles",
+    "Total van storage capacity"
+  ],
+  "Unidades compradas": [
+    "Unitats comprades",
+    "Units purchased"
+  ],
+  "Presupuesto utilizado (€)": [
+    "Pressupost utilitzat (€)",
+    "Budget spent (€)"
+  ],
+  "Unidades sin cubrir": [
+    "Unitats sense cobrir",
+    "Unserved units"
+  ],
+  "MRR inicial (€)": [
+    "MRR inicial (€)",
+    "Starting MRR (€)"
+  ],
+  "MRR de cohorte inicial mes 6 (€)": [
+    "MRR de cohort inicial mes 6 (€)",
+    "Original cohort MRR after six months (€)"
+  ],
+  "MRR total mes 6 (€)": [
+    "MRR total mes 6 (€)",
+    "Total MRR after six months (€)"
+  ],
+  "NRR cohorte inicial (%)": [
+    "NRR cohort inicial (%)",
+    "Original cohort NRR (%)"
+  ],
+  "Activaciones iniciales": [
+    "Activacions inicials",
+    "Baseline activations"
+  ],
+  "Activaciones con guía": [
+    "Activacions amb guia",
+    "Guided activations"
+  ],
+  "Tiempo inicial estimado (min)": [
+    "Temps inicial estimat (min)",
+    "Estimated baseline time (min)"
+  ],
+  "Tiempo con guía estimado (min)": [
+    "Temps amb guia estimat (min)",
+    "Estimated guided time (min)"
+  ],
+  "Respuestas incorrectas supuestas": [
+    "Respostes incorrectes suposades",
+    "Assumed incorrect responses"
+  ],
+  "Alertas totales": [
+    "Alertes totals",
+    "Total alerts"
+  ],
+  "Revisiones realizadas": [
+    "Revisions realitzades",
+    "Completed reviews"
+  ],
+  "Errores sin revisión estimados": [
+    "Errors sense revisió estimats",
+    "Estimated unreviewed errors"
+  ],
+  "Coste base sin caché (€)": [
+    "Cost base sense caché (€)",
+    "Baseline cost without caching (€)"
+  ],
+  "Coste total con caché (€)": [
+    "Cost total amb caché (€)",
+    "Total cost with caching (€)"
+  ],
+  "Coste tokens tras caché (€)": [
+    "Cost dels tokens amb caché (€)",
+    "Token cost after caching (€)"
+  ],
+  "Gasto soporte humano (€)": [
+    "Despesa en suport humà (€)",
+    "Human support expense (€)"
+  ],
+  "MRR al inicio (€)": [
+    "MRR a l'inici (€)",
+    "MRR at start (€)"
+  ],
+  "MRR al cierre (€)": [
+    "MRR al tancament (€)",
+    "MRR at end (€)"
+  ],
+  "ARR al cierre (€)": [
+    "ARR al tancament (€)",
+    "ARR at end (€)"
+  ],
+  "Banda inferior ilustrativa (€)": [
+    "Banda inferior il·lustrativa (€)",
+    "Illustrative lower bound (€)"
+  ],
+  "Cola sin refuerzo": [
+    "Cua sense reforç",
+    "Backlog without extra staff"
+  ],
+  "Cola con refuerzo": [
+    "Cua amb reforç",
+    "Backlog with extra staff"
+  ],
+  "Tickets atendibles por semana": [
+    "Tiquets atendibles per setmana",
+    "Tickets serviceable per week"
+  ],
+  "Coste con equipo seleccionado (€)": [
+    "Cost amb equip seleccionat (€)",
+    "Cost with selected staffing (€)"
   ]
 };
 export const WARNING_TRANSLATIONS = {
@@ -2152,8 +2424,8 @@ export const WARNING_TRANSLATIONS = {
     "Estimated contribution does not cover investment under these assumptions."
   ],
   "La primera compra no genera contribución positiva; la recuperación por este canal no es estimable.": [
-    "La primera compra no genera contribució positiva; no es pot estimar la recuperació d'inversió.",
-    "The first order has no positive contribution; acquisition payback cannot be estimated."
+    "La primera compra no genera contribució positiva; no es pot estimar la recuperació.",
+    "The first order has no positive contribution; acquisition payback is not estimable."
   ],
   "La cola administrativa supera la capacidad de servicio; el tiempo mostrado es un límite visual, no una espera estable.": [
     "La cua administrativa supera la capacitat de servei; el temps mostrat és només un límit visual.",
@@ -2186,6 +2458,26 @@ export const WARNING_TRANSLATIONS = {
   "Capacidad humana de revisión insuficiente para todas las alertas generadas.": [
     "La capacitat de revisió humana és insuficient per a totes les alertes.",
     "Not enough human review capacity for all generated alerts."
+  ],
+  "El proyecto presenta margen negativo bajo las hipótesis introducidas.": [
+    "El projecte presenta marge negatiu amb les hipòtesis indicades.",
+    "The project has a negative margin under the assumptions."
+  ],
+  "Los cambios reducen la rentabilidad del proyecto frente al alcance original.": [
+    "Els canvis redueixen la rendibilitat respecte de l'abast original.",
+    "Scope changes reduce contribution versus the original contract."
+  ],
+  "La colaboración propuesta no cubre todas las horas demandadas; conviene revisar alcance y habilidades.": [
+    "La col·laboració no cobreix totes les hores; cal revisar abast i habilitats.",
+    "The partner scenario does not cover all required hours; review scope and skills."
+  ],
+  "El coste de prestar el servicio supera las cuotas mensuales supuestas.": [
+    "El cost del servei supera les quotes mensuals suposades.",
+    "Assumed monthly contract fees do not cover delivery cost."
+  ],
+  "El escenario conserva respuestas potencialmente incorrectas sin revisión.": [
+    "L'escenari manté respostes potencialment incorrectes sense revisar.",
+    "The scenario leaves potentially incorrect agent outputs unreviewed."
   ]
 };
 export const SECTOR_CONTEXT = {

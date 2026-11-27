@@ -10,8 +10,8 @@ const out=(metrics,visual,formula,limits,table,warning="")=>({metrics,visual,for
 const rnd=x=>Math.round(x*100)/100,sum=a=>a.reduce((s,v)=>s+v,0),min=(...v)=>Math.min(...v);
 export const fieldServiceModels={
  svDispatch:{title:L("Asignación de técnicos según habilidad y carga","Assignació tècnics segons habilitat i càrrega","Technician dispatch by skills and capacity"),inputs:[
- f("electrical","Avisos eléctricos","Avisos elèctrics","Electrical jobs",10,220,5,68),
- f("mechanical","Avisos mecánicos","Avisos mecànics","Mechanical jobs",10,220,5,82),
+ f("electrical","Avisos eléctricos","Avisos elèctrics","Electrical jobs",10,220,5,85),
+ f("mechanical","Avisos mecánicos","Avisos mecànics","Mechanical jobs",10,220,5,105),
  f("electricalStaff","Técnicos eléctricos","Tècnics elèctrics","Electrical technicians",1,25,1,5),
  f("mechanicalStaff","Técnicos mecánicos","Tècnics mecànics","Mechanical technicians",1,25,1,6),
  f("multiStaff","Técnicos polivalentes","Tècnics polivalents","Multi-skilled technicians",0,15,1,3),
@@ -33,13 +33,13 @@ export const fieldServiceModels={
  f("prob","Probabilidad de fallo por periodo (%)","Probabilitat de fallada per període (%)","Assumed failure probability (%)",2,50,2,18,"pct"),
  f("downtime","Horas por incidencia","Hores per incidència","Downtime hours per failure",1,80,1,15,"hours"),
  f("costHour","Coste por hora de parada (€)","Cost per hora d'aturada (€)","Downtime cost per hour (€)",50,2500,50,470,"eur"),
- f("preventCost","Coste por actuación preventiva (€)","Cost per actuació preventiva (€)","Cost per preventive service (€)",100,7000,100,1600,"eur"),
- f("efficacy","Reducción relativa de fallos (%)","Reducció relativa fallades (%)","Assumed risk reduction (%)",10,90,5,65,"pct"),
+ f("preventCost","Coste por actuación preventiva (€)","Cost per actuació preventiva (€)","Cost per preventive service (€)",100,7000,100,700,"eur"),
+ f("efficacy","Reducción relativa de fallos (%)","Reducció relativa fallades (%)","Assumed risk reduction (%)",10,90,5,80,"pct"),
  f("budget","Presupuesto preventivo (€)","Pressupost preventiu (€)","Maintenance budget (€)",5000,250000,5000,65000,"eur")
  ]},
  svUrgent:{title:L("Urgencias y capacidad reservada","Urgències i capacitat reservada","Urgent repairs and buffer staffing"),inputs:[
- f("planned","Avisos planificados por día","Avisos planificats per dia","Planned daily jobs",10,140,5,68),
- f("urgent","Urgencias esperadas por día","Urgències esperades per dia","Expected daily urgent calls",0,85,5,26),
+ f("planned","Avisos planificados por día","Avisos planificats per dia","Planned daily jobs",10,140,5,95),
+ f("urgent","Urgencias esperadas por día","Urgències esperades per dia","Expected daily urgent calls",0,85,5,35),
  f("techs","Técnicos disponibles","Tècnics disponibles","Available technicians",2,40,1,13),
  f("capacity","Avisos por técnico/día","Avisos per tècnic/dia","Jobs per technician-day",3,14,1,8),
  f("reserve","Técnicos reservados para urgencias","Tècnics reservats per urgències","Technicians reserved for emergencies",0,20,1,3),

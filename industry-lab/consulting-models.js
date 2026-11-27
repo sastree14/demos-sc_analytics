@@ -140,7 +140,7 @@ function docs(p){
 function partner(p){
  const gap=Math.max(0,p.work-p.internal);
  const specialist=gap*p.specialty/100;
- const covered=Math.min(gap,specialist*p.coverage/100+(gap-specialist)*Math.min(1,p.coverage/100));
+ const covered=Math.min(gap,specialist*p.coverage/100+(gap-specialist)*Math.min(1,0.6+p.coverage/200));
  const spend=covered*p.rate*(1+p.risk/100);
  const achievable=p.budget/(p.rate*(1+p.risk/100));
  const used=Math.min(covered,achievable);

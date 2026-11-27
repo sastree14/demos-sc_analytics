@@ -59,7 +59,7 @@ export const saasModels={
  saSupport:{title:L("Backlog de soporte y capacidad de resolución","Cua de suport i capacitat de resolució","Support backlog and staffing capacity"),inputs:[
  f("starting","Tickets pendientes","Tiquets pendents","Starting support backlog",0,2000,50,380),
  f("incoming","Nuevos tickets por semana","Nous tiquets per setmana","New tickets per week",50,1500,50,520),
- f("agents","Agentes de soporte","Agents de suport","Support agents",2,70,1,18),
+ f("agents","Agentes de soporte","Agents de suport","Support agents",2,70,1,8),
  f("hours","Horas útiles por agente/semana","Hores útils per agent/setmana","Productive hours per agent/week",10,45,5,30,"hours"),
  f("minutes","Minutos por resolución","Minuts per resolució","Minutes per resolution",5,120,5,38,"minutes"),
  f("extra","Personal extra","Personal extra","Extra support agents",0,30,1,5),

@@ -12,7 +12,7 @@ const query=new URLSearchParams(location.search);
 let language=["es","ca","en"].includes(query.get("lang"))?query.get("lang"):null;
 try{language=language||sessionStorage.getItem("scIndustryLanguage");}catch(_){}
 language=["es","ca","en"].includes(language)?language:(navigator.language?.toLowerCase().startsWith("ca")?"ca":navigator.language?.toLowerCase().startsWith("en")?"en":"es");
-const requested=(query.get("sector")||query.get("industry")||"SC01").toUpperCase();
+const requested=(query.get("sector")||query.get("industry")||document.body.dataset.initialSector||"SC01").toUpperCase();
 const sectors=INDUSTRY_CATALOG.sectors;
 let sector=sectors.find(x=>x.code===requested)||sectors[0];
 let problem=sector.pain_points.find(x=>x.id===query.get("case"))||(sector.code==="SC01"?sector.pain_points[2]:sector.pain_points[0]);

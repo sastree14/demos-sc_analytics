@@ -29,14 +29,14 @@ def main():
         page.goto(base+"index.html",wait_until="networkidle")
         page.get_by_role("button",name="Castellano",exact=True).click()
         assert page.locator("#industry-grid article").count()==18,"Industry catalog is incomplete"
-        assert page.locator("#industry-grid a[href*='experience.html']").count()==1
+        assert page.locator("#industry-grid a[href*='?lang=']").count()==18
         if page.locator("#tour").evaluate("el => el.open"):
             page.locator("#tour-skip").click()
         assert page.locator("#capabilities").is_hidden(),"Capability view should start hidden"
         page.locator("#tab-capabilities").click()
         assert page.locator("#capability-grid article").count()==7
         for sector in SECTORS:
-            page.goto(base+f"experience.html?sector={sector}",wait_until="networkidle")
+            page.goto(base+f"{sector.lower()}/",wait_until="networkidle")
             page.get_by_role("button",name="English",exact=True).click()
             assert page.locator("html").get_attribute("lang")=="en"
             if page.locator("#guide-dialog").evaluate("el => el.open"):

@@ -47,26 +47,26 @@ function applyLanguage(next){
  try{sessionStorage.setItem("scLabLocale",lang);}catch(_){}
 }
 const onPublicPages=location.hostname==="sastree14.github.io" || !new URLSearchParams(location.search).has("review");
-let publicSectors=new Set(["SC01"]);
+let publicSectors=new Set(Array.from({length:18},(_,i)=>"SC"+String(i+1).padStart(2,"0")));
 const requestLabel={es:"Solicitar una demostración",ca:"Demanar una demostració",en:"Request a walkthrough"};
 const upcoming={es:"Presentación previa bajo solicitud",ca:"Presentació prèvia a petició",en:"Preview on request"};
 function sectorLink(code){
  const available=!onPublicPages || publicSectors.has(code);
- return available ? "./experience.html?sector="+code+"&lang="+lang : "https://www.sc-analytics.io/contact?intent=problem&sector="+code;
+ return available ? "./"+code.toLowerCase()+"/?lang="+lang : "https://www.sc-analytics.io/contact?intent=problem&sector="+code;
 }
 function renderIndustries(){
  const grid=byId("industry-grid");grid.replaceChildren();
  industries.forEach(item=>{
   const code=item[0],pilot=code==="SC01";
-  const card=document.createElement("article");card.className="industry-card "+(pilot?"pilot":"");
-  const codeEl=document.createElement("span");codeEl.className="code";codeEl.textContent=pilot?"🚚":code;
+  const card=document.createElement("article");card.className="industry-card";
+  const codeEl=document.createElement("span");codeEl.className="code";codeEl.textContent=code;
   const h=document.createElement("h3");h.textContent=cardTitle(item);
   const p=document.createElement("p");p.textContent=cardDesc(item);
   const status=document.createElement("span");status.className="status"+(pilot?" pilot-status":"");status.textContent=tr("industryAvailable");
   const link=document.createElement("a");link.href="./experience.html?sector="+encodeURIComponent(code)+"&lang="+encodeURIComponent(lang);link.textContent=tr("industryExplore");
   link.href=sectorLink(code);
   if(onPublicPages && !publicSectors.has(code)){status.textContent=upcoming[lang];link.textContent=requestLabel[lang];}
-  if(pilot){status.textContent=({es:"Piloto · presentación prevista el 9 de diciembre",ca:"Pilot · presentació prevista el 9 de desembre",en:"Pilot · presentation planned for 9 December"})[lang];} card.append(codeEl,h,p,status,link);grid.append(card);
+ card.append(codeEl,h,p,status,link);grid.append(card);
  });
 }
 function renderCapabilities(){

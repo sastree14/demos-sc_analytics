@@ -116,9 +116,11 @@ function preventive(p){
 }
 function urgent(p){
  const dailyCap=p.techs*p.capacity,urgentSlots=Math.min(dailyCap,p.reserve*p.capacity);
- const directUrgent=Math.min(p.urgent,urgentSlots),fromRest=Math.min(Math.max(0,p.urgent-directUrgent),Math.max(0,dailyCap-urgentSlots));
- const leftover=Math.max(0,dailyCap-directUrgent-fromRest);
- const regular=Math.min(p.planned,leftover),urgentDone=directUrgent+fromRest;
+ const directUrgent=Math.min(p.urgent,urgentSlots);
+ const regularBase=Math.min(p.planned,Math.max(0,dailyCap-urgentSlots));
+ const urgentOverflow=Math.min(Math.max(0,p.urgent-directUrgent),Math.max(0,dailyCap-urgentSlots-regularBase));
+ const regularOverflow=Math.min(Math.max(0,p.planned-regularBase),Math.max(0,urgentSlots-directUrgent));
+ const regular=regularBase+regularOverflow,urgentDone=directUrgent+urgentOverflow;
  const missedUrgent=p.urgent-urgentDone,missedPlanned=p.planned-regular;
  const cost=missedUrgent*p.urgentCost+missedPlanned*p.plannedCost;
  const baselineUrgent=Math.min(p.urgent,Math.max(0,dailyCap-Math.min(p.planned,dailyCap)));
@@ -146,7 +148,7 @@ function contract(p){
 }
 function vans(p){
  const demand=[p.needA,p.needB,p.needC],total=Math.min(p.vans*p.capacity,Math.floor(p.stockBudget/p.price));
- const weights=[1.35,1,1.65],placed=[0,0,0],order=[2,0,1],remaining=total;
+ const placed=[0,0,0],order=[2,0,1];let remaining=total;
  for(const idx of order){placed[idx]=Math.min(remaining,demand[idx]);remaining-=placed[idx];}
  const short=demand.map((v,i)=>Math.max(0,v-placed[i])),missed=sum(short);
  return out([

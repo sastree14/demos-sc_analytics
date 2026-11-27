@@ -116,7 +116,24 @@ def main():
         assert page.locator("#results svg").count()==1
         page.locator("[data-case=simulacion]").click()
         assert "500" in page.locator("#results").inner_text()
-        page.locator(".navcase").first.click()
+        page.locator("#role-picker").select_option("finance")
+        assert page.locator(".navcase").count()==7
+        assert "Rentabilidad" in page.locator(".case-head h2").inner_text()
+        page.locator("#role-picker").select_option("ops")
+        assert page.locator(".navcase").count()==10
+        assert "rutas" in page.url
+        page.locator("[data-input=1]").evaluate("(el) => { el.value = 2; el.dispatchEvent(new Event('input', {bubbles:true})); }")
+        assert "pendientes" in page.locator("#execution-status").inner_text()
+        page.locator("#run-model").click()
+        page.locator("#execution-status.done").wait_for()
+        page.locator("[data-question=change]").click()
+        page.locator("#apply-proposal").wait_for()
+        page.locator("#apply-proposal").click()
+        page.locator("#execution-status.done").wait_for()
+        page.locator("[data-question=explain]").click()
+        page.locator(".assistant-reply").wait_for()
+        assert page.locator(".assistant-metric").count()>=2
+        page.locator("#role-picker").select_option("all")
         page.screenshot(path="qa-evidence/logistics-executive.png",full_page=True)
         assert not failures,failures
         browser.close()

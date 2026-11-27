@@ -100,14 +100,22 @@ def main():
                 page.set_viewport_size({"width":1366,"height":850})
             print("PASS",sector,"6 cases",flush=True)
         page.goto(base+"sc01/",wait_until="networkidle")
-        assert page.locator(".navcase").count()==12
+        page.locator(".navcase").first.wait_for()
+        assert page.locator(".navcase").count()==16
         titles=[]
         for button in page.locator(".navcase").all():
             button.click()
             titles.append(page.locator(".case-head h2").inner_text())
             assert page.locator("#results .metric").count()>=2
             assert "NaN" not in page.locator("#results").inner_text()
-        assert len(set(titles))==12
+        assert len(set(titles))==16
+        page.locator("[data-case=rutas]").click()
+        assert page.locator("#map-canvas svg").count()==1
+        assert page.locator("#results table").count()==3
+        page.locator("[data-case=demanda]").click()
+        assert page.locator("#results svg").count()==1
+        page.locator("[data-case=simulacion]").click()
+        assert "500" in page.locator("#results").inner_text()
         page.locator(".navcase").first.click()
         page.screenshot(path="qa-evidence/logistics-executive.png",full_page=True)
         assert not failures,failures

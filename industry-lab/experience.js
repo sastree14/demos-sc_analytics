@@ -144,8 +144,58 @@ function renderResults(){
  }
  renderChart(result.visual);
 }
+const seriesExtras = {
+  "capacity": [
+    "Capacitat",
+    "Capacity"
+  ],
+  "cost": [
+    "Cost",
+    "Cost"
+  ],
+  "demand": [
+    "Demanda",
+    "Demand"
+  ],
+  "dropout": [
+    "Abandonaments",
+    "Non-completions"
+  ],
+  "failures": [
+    "Fallades",
+    "Failures"
+  ],
+  "lower": [
+    "Límit inferior",
+    "Lower bound"
+  ],
+  "repeat": [
+    "Segones visites",
+    "Repeat visits"
+  ],
+  "retained": [
+    "Continuïtat",
+    "Retained learners"
+  ],
+  "revenue": [
+    "Ingressos",
+    "Revenue"
+  ],
+  "review": [
+    "Revisió",
+    "Review"
+  ],
+  "upper": [
+    "Límit superior",
+    "Upper bound"
+  ],
+  "volume": [
+    "Volum",
+    "Volume"
+  ]
+};
 function seriesName(key){
- return ({target:t("target"),actual:t("actual"),reference:t("reference"),scenario:t("scenario"),profit:t("profit"),shortage:t("shortage"),stock:t("stock"),wait:t("wait"),total:t("total"),cases:t("cases"),defects:t("defects"),hours:t("hours"),cash:t("cash"),allocation:t("allocation"),coverage:t("coverage"),energy:t("energy"),amount:t("total")})[key]||key;
+ return ({target:t("target"),actual:t("actual"),reference:t("reference"),scenario:t("scenario"),profit:t("profit"),shortage:t("shortage"),stock:t("stock"),wait:t("wait"),total:t("total"),cases:t("cases"),defects:t("defects"),hours:t("hours"),cash:t("cash"),allocation:t("allocation"),coverage:t("coverage"),energy:t("energy"),amount:t("total")})[key]||(language==="es"?key:(seriesExtras[key]?.[language==="ca"?0:1]||key));
 }
 const palette=["#407e6b","#7d9eb4","#c79a60","#8d83ae"];
 const NS="http://www.w3.org/2000/svg";

@@ -98,7 +98,7 @@ function firstFix(p){
  [["Segundas visitas sin mejora",rnd(repeat)],["Segundas visitas con mejora",rnd(after)],["Coste de referencia (€)",rnd(beforeCost)],["¿Mejora seleccionada?",deploy?"Sí":"No"]]);
 }
 function preventive(p){
- const groups=[.65,1,1.45],qty=groups.map(x=>p.assets*x/3);
+ const groups=[.6,1,1.4],qty=groups.map(x=>p.assets*x/3);
  const baseline=qty.map((n,i)=>n*p.prob/100*groups[i]*p.downtime*p.costHour);
  const withPrevention=baseline.map((x,i)=>x*(1-p.efficacy/100)+qty[i]*p.preventCost);
  const choose=groups.map((_,i)=>({i,gain:baseline[i]-withPrevention[i],cost:qty[i]*p.preventCost})).filter(x=>x.gain>0).sort((a,b)=>b.gain/b.cost-a.gain/a.cost);

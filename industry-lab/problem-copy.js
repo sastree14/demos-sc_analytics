@@ -1,4 +1,4 @@
-/* Industry-specific first-person business questions (synthetic scenario introductions). */
+/* Industry-specific decision-first business questions in ES/CAT/EN. Synthetic cases. */
 export const BUSINESS_QUESTIONS = {
   "SC06": [
     [
@@ -222,6 +222,198 @@ export const BUSINESS_QUESTIONS = {
       "¿Cuánto retraso administrativo podría evitarse reforzando tramitación?",
       "Quant retard administratiu es podria evitar reforçant tramitació?",
       "How much administrative backlog might extra claims-processing capacity reduce?"
+    ]
+  ],
+  "SC13": [
+    [
+      "¿Qué margen me queda cuando un proyecto cerrado consume más horas de las previstas?",
+      "Quin marge em queda si un projecte tancat consumeix més hores de les previstes?",
+      "What margin is left when a fixed-fee project takes longer than expected?"
+    ],
+    [
+      "¿Tenemos horas de cada especialidad suficientes para cumplir los proyectos comprometidos?",
+      "Tenim prou hores de cada especialitat per lliurar els projectes compromesos?",
+      "Do we have enough capacity in each skill to deliver our projects?"
+    ],
+    [
+      "¿Cuántas horas de trabajo puede generar nuestro pipeline comercial si cierra?",
+      "Quantes hores de feina pot generar el pipeline comercial si es tanca?",
+      "How much delivery work could our sales pipeline create if it converts?"
+    ],
+    [
+      "¿Cuánto nos cuesta aceptar cambios de alcance que no llegamos a facturar?",
+      "Quant ens costa acceptar canvis d'abast que no acabem facturant?",
+      "How much do unbilled scope changes cost us?"
+    ],
+    [
+      "¿Cuántas horas documentales ahorraríamos sin reducir la revisión profesional?",
+      "Quantes hores documentals estalviaríem sense reduir la revisió professional?",
+      "How many document-preparation hours could we save without removing human review?"
+    ],
+    [
+      "¿Qué parte del proyecto puede asumir un partner externo dentro del presupuesto?",
+      "Quina part del projecte pot assumir un partner extern dins del pressupost?",
+      "How much of this project could a delivery partner cover within budget?"
+    ]
+  ],
+  "SC14": [
+    [
+      "¿Qué avisos pueden cubrir los técnicos disponibles según su especialidad?",
+      "Quins avisos poden cobrir els tècnics disponibles segons l'especialitat?",
+      "Which service jobs can the available skilled technicians actually cover?"
+    ],
+    [
+      "¿Cuánto nos cuestan las segundas visitas por falta de pieza o diagnóstico adecuado?",
+      "Quant ens costen les segones visites per manca de peça o diagnòstic correcte?",
+      "How much do repeat visits cost when parts or diagnoses are missing?"
+    ],
+    [
+      "¿En qué equipos compensa invertir en prevención para reducir paradas esperadas?",
+      "En quins equips convé invertir en prevenció per reduir aturades esperades?",
+      "Which equipment would justify preventive maintenance spending?"
+    ],
+    [
+      "¿Cuánta capacidad debemos reservar para urgencias sin desatender las visitas previstas?",
+      "Quanta capacitat hem de reservar per urgències sense descuidar visites planificades?",
+      "How much emergency capacity should we reserve without dropping planned jobs?"
+    ],
+    [
+      "¿Qué margen queda en cada contrato después de horas, desplazamientos y piezas?",
+      "Quin marge queda en cada contracte després d'hores, desplaçaments i peces?",
+      "What contract contribution remains after labour, travel and spare parts?"
+    ],
+    [
+      "¿Qué repuestos deberíamos llevar en vehículos si el presupuesto y el espacio son limitados?",
+      "Quins recanvis hauríem de portar als vehicles amb espai i pressupost limitats?",
+      "Which spares should vans carry under limited space and budget?"
+    ]
+  ],
+  "SC15": [
+    [
+      "¿Estamos creciendo por nuevas altas mientras perdemos ingresos de los clientes que ya teníamos?",
+      "Creixem per noves altes mentre perdem ingressos de clients existents?",
+      "Are new signups masking revenue lost from existing customers?"
+    ],
+    [
+      "¿Dónde se quedan nuestros usuarios antes de experimentar el primer valor del producto?",
+      "On es perden els usuaris abans d'obtenir el primer valor del producte?",
+      "Where do users drop out before reaching their first product value?"
+    ],
+    [
+      "¿Cuántas respuestas incorrectas de nuestros agentes podrían quedar sin revisión humana?",
+      "Quantes respostes incorrectes dels agents podrien quedar sense revisió humana?",
+      "How many incorrect agent outputs could remain unreviewed?"
+    ],
+    [
+      "¿Qué parte del coste real procede de inferencia, caché y soporte humano?",
+      "Quina part del cost ve d'inferència, caché i suport humà?",
+      "How much of our AI-service cost comes from inference, caching and support?"
+    ],
+    [
+      "¿Cómo cambiarían MRR y ARR si variamos las altas, el churn y la expansión?",
+      "Com canviarien MRR i ARR en variar altes, churn i expansió?",
+      "How would MRR and ARR change with different new business, churn and expansion?"
+    ],
+    [
+      "¿Cuándo se acumulan tickets y compensa reforzar el equipo de soporte?",
+      "Quan s'acumulen els tiquets i convé reforçar l'equip de suport?",
+      "When does support backlog grow enough to justify extra staffing?"
+    ]
+  ],
+  "SC16": [
+    [
+      "¿Qué continuidad del grupo podríamos esperar con acompañamiento voluntario?",
+      "Quina continuïtat del grup podríem esperar amb acompanyament voluntari?",
+      "How might aggregate course completion change with voluntary support?"
+    ],
+    [
+      "¿Tenemos aulas y profesorado suficientes para cubrir las sesiones sin conflictos?",
+      "Tenim prou aules i professorat per cobrir sessions sense conflictes?",
+      "Do we have enough rooms and teachers to cover planned sessions?"
+    ],
+    [
+      "¿Cuántas matrículas necesitamos para cubrir el coste de una edición?",
+      "Quantes matrícules necessitem per cobrir el cost d'una edició?",
+      "How many enrolments would cover the cost of a course edition?"
+    ],
+    [
+      "¿Cuántas plazas necesitamos para la siguiente convocatoria según el embudo supuesto?",
+      "Quantes places necessitem per a la propera convocatòria segons l'embut suposat?",
+      "How many seats might the next intake require under assumed demand?"
+    ],
+    [
+      "¿Cómo cambiará la cola de consultas si aumentan las solicitudes de estudiantes?",
+      "Com canviarà la cua de consultes si augmenten les sol·licituds d'estudiants?",
+      "How might the student support backlog change as demand rises?"
+    ],
+    [
+      "¿Qué carga docente podemos cubrir en teoría, laboratorio y tutorías?",
+      "Quina càrrega docent podem cobrir en teoria, laboratori i tutories?",
+      "How much teaching demand can we cover in lectures, labs and tutoring?"
+    ]
+  ],
+  "SC17": [
+    [
+      "¿Qué parte del pico de potencia podríamos desplazar sin sobrepasar otra franja?",
+      "Quina part del pic de potència podríem moure sense superar una altra franja?",
+      "How much peak power could shift without creating a new peak elsewhere?"
+    ],
+    [
+      "¿Cómo cambia la demanda energética al variar producción, clima y calendario?",
+      "Com canvia la demanda energètica si varia producció, clima i calendari?",
+      "How does energy demand change with production, weather and the calendar?"
+    ],
+    [
+      "¿Qué alertas producirían estos límites sobre lecturas hipotéticas de sensores?",
+      "Quines alertes produirien aquests llindars sobre lectures hipotètiques?",
+      "Which alerts would these thresholds trigger in synthetic sensor data?"
+    ],
+    [
+      "¿Cuántos equipos podemos mantener durante una parada planificada y con qué beneficio supuesto?",
+      "Quants equips podem mantenir en una parada prevista i amb quin benefici suposat?",
+      "How many assets fit a planned maintenance window, and what might it save?"
+    ],
+    [
+      "¿Compensa desplazar consumo eléctrico de punta a valle con los costes indicados?",
+      "Convé moure consum elèctric de punta a vall amb els costos indicats?",
+      "Does shifting electricity use off-peak pay under these assumed rates?"
+    ],
+    [
+      "¿Qué línea consume más energía por unidad y cuándo compensa intervenir?",
+      "Quina línia consumeix més energia per unitat i quan convé intervenir?",
+      "Which production line uses more energy per unit, and when is intervention worthwhile?"
+    ]
+  ],
+  "SC18": [
+    [
+      "¿Cuánta asistencia esperamos realmente después de cancelaciones y no-shows?",
+      "Quanta assistència esperem després de cancel·lacions i no-shows?",
+      "How many attendees might arrive after cancellations and no-shows?"
+    ],
+    [
+      "¿Qué precios por zona equilibran capacidad, ingresos y contribución esperada?",
+      "Quins preus per zona equilibren capacitat, ingressos i contribució esperada?",
+      "Which ticket prices balance zone capacity and expected contribution?"
+    ],
+    [
+      "¿Se saturarán los accesos en hora punta y conviene abrir más puertas?",
+      "Se saturaran els accessos en hora punta i convé obrir més portes?",
+      "Will peak arrivals overwhelm entry gates, and would more gates help?"
+    ],
+    [
+      "¿Qué efecto financiero tendría una suspensión y cuánto aporta un plan alternativo?",
+      "Quin efecte financer tindria una suspensió i què aporta un pla alternatiu?",
+      "What would a cancellation cost, and could contingency planning help?"
+    ],
+    [
+      "¿Dónde se formará más cola: entrada o restauración, y qué refuerzo compensa?",
+      "On es formarà més cua: entrada o restauració, i quin reforç compensa?",
+      "Where will queues build first, at entry or concessions, and what capacity would help?"
+    ],
+    [
+      "¿Qué margen deja el evento después de comisiones, recinto, personal y producción?",
+      "Quin marge deixa l'esdeveniment després de comissions, recinte, personal i producció?",
+      "What event contribution remains after ticket fees, production, staffing and venue costs?"
     ]
   ]
 };

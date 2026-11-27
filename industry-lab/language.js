@@ -13,9 +13,18 @@ export function chooseLanguage(initial, onChoose) {
     button.autofocus = code === initial;
     dialog.querySelector('form div').append(button);
   }
-  dialog.addEventListener('close', () => {
-    onChoose(dialog.returnValue || initial);
+  function finish(code) {
+    dialog.close();
     dialog.remove();
-  }, {once:true});
+    onChoose(code);
+  }
+  dialog.querySelector('form').addEventListener('submit', event => {
+    event.preventDefault();
+    finish(event.submitter?.value || initial);
+  });
+  dialog.addEventListener('cancel', event => {
+    event.preventDefault();
+    finish(initial);
+  });
   dialog.showModal();
 }

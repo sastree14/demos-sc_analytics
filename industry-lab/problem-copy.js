@@ -1,5 +1,167 @@
 /* Industry-specific decision-first business questions in ES/CAT/EN. Synthetic cases. */
 export const BUSINESS_QUESTIONS = {
+
+  "SC01": [
+    [
+      "¿Cuánto margen conserva una ruta después de pagar esperas y kilómetros en vacío?",
+      "Quin marge conserva una ruta després de pagar esperes i quilòmetres en buit?",
+      "How much margin remains after waiting time and empty mileage?"
+    ],
+    [
+      "¿Cuándo compensa aceptar una carga de retorno al precio que ofrece el cliente?",
+      "Quan compensa acceptar una càrrega de retorn al preu que ofereix el client?",
+      "When is a paid backhaul worth the extra handling cost?"
+    ],
+    [
+      "¿Qué paradas caben en el turno y cuánta flota necesito para cubrir el plan?",
+      "Quines parades caben al torn i quanta flota necessito per cobrir el pla?",
+      "Which stops fit in one shift and how much fleet capacity does the plan need?"
+    ],
+    [
+      "¿Subcontratamos entregas urgentes o asumimos el coste de incumplirlas?",
+      "Subcontractem lliuraments urgents o assumim el cost de no fer-los?",
+      "Should we outsource urgent deliveries or absorb the cost of missed orders?"
+    ],
+    [
+      "¿En qué periodo superará la carga prevista la capacidad de la delegación?",
+      "En quin període superarà la càrrega prevista la capacitat de la delegació?",
+      "When will projected volume exceed the depot’s capacity?"
+    ],
+    [
+      "¿Cuánta capacidad externa necesito para cumplir el servicio y a qué coste?",
+      "Quanta capacitat externa necessito per complir el servei i a quin cost?",
+      "How much external capacity do we need to meet the service target, and at what cost?"
+    ]
+  ],
+  "SC02": [
+    [
+      "¿Qué nivel de stock equilibra el coste de guardar y el de perder un pedido?",
+      "Quin nivell d’estoc equilibra el cost de guardar i el de perdre una comanda?",
+      "What stock level balances holding costs against missed orders?"
+    ],
+    [
+      "¿Sale más barato trasladar existencias entre almacenes que aceptar una rotura?",
+      "Surt més a compte traslladar estoc entre magatzems que assumir una ruptura?",
+      "Is it cheaper to transfer stock between warehouses than to accept a shortage?"
+    ],
+    [
+      "¿Qué margen de protección necesitamos si el proveedor entrega con retraso?",
+      "Quin marge de protecció necessitem si el proveïdor lliura amb retard?",
+      "How much protection do we need if supplier deliveries run late?"
+    ],
+    [
+      "¿Compensa el descuento por volumen una vez incluido el coste de mantener el lote?",
+      "Compensa el descompte per volum un cop inclòs el cost de mantenir el lot?",
+      "Does a volume discount outweigh the cost of holding the larger lot?"
+    ],
+    [
+      "¿Qué pedidos siguen siendo rentables al incluir preparación y transporte?",
+      "Quines comandes continuen sent rendibles amb la preparació i el transport?",
+      "Which orders remain profitable after handling and freight?"
+    ],
+    [
+      "¿Qué referencias merecen reposición y cuáles concentran el riesgo de obsolescencia?",
+      "Quines referències convé reposar i quines concentren el risc d’obsolescència?",
+      "Which items merit replenishment and which carry the most obsolescence risk?"
+    ]
+  ],
+  "SC03": [
+    [
+      "¿Qué secuencia de órdenes reduce las esperas en el cuello de botella?",
+      "Quina seqüència d’ordres redueix les esperes al coll d’ampolla?",
+      "Which job sequence reduces waiting at the bottleneck?"
+    ],
+    [
+      "¿Cubre el turno la demanda comprometida o necesitamos capacidad adicional?",
+      "Cobreix el torn la demanda compromesa o necessitem més capacitat?",
+      "Can this shift cover committed demand or do we need extra capacity?"
+    ],
+    [
+      "¿Cuándo compensa parar para mantenimiento frente al coste de una avería?",
+      "Quan compensa aturar-se per manteniment davant el cost d’una avaria?",
+      "When is planned maintenance worthwhile given the cost of a breakdown?"
+    ],
+    [
+      "¿Cuántas unidades vendibles perdemos cuando cae el rendimiento del proceso?",
+      "Quantes unitats venibles perdem quan baixa el rendiment del procés?",
+      "How many sellable units do we lose when process yield drops?"
+    ],
+    [
+      "¿Qué producción podemos comprometer con las materias primas disponibles?",
+      "Quina producció podem comprometre amb les matèries primeres disponibles?",
+      "What production can we commit to with available raw materials?"
+    ],
+    [
+      "¿Qué combinación de órdenes cabe en el presupuesto energético del turno?",
+      "Quina combinació d’ordres cap dins el pressupost energètic del torn?",
+      "Which order mix fits within the shift’s energy budget?"
+    ]
+  ],
+  "SC04": [
+    [
+      "¿Cuánto conviene preparar si la demanda oscila y perder una venta tiene coste?",
+      "Quant convé preparar si la demanda oscil·la i perdre una venda té un cost?",
+      "How much should we prepare when demand fluctuates and missed sales cost money?"
+    ],
+    [
+      "¿Qué parte del lote podemos vender antes de su fecha de caducidad?",
+      "Quina part del lot podem vendre abans de la data de caducitat?",
+      "How much of this batch can we sell before its expiry date?"
+    ],
+    [
+      "¿Qué tamaño de lote equilibra preparación, almacenamiento y merma?",
+      "Quina mida de lot equilibra preparació, emmagatzematge i minva?",
+      "Which batch size balances setup, storage and waste?"
+    ],
+    [
+      "¿El volumen adicional de la promoción cubre el descuento y sus costes?",
+      "El volum addicional de la promoció cobreix el descompte i els costos?",
+      "Will the promotion’s extra volume cover the discount and its costs?"
+    ],
+    [
+      "¿Cuántas entregas refrigeradas caben en la ventana de reparto disponible?",
+      "Quants lliuraments refrigerats caben dins la finestra de repartiment disponible?",
+      "How many refrigerated deliveries fit inside the available delivery window?"
+    ],
+    [
+      "¿Qué cobertura permite mantener el plan si varía el suministro previsto?",
+      "Quina cobertura permet mantenir el pla si varia el subministrament previst?",
+      "How much cover keeps the plan on track if incoming supplies vary?"
+    ]
+  ],
+  "SC05": [
+    [
+      "¿Cómo afecta una desviación de rendimiento al volumen disponible del lote?",
+      "Com afecta una desviació de rendiment el volum disponible del lot?",
+      "How does a yield deviation affect available batch volume?"
+    ],
+    [
+      "¿Cuánta revisión de calidad hace falta para reducir la cola de liberación?",
+      "Quanta revisió de qualitat cal per reduir la cua d’alliberament?",
+      "How much quality review capacity is needed to reduce the release backlog?"
+    ],
+    [
+      "¿Qué cobertura de materiales críticos protege el calendario de pedidos?",
+      "Quina cobertura de materials crítics protegeix el calendari de comandes?",
+      "How much critical material coverage protects the order schedule?"
+    ],
+    [
+      "¿Qué calendario de campañas deja suficiente capacidad entre cambios de serie?",
+      "Quin calendari de campanyes deixa prou capacitat entre canvis de sèrie?",
+      "Which campaign schedule leaves enough capacity between changeovers?"
+    ],
+    [
+      "¿Qué alertas debe revisar primero el equipo con su capacidad disponible?",
+      "Quines alertes ha de revisar primer l’equip amb la capacitat disponible?",
+      "Which alerts should the team review first with its available capacity?"
+    ],
+    [
+      "¿Qué expedientes necesitan revisión para completar la trazabilidad documental?",
+      "Quins expedients necessiten revisió per completar la traçabilitat documental?",
+      "Which records need review to complete the documentation trail?"
+    ]
+  ]
+,
   "SC06": [
     [
       "¿Cuántas personas necesito en cada franja para atender pedidos sin sobredimensionar la plantilla?",

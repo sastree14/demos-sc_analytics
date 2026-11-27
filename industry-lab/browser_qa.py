@@ -29,6 +29,7 @@ def main():
         page.goto(base+"index.html",wait_until="networkidle")
         page.get_by_role("button",name="Castellano",exact=True).click()
         assert page.locator("#industry-grid article").count()==18,"Industry catalog is incomplete"
+        assert page.locator("#industry-grid a[href*='experience.html']").count()==1
         if page.locator("#tour").evaluate("el => el.open"):
             page.locator("#tour-skip").click()
         assert page.locator("#capabilities").is_hidden(),"Capability view should start hidden"
@@ -49,6 +50,13 @@ def main():
                     assert page.locator("html").get_attribute("lang")==language
                     assert page.locator("#case-description").inner_text().strip()
                     assert page.locator("#contact-link").get_attribute("href").endswith("case="+sector+"-P"+str(idx+1).zfill(2))
+                assert page.locator("#plan-board .plan-row").count()==3
+                page.locator("#plan-board select").select_option("1")
+                if sector=="SC01" and idx==2:
+                    page.locator("#route-studio button").click()
+                    page.get_by_text("Route recalculated",exact=True).wait_for()
+                    assert page.locator("#route-studio circle").count()==7
+                    page.locator("#route-studio").screenshot(path="qa-evidence/route-studio.png")
                 if sector=="SC02" and idx==5:
                     page.locator("#stock-groups select").select_option("4")
                     assert page.locator("#stock-groups circle").count()==24
@@ -72,7 +80,8 @@ def main():
                 page.locator("#input-grid input[type=range]").first.evaluate("(el) => { el.value = el.value !== el.max ? el.max : el.min; el.dispatchEvent(new Event('input', {bubbles:true})); }")
                 page.locator("#run").click()
                 page.locator("#save-b").click()
-                assert page.locator("#compare-result .compare-table>div").count()==15
+                page.locator("#save-c").click()
+                assert page.locator("#compare-result .compare-table>div").count()==20
                 with page.expect_download() as download:
                     page.locator("#download").click()
                 assert download.value.suggested_filename.endswith(".html")

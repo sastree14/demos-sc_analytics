@@ -18,7 +18,7 @@ export const links=[
 ];
 const money=n=>new Intl.NumberFormat("es-ES",{style:"currency",currency:"EUR",maximumFractionDigits:0}).format(Number(n)||0);
 const percent=n=>(100*n).toFixed(1)+"%";
-const number=value=>{
+export const number=value=>{
  if(typeof value==="number")return value;
  const s=String(value??"").replace(/[€£\s%]/g,"").replace(/[^0-9.,+\-]/g,"");
  if(!s)return NaN;const comma=s.lastIndexOf(","),dot=s.lastIndexOf(".");

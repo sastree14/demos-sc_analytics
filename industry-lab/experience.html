@@ -39,6 +39,7 @@
   <h1 id="industry-name">Logística y transporte</h1>
   <p class="hero-lead" data-i18n="welcome">Una decisión empresarial, varias alternativas posibles.</p>
   <p class="hero-contextline" id="industry-context"></p>
+  <a class="hero-jump" id="hero-jump" href="#plan-board"></a>
   <p class="hero-note" data-i18n="context">Demo con datos sintéticos · no representa una implementación real</p>
  </section>
  <section class="experience">
@@ -56,6 +57,8 @@
    <button id="restart-tour" class="side-help" type="button"><span class="help-icon">?</span><span data-i18n="help">¿Cómo funciona?</span></button>
   </aside>
   <div class="maincol">
+   <section id="route-studio" class="route-studio" hidden></section>
+   <section id="plan-board" class="plan-board" aria-live="polite"></section>
    <div class="problem-heading">
     <div>
       <p class="eyebrow"><span id="case-count">01 / 06</span> <span data-i18n="model">Modelo ilustrativo</span></p>
@@ -105,6 +108,7 @@
     <div class="compare-controls">
       <button id="save-a" class="button-outline" type="button" data-i18n="saveA">Guardar escenario A</button>
       <button id="save-b" class="button-outline" type="button" data-i18n="saveB">Guardar escenario B</button>
+      <button id="save-c" class="button-outline" type="button"></button>
       <button id="download" class="text-button" type="button"><span aria-hidden="true">↓</span><span data-i18n="download">Descargar informe</span></button>
     </div>
     <p id="compare-hint" data-i18n="emptyCompare">Guarda A y B para comparar.</p>

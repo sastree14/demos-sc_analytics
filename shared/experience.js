@@ -1,4 +1,4 @@
-import {evaluateDecision,answerGuide,explainSensitivity,links,familyColors} from "./decision-engine.js";
+import {evaluateDecision,answerGuide,explainSensitivity,number,links,familyColors} from "./decision-engine.js";
 
 /**
  * Installs a reusable, fully-local decision layer across SC-Analytics demos.
@@ -34,14 +34,16 @@ export function installDecisionExperience({family,read,apply,run,simulate}){
  const toolbar=el("section","sc-toolbar");
  toolbar.setAttribute("aria-label","Decision workspace tools");
  const toolbarCopy=el("div");toolbarCopy.append(el("h3","","Decision workspace"),el("small","","Understand the current result, test alternatives and explain the next action."));
+ const serviceCTA=el("a","sc-action sc-action-primary","Explore this with our data");
+ const impactBoard=el("section","sc-impact-board");
  const toolbarActions=el("div","sc-toolbar-actions");
  toolbarActions.append(makeButton("Open full report ↗",()=>openReport(0),"sc-action sc-action-primary"),
   makeButton("Compare scenarios",()=>openReport(2)),
   makeButton("Ask Decision Guide",()=>toggleGuide(true)),makeButton("Preview client branding",()=>previewBrand()));
- toolbar.append(toolbarCopy,toolbarActions);
+ toolbarActions.append(serviceCTA);toolbar.append(toolbarCopy,toolbarActions);
  const root=document.querySelector(".body,.main-column main,.workspace main,main")||document.body;
  const hero=root.querySelector(".hero,.intro");
- if(hero)hero.after(toolbar);else root.prepend(toolbar);
+ if(hero)hero.after(toolbar);else root.prepend(toolbar);toolbar.after(impactBoard);
 
  const callout=el("section","sc-decision");
  callout.setAttribute("aria-label","What should you do next?");
@@ -318,6 +320,29 @@ export function installDecisionExperience({family,read,apply,run,simulate}){
   if(state.context?.id!==ctx.id)log.replaceChildren();
   log.querySelectorAll(".sc-guide-quick").forEach(row=>row.remove());
   state.context=ctx;
+  toolbarCopy.querySelector("h3").textContent=ctx.label;
+  toolbarCopy.querySelector("small").textContent="Change one business constraint and see what it does to the result. A client implementation uses your records, rules and costs.";
+  const url=new URL("https://www.sc-analytics.io/contact");url.searchParams.set("intent","problem");url.searchParams.set("demo",canonical);url.searchParams.set("case",ctx.id);serviceCTA.href=url.href;
+  impactBoard.replaceChildren();
+  const control=ctx.controls?.find(c=>c.kind!=="choice"&&Number.isFinite(c.max)&&Number.isFinite(c.min)&&Number.isFinite(Number(ctx.params[c.key])));
+  if(control&&simulate){
+   const step=control.step||1,base=Number(ctx.params[control.key]),shift=step*Math.max(1,Math.round((control.max-control.min)*.12/step));
+   const levels=[base,Math.max(control.min,base-shift),Math.min(control.max,base+shift)];
+   const outcomes=levels.map((v,i)=>i?simulate(ctx.id,{...ctx.params,[control.key]:v}):ctx.result);
+   const impacts=outcomes.map(o=>number(o.impact?.value));
+   if(impacts.every(Number.isFinite)){
+    impactBoard.append(el("h3","",ctx.result.impact.label),el("p","","Three scenarios for "+control.label+". All other inputs match the current plan."));
+    const lo=Math.min(0,...impacts),hi=Math.max(0,...impacts),span=hi-lo||1;
+    outcomes.forEach((o,i)=>{
+     const row=el("div","sc-impact-row"),track=el("span","sc-impact-track"),bar=el("i");
+     bar.style.left=(Math.min(0,impacts[i])-lo)/span*100+"%";bar.style.width=Math.abs(impacts[i])/span*100+"%";track.append(bar);
+     const diff=impacts[i]-impacts[0],currency=String(o.impact.value).includes("€");
+     const delta=new Intl.NumberFormat("en-GB",{signDisplay:"exceptZero",maximumFractionDigits:2,...(currency?{style:"currency",currency:"EUR"}:{})}).format(diff);
+     row.append(el("b","","ABC"[i]),el("span","",levels[i]+(control.unit||"")),track,el("strong","",String(o.impact.value)),el("small","",i?delta+" vs A":"Reference"));impactBoard.append(row);
+    });
+   }
+  }
+  impactBoard.hidden=!impactBoard.childElementCount;
   state.decision=evaluateDecision(ctx);
   badge.textContent=state.decision.status;badge.dataset.level=state.decision.level;
   headline.textContent=state.decision.level==="wait"?"Monitor before changing the plan":

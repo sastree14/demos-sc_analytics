@@ -1,3 +1,5 @@
+import {scenarioBoard} from "./scenarios.js";
+import {routeStudio} from "./route.js";
 import {allocationPlot,stockGroups} from "./decision-plots.js";
 import {chooseLanguage} from "./language.js";
 import {INDUSTRY_CATALOG} from "./catalog.js";
@@ -13,16 +15,18 @@ language=["es","ca","en"].includes(language)?language:(navigator.language?.toLow
 const requested=(query.get("sector")||query.get("industry")||"SC01").toUpperCase();
 const sectors=INDUSTRY_CATALOG.sectors;
 let sector=sectors.find(x=>x.code===requested)||sectors[0];
-let problem=sector.pain_points.find(x=>x.id===query.get("case"))||sector.pain_points[0];
+let problem=sector.pain_points.find(x=>x.id===query.get("case"))||(sector.code==="SC01"?sector.pain_points[2]:sector.pain_points[0]);
 let values={},lastValues={},result=null,snapshots={A:null,B:null};
-let tutorialStep=0;
+let tutorialStep=0,metricIndex=0;
+const word=(es,ca,en)=>({es,ca,en})[language];
+function board(){scenarioBoard($("plan-board"),problem.model,lastValues,language,format,snapshots,metricIndex,i=>{metricIndex=i;board();});}
 const formatters={};
 const loc=()=>language==="ca"?"ca-ES":language==="es"?"es-ES":"en-GB";
 const t=key=>UI[language][key]??UI.es[key]??key;
 const tr=ob=>(typeof ob==="string"?ob:(ob?.[language]||ob?.es||""));
 const stateLocale=(str,key)=>language==="es"?str:(sectorText[sector.code]?.problems?.[key]?.[language]||str);
 function sectorName(){return language==="es"?sector.name:(sectorText[sector.code]?.[language]||sector.name);}
-function caseName(p){return stateLocale(p.title,sector.pain_points.findIndex(x=>x.id===p.id));}
+function caseName(p){if(p.id==="SC01-P03")return ({es:"Optimización de rutas y asignación de flota",ca:"Optimització de rutes i assignació de flota",en:"Route optimisation and fleet allocation"})[language];return stateLocale(p.title,sector.pain_points.findIndex(x=>x.id===p.id));}
 function format(v,unit="number"){
  if(!Number.isFinite(v))return "—";
  const digits=unit==="eur4"?3:unit==="minutes"?1:Math.abs(v)<10&&unit!=="number"?1:Math.abs(v)<1?2:Math.abs(v)<100?1:0;
@@ -75,7 +79,7 @@ function buildNav(){
 function chooseProblem(caseId){
  const next=sector.pain_points.find(x=>x.id===caseId);if(!next)return;
  problem=next;values=defaultInputs(problem.model,problem.scenario_seed);
- snapshots={A:null,B:null};
+ snapshots={A:null,B:null,C:null};metricIndex=0;
  result=null;lastValues={};
  buildNav();renderCase(true);syncUrl();
 }
@@ -85,6 +89,18 @@ function renderCase(rebuildControls=true){
  const question=BUSINESS_QUESTIONS[sector.code]?.[sector.pain_points.indexOf(problem)];
  const description=question?(question[language==="es"?0:language==="ca"?1:2]):(language==="es"?problem.example_controls:(language==="ca"?"Analitza aquest repte amb paràmetres simulats i compara escenaris de "+tr(MODELS[problem.model].title).toLowerCase()+".":"Explore this challenge with synthetic inputs and compare "+tr(MODELS[problem.model].title).toLowerCase()+" scenarios."));
  $("case-description").textContent=description;
+ $("industry-name").textContent=caseName(problem);
+ document.querySelector(".hero-context .eyebrow").textContent=sectorName();
+ document.querySelector(".hero-lead").textContent=description;
+ $("case-description").textContent=tr(MODELS[problem.model].title);
+ $("industry-context").textContent=word("Trabajamos con tus datos, tus costes y las restricciones de tu operación. Aquí puedes probar la decisión con datos ilustrativos.","Treballem amb les teves dades, els teus costos i les restriccions de la teva operació. Aquí pots provar la decisió amb dades il·lustratives.","Your data, costs and operating constraints shape the final system. Try the decision here with illustrative data.");
+ $("route-studio").hidden=problem.id!=="SC01-P03";
+ if(!$("route-studio").hidden)routeStudio($("route-studio"),language);
+ $("save-c").textContent=word("Guardar escenario C","Desar escenari C","Save scenario C");
+ $("run").firstElementChild.textContent=word("Simular con estas condiciones","Simular amb aquestes condicions","Simulate with these assumptions");
+ $("case-title").textContent=word("¿Qué puedes cambiar?","Què pots canviar?","What can you change?");
+ $("hero-jump").textContent=word("Explorar el resultado","Explorar el resultat","Explore the result");
+ $("contact-link").firstElementChild.textContent=sector.code==="SC01"?word("Aplicarlo a mis rutas y costes","Aplicar-ho a les meves rutes i costos","Apply this to my routes and costs"):word("Probarlo con mis datos","Provar-ho amb les meves dades","Explore this with my data");
  if(!result){values=defaultInputs(problem.model,problem.scenario_seed);result=calculate(problem.model,values);lastValues={...values};rebuildControls=true;}
  if(rebuildControls)renderInputs();
  renderResults();renderComparison();
@@ -144,7 +160,20 @@ function renderResults(){
   const data=document.createElement("td");data.textContent=tableValue(value);
   row.append(label,data);tbody.append(row);
  }
+ board();
  renderChart(result.visual);
+ if(problem.model==="forecast"){
+  const v=result.visual, base=v.series[0].values, u=lastValues.uncertainty/100, capacity=lastValues.capacity;
+  const low=base.map(x=>x*(1-u)),high=base.map(x=>x*(1+u));
+  const peak=high.indexOf(Math.max(...high));
+  const labels=[word("Central","Central","Central"),word("Baja","Baixa","Lower"),word("Alta","Alta","Upper"),word("Capacidad","Capacitat","Capacity")];
+  renderChart({...v,series:[base,low,high,base.map(()=>capacity)].map((values,j)=>({key:labels[j],values}))});
+  $("explanation").textContent=word("En ","En ","In ")+v.labels[peak]+word(", la demanda del escenario alto alcanza ",", la demanda de l’escenari alt arriba a ",", high-case demand reaches ")+format(high[peak])+word(" frente a una capacidad de "," davant d’una capacitat de "," against capacity of ")+format(capacity)+". "+word("Las bandas representan la variación supuesta, no una probabilidad estimada.","Les bandes representen la variació suposada, sense probabilitat estimada.","The range reflects assumed variation, without an estimated probability.");
+ }
+ if(problem.model==="subcontract"){
+  const p=lastValues,gap=Math.max(0,Math.ceil(p.orders*p.serviceTarget/100)-p.ownCapacity-p.externalCap);
+  if(gap)$("explanation").textContent=word("Faltan ","Falten ","You need ")+gap+word(" entregas de capacidad para alcanzar el objetivo. Amplía la flota propia o externa y compara el coste."," lliuraments de capacitat per assolir l’objectiu. Amplia la flota pròpia o externa i compara el cost."," more delivery slots to meet the target. Increase in-house or external capacity and compare costs.");
+ }
  const grouping=$("stock-groups");
  grouping.hidden=problem.id!=="SC02-P06";
  if(!grouping.hidden)stockGroups(grouping,language);
@@ -548,14 +577,15 @@ function save(which){
  renderComparison();
 }
 function renderComparison(){
- const a=snapshots.A,b=snapshots.B,container=$("compare-result");container.replaceChildren();
- $("compare-hint").hidden=!!(a||b);
- if(!a&&!b)return;
+ board();
+ const a=snapshots.A,b=snapshots.B,c=snapshots.C,container=$("compare-result");container.replaceChildren();
+ $("compare-hint").hidden=true;
+ if(!a&&!b&&!c)return;
  const table=document.createElement("div");table.className="compare-table";
- for(const cell of ["",t("scenarioA"),t("scenarioB")]){const span=document.createElement("div");span.className="compare-head";span.textContent=cell;table.append(span);}
- for(const m of (a||b).metrics){
+ for(const cell of ["",t("scenarioA"),t("scenarioB"),"C"]){const span=document.createElement("div");span.className="compare-head";span.textContent=cell;table.append(span);}
+ for(const m of (a||b||c).metrics){
   const left=document.createElement("div");left.textContent=metricLabel(m.key,language);table.append(left);
-  for(const snapshot of [a,b]){
+  for(const snapshot of [a,b,c]){
    const cell=document.createElement("div");cell.className="compare-num";
    const value=snapshot?.metrics.find(x=>x.key===m.key);
    cell.textContent=value?format(value.value,value.unit):"—";table.append(cell);
@@ -573,7 +603,8 @@ function report(){
   const x=MODELS[problem.model].inputs.find(f=>f.key===k);
   return "<tr><td>"+escaped(tr(x.label))+"</td><td>"+escaped(format(v,x.unit))+"</td></tr>";
  }).join("");
- const html='<!doctype html><html lang="'+language+'"><meta charset="utf-8"><title>'+escaped(t("reportTitle"))+'</title><style>body{font:15px Arial,sans-serif;max-width:850px;margin:45px auto;padding:0 30px;color:#102b31;line-height:1.6}h1{font:normal 34px Georgia,serif}table{border-collapse:collapse;width:100%;margin:20px 0}td{padding:9px;border-bottom:1px solid #ddd}td:last-child{text-align:right}small{color:#60716b}.brand{color:#28664e;font-weight:bold}</style><p class="brand">SC-Analytics · Industry Decision Lab</p><h1>'+escaped(sectorName())+' — '+escaped(caseName(problem))+'</h1><p>'+escaped(t("reportSource"))+'</p><h2>'+escaped(t("controls"))+'</h2><table>'+vars+'</table><h2>'+escaped(t("metrics"))+'</h2><table>'+rows+'</table><h2>'+escaped(detailsTitle)+'</h2><table>'+details+'</table><h2>'+escaped(t("formula"))+'</h2><p>'+escaped($("formula").textContent)+'</p><h2>'+escaped(t("limitations"))+'</h2><p>'+escaped($("limitations").textContent)+'</p><p>'+escaped(discuss)+' <a href="https://www.sc-analytics.io/contact">SC-Analytics</a></p><small>https://www.sc-analytics.io/ · '+escaped(new Date().toLocaleDateString(loc()))+'</small></html>';
+ const comparison=Array.from($("plan-board").querySelectorAll(".plan-row"),row=>"<tr>"+[".plan-key",".plan-input",".plan-value"].map(sel=>"<td>"+escaped(row.querySelector(sel).innerText)+"</td>").join("")+"</tr>").join("");
+ const html='<!doctype html><html lang="'+language+'"><meta charset="utf-8"><title>'+escaped(t("reportTitle"))+'</title><style>body{font:15px Arial,sans-serif;max-width:850px;margin:45px auto;padding:0 30px;color:#102b31;line-height:1.6}h1{font:normal 34px Georgia,serif}table{border-collapse:collapse;width:100%;margin:20px 0}td{padding:9px;border-bottom:1px solid #ddd}td:last-child{text-align:right}small{color:#60716b}.brand{color:#28664e;font-weight:bold}</style><p class="brand">SC-Analytics · Industry Decision Lab</p><h1>'+escaped(sectorName())+' — '+escaped(caseName(problem))+'</h1><p>'+escaped(t("reportSource"))+'</p><h2>'+escaped(t("controls"))+'</h2><table>'+vars+'</table><h2>'+escaped(t("metrics"))+'</h2><table>'+rows+'</table><h2>'+escaped(t('compare'))+' · '+escaped($('plan-board').querySelector('select').selectedOptions[0].textContent)+'</h2><table>'+comparison+'</table><h2>'+escaped(detailsTitle)+'</h2><table>'+details+'</table><h2>'+escaped(t("formula"))+'</h2><p>'+escaped($("formula").textContent)+'</p><h2>'+escaped(t("limitations"))+'</h2><p>'+escaped($("limitations").textContent)+'</p><p>'+escaped(discuss)+' <a href="https://www.sc-analytics.io/contact">SC-Analytics</a></p><small>https://www.sc-analytics.io/ · '+escaped(new Date().toLocaleDateString(loc()))+'</small></html>';
  const blob=new Blob([html],{type:"text/html;charset=utf-8"}),url=URL.createObjectURL(blob);
  const a=document.createElement("a");a.href=url;a.download=sector.code.toLowerCase()+"-"+problem.id.toLowerCase()+"-sc-analytics.html";
  document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
@@ -607,8 +638,9 @@ function configure(){
  document.querySelectorAll("[data-locale]").forEach(btn=>btn.addEventListener("click",()=>applyLanguage(btn.dataset.locale)));
  $("mobile-case").addEventListener("change",e=>chooseProblem(e.target.value));
  $("run").addEventListener("click",execute);
- $("reset").addEventListener("click",()=>{values=defaultInputs(problem.model,problem.scenario_seed);result=calculate(problem.model,values);lastValues={...values};renderInputs();renderResults();$("unsaved").hidden=true;});
+ $("reset").addEventListener("click",()=>{values=defaultInputs(problem.model,problem.scenario_seed);result=calculate(problem.model,values);lastValues={...values};renderInputs();renderResults();renderComparison();$("unsaved").hidden=true;});
  $("save-a").addEventListener("click",()=>save("A"));$("save-b").addEventListener("click",()=>save("B"));
+ $("save-c").addEventListener("click",()=>save("C"));
  $("download").addEventListener("click",report);
  $("copy-link").addEventListener("click",copyLink);
  $("restart-tour").addEventListener("click",openTour);

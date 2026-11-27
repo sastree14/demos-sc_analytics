@@ -53,8 +53,10 @@ def main():
                 assert page.locator("#plan-board .plan-row").count()==3
                 page.locator("#plan-board select").select_option("1")
                 if sector=="SC01" and idx==2:
-                    page.locator("#route-studio button").click()
+                    page.get_by_role("button",name="Optimise route",exact=True).click()
                     page.get_by_text("Route recalculated",exact=True).wait_for()
+                    page.locator(".route-plans button").nth(2).click()
+                    assert "versus A" in page.locator(".route-detail").inner_text()
                     assert page.locator("#route-studio circle").count()==7
                     page.locator("#route-studio").screenshot(path="qa-evidence/route-studio.png")
                 if sector=="SC02" and idx==5:

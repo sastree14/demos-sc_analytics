@@ -161,6 +161,7 @@ function renderResults(){
   row.append(label,data);tbody.append(row);
  }
  board();
+ $("period-inspect").hidden=true;
  renderChart(result.visual);
  if(problem.model==="forecast"){
   const v=result.visual, base=v.series[0].values, u=lastValues.uncertainty/100, capacity=lastValues.capacity;
@@ -168,6 +169,19 @@ function renderResults(){
   const peak=high.indexOf(Math.max(...high));
   const labels=[word("Central","Central","Central"),word("Baja","Baixa","Lower"),word("Alta","Alta","Upper"),word("Capacidad","Capacitat","Capacity")];
   renderChart({...v,series:[base,low,high,base.map(()=>capacity)].map((values,j)=>({key:labels[j],values}))});
+  const points=$("chart").querySelectorAll("circle");
+  const inspection=$("period-inspect");inspection.hidden=false;inspection.replaceChildren();
+  const period=document.createElement("input");period.type="range";period.min=1;period.max=base.length;period.value=peak+1;
+  const inspectLabel=word("Explorar periodo","Explorar període","Explore period");period.setAttribute("aria-label",inspectLabel);
+  const readout=document.createElement("strong");inspection.append(inspectLabel,period,readout);
+  const marker=svgEl("g",{"pointer-events":"none"});$("chart").append(marker);
+  const annotate=()=>{
+   const i=Number(period.value)-1,dot=points[2*base.length+i];if(!dot)return;
+   const x=Number(dot.getAttribute("cx")),y=Number(dot.getAttribute("cy")),w=144,bx=Math.max(69,Math.min(760-w-10,x-w/2)),by=y<64?y+12:y-39;
+   marker.replaceChildren(svgEl("circle",{cx:x,cy:y,r:7,stroke:"#9f511d",fill:"none","stroke-width":2}),svgEl("rect",{x:bx,y:by,width:w,height:25,rx:5,fill:"#fff1da",stroke:"#ca9256"}),svgEl("text",{x:bx+w/2,y:by+17,"text-anchor":"middle"},v.labels[i]+" · "+labels[2]+" "+format(high[i])));
+   readout.textContent=v.labels[i]+" · "+labels[1]+" "+format(low[i])+" / "+labels[0]+" "+format(base[i])+" / "+labels[2]+" "+format(high[i])+" · "+word("Capacidad adicional","Capacitat addicional","Extra capacity")+" "+format(Math.max(0,Math.ceil(high[i]-capacity)));
+  };
+  period.oninput=annotate;points.forEach((dot,j)=>dot.addEventListener("click",()=>{period.value=j%base.length+1;annotate();}));annotate();
   $("explanation").textContent=word("En ","En ","In ")+v.labels[peak]+word(", la demanda del escenario alto alcanza ",", la demanda de l’escenari alt arriba a ",", high-case demand reaches ")+format(high[peak])+word(" frente a una capacidad de "," davant d’una capacitat de "," against capacity of ")+format(capacity)+". "+word("Las bandas representan la variación supuesta, no una probabilidad estimada.","Les bandes representen la variació suposada, sense probabilitat estimada.","The range reflects assumed variation, without an estimated probability.");
  }
  if(problem.model==="subcontract"){

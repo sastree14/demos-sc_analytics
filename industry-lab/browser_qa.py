@@ -36,7 +36,7 @@ def main():
         page.locator("#tab-capabilities").click()
         assert page.locator("#capability-grid article").count()==7
         for sector in SECTORS:
-            page.goto(base+f"{sector.lower()}/",wait_until="networkidle")
+            page.goto(base+("experience.html?sector=SC01" if sector=="SC01" else f"{sector.lower()}/"),wait_until="networkidle")
             page.get_by_role("button",name="English",exact=True).click()
             assert page.locator("html").get_attribute("lang")=="en"
             if page.locator("#guide-dialog").evaluate("el => el.open"):
@@ -99,6 +99,17 @@ def main():
                 page.screenshot(path="qa-evidence/industry-lab-sc01-mobile.png",full_page=True)
                 page.set_viewport_size({"width":1366,"height":850})
             print("PASS",sector,"6 cases",flush=True)
+        page.goto(base+"sc01/",wait_until="networkidle")
+        assert page.locator(".navcase").count()==12
+        titles=[]
+        for button in page.locator(".navcase").all():
+            button.click()
+            titles.append(page.locator(".case-head h2").inner_text())
+            assert page.locator("#results .metric").count()>=2
+            assert "NaN" not in page.locator("#results").inner_text()
+        assert len(set(titles))==12
+        page.locator(".navcase").first.click()
+        page.screenshot(path="qa-evidence/logistics-executive.png",full_page=True)
         assert not failures,failures
         browser.close()
     server.shutdown()

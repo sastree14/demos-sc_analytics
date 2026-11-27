@@ -31,7 +31,7 @@ export const eventsModels={
  evStaff:{title:L("Acomodadores, accesos y tiempos de espera","Acomodadors, accessos i temps d'espera","Event staffing and gate throughput"),inputs:[
  f("attendees","Asistentes previstos","Assistents previstos","Expected visitors",300,40000,500,8500),
  f("peakShare","Fracción en hora punta (%)","Fracció en hora punta (%)","Peak-hour arrival share (%)",20,85,5,55,"pct"),
- f("gates","Puntos de entrada","Punts d'entrada","Entry gates",2,45,1,12),
+ f("gates","Puntos de entrada","Punts d'entrada","Entry gates",2,45,1,7),
  f("rate","Atenciones por puerta/hora","Atencions per porta/hora","Processing capacity per gate-hour",50,1200,50,520),
  f("extra","Puertas adicionales disponibles","Portes addicionals disponibles","Extra gates available",0,25,1,5),
  f("cost","Coste adicional por puerta/hora (€)","Cost addicional per porta/hora (€)","Extra gate staffing cost (€)",30,500,10,135,"eur"),

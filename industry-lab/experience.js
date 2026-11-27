@@ -139,7 +139,7 @@ function renderResults(){
  for(const [name,value] of result.table){
   const row=document.createElement("tr");
   const label=document.createElement("td");label.textContent=language==="es"?name:(DETAIL_TRANSLATIONS[name]?.[language==="ca"?0:1]||name);
-  const data=document.createElement("td");data.textContent=typeof value==="number"?format(value):String(value);
+  const data=document.createElement("td");data.textContent=tableValue(value);
   row.append(label,data);tbody.append(row);
  }
  renderChart(result.visual);
@@ -157,7 +157,92 @@ function svgEl(tag,attrs,text){
 }
 
 /* Decision-specific SVG explanations: more useful than decorative bar charts. */
+const valueWords={
+ "Sí":["Sí","Yes"],"No":["No","No"],
+ "Ninguno":["Cap","None"],"No alcanza equilibrio":["No arriba a l'equilibri","Does not break even"],
+ "No alcanzable":["No assolible","Not attainable"],
+ "Mantener precio":["Mantenir preu","Keep full price"],"Liquidar":["Liquidar","Mark down"]
+};
+function tableValue(value){
+ if(typeof value==="number")return format(value);
+ return language==="es"?String(value):(valueWords[String(value)]?.[language==="ca"?0:1]??String(value));
+}
 const translatedLabels={
+ "Presupuestado":["Pressupostat","Budgeted"],
+ "Ejecutado":["Executat","Actual"],
+ "Data":["Dades","Data"],
+ "Software":["Programari","Software"],
+ "Funcional":["Funcional","Business"],
+ "Descubrimiento":["Descobriment","Discovery"],
+ "Propuesta":["Proposta","Proposal"],
+ "Negociación":["Negociació","Negotiation"],
+ "Contrato base":["Contracte base","Base contract"],
+ "Con cambios":["Amb canvis","With changes"],
+ "Manual":["Manual","Manual"],
+ "Con plantillas":["Amb plantilles","With templates"],
+ "Trabajo previsto":["Treball previst","Planned work"],
+ "Interno":["Intern","In-house"],
+ "Partner":["Partner","Partner"],
+ "Electricidad":["Electricitat","Electrical"],
+ "Mecánica":["Mecànica","Mechanical"],
+ "Actual":["Actual","Current"],
+ "Con repuestos":["Amb recanvis","With spare parts"],
+ "Baja":["Baixa","Low"],
+ "Media":["Mitjana","Medium"],
+ "Alta":["Alta","High"],
+ "Planificados":["Planificats","Scheduled"],
+ "Urgentes":["Urgents","Urgent"],
+ "Servicio":["Servei","Service"],
+ "Repuestos":["Recanvis","Spare parts"],
+ "Pieza A":["Peça A","Part A"],
+ "Pieza B":["Peça B","Part B"],
+ "Pieza C":["Peça C","Part C"],
+ "Registro":["Registre","Sign-up"],
+ "Verificación":["Verificació","Verification"],
+ "Configuración":["Configuració","Setup"],
+ "Primer valor":["Primer valor","First value"],
+ "Correctas":["Correctes","Correct"],
+ "Incorrectas":["Incorrectes","Incorrect"],
+ "Inferencia base":["Inferència base","Baseline inference"],
+ "Caché aplicada":["Amb caché","Cached inference"],
+ "Soporte":["Suport","Support"],
+ "Sin acompañamiento":["Sense acompanyament","No additional support"],
+ "Apoyo voluntario":["Suport voluntari","Voluntary support"],
+ "Tipo A":["Tipus A","Type A"],
+ "Tipo B":["Tipus B","Type B"],
+ "Tipo C":["Tipus C","Type C"],
+ "Docencia":["Docència","Teaching"],
+ "Material":["Material","Materials"],
+ "Costes fijos":["Costos fixos","Fixed costs"],
+ "Plazas actuales":["Places actuals","Current seats"],
+ "Con ampliación":["Amb ampliació","Additional seats"],
+ "Teoría":["Teoria","Lectures"],
+ "Laboratorio":["Laboratori","Laboratory"],
+ "Tutorías":["Tutories","Tutoring"],
+ "Sin prevención":["Sense prevenció","Without prevention"],
+ "Línea A":["Línia A","Line A"],
+ "Línea B":["Línia B","Line B"],
+ "Entradas vendidas":["Entrades venudes","Tickets sold"],
+ "Asistencia estimada":["Assistència estimada","Estimated attendance"],
+ "Aforo":["Aforament","Capacity"],
+ "Solo puertas actuales":["Només portes actuals","Current gates only"],
+ "Con puertas extra":["Amb portes extra","Extra gates"],
+ "Sin contingencia":["Sense contingència","No contingency"],
+ "Con contingencia":["Amb contingència","With contingency"],
+ "Entrada":["Entrada","Entry"],
+ "Restauración":["Restauració","Concessions"],
+ "Taquilla":["Taquilla","Ticketing"],
+ "Patrocinios":["Patrocinis","Sponsorship"],
+ "Producción":["Producció","Production"],
+ "Personal":["Personal","Staff"],
+ "Recinto":["Recinte","Venue"],
+ "L":["Dl","Mon"],
+ "M":["Dt","Tue"],
+ "X":["Dc","Wed"],
+ "J":["Dj","Thu"],
+ "V":["Dv","Fri"],
+ "S":["Ds","Sat"],
+ "D":["Dg","Sun"],
  "Ingresos":["Ingressos","Revenue"],"Kilómetros":["Quilòmetres","Distance"],"Espera":["Espera","Waiting"],
  "Contribución":["Contribució","Contribution"],"Producto":["Producte","Product cost"],
  "Operación":["Operació","Operations"],"Devoluciones":["Devolucions","Returns"],
@@ -423,12 +508,15 @@ function renderComparison(){
 }
 function report(){
  if(!$("unsaved").hidden)execute();
+ const details=result.table.map(([name,value])=>"<tr><td>"+escaped(language==="es"?name:(DETAIL_TRANSLATIONS[name]?.[language==="ca"?0:1]||name))+"</td><td>"+escaped(tableValue(value))+"</td></tr>").join("");
+ const detailsTitle=language==="ca"?"Detall de l'escenari":language==="en"?"Scenario details":"Detalle del escenario";
+ const discuss=language==="ca"?"Vols comentar com aplicar aquesta decisió al teu negoci?":language==="en"?"Would you like to discuss how this decision could apply to your business?":"¿Te gustaría comentar cómo aplicar esta decisión a tu negocio?";
  const rows=result.metrics.map(m=>"<tr><td>"+escaped(metricLabel(m.key,language))+"</td><td>"+escaped(format(m.value,m.unit))+"</td></tr>").join("");
  const vars=Object.entries(lastValues).map(([k,v])=>{
   const x=MODELS[problem.model].inputs.find(f=>f.key===k);
   return "<tr><td>"+escaped(tr(x.label))+"</td><td>"+escaped(format(v,x.unit))+"</td></tr>";
  }).join("");
- const html='<!doctype html><html lang="'+language+'"><meta charset="utf-8"><title>'+escaped(t("reportTitle"))+'</title><style>body{font:15px Arial,sans-serif;max-width:850px;margin:45px auto;padding:0 30px;color:#102b31;line-height:1.6}h1{font:normal 34px Georgia,serif}table{border-collapse:collapse;width:100%;margin:20px 0}td{padding:9px;border-bottom:1px solid #ddd}td:last-child{text-align:right}small{color:#60716b}.brand{color:#28664e;font-weight:bold}</style><p class="brand">SC-Analytics · Industry Decision Lab</p><h1>'+escaped(sectorName())+' — '+escaped(caseName(problem))+'</h1><p>'+escaped(t("reportSource"))+'</p><h2>'+escaped(t("controls"))+'</h2><table>'+vars+'</table><h2>'+escaped(t("metrics"))+'</h2><table>'+rows+'</table><h2>'+escaped(t("formula"))+'</h2><p>'+escaped($("formula").textContent)+'</p><h2>'+escaped(t("limitations"))+'</h2><p>'+escaped($("limitations").textContent)+'</p><small>https://www.sc-analytics.io/ · '+escaped(new Date().toLocaleDateString(loc()))+'</small></html>';
+ const html='<!doctype html><html lang="'+language+'"><meta charset="utf-8"><title>'+escaped(t("reportTitle"))+'</title><style>body{font:15px Arial,sans-serif;max-width:850px;margin:45px auto;padding:0 30px;color:#102b31;line-height:1.6}h1{font:normal 34px Georgia,serif}table{border-collapse:collapse;width:100%;margin:20px 0}td{padding:9px;border-bottom:1px solid #ddd}td:last-child{text-align:right}small{color:#60716b}.brand{color:#28664e;font-weight:bold}</style><p class="brand">SC-Analytics · Industry Decision Lab</p><h1>'+escaped(sectorName())+' — '+escaped(caseName(problem))+'</h1><p>'+escaped(t("reportSource"))+'</p><h2>'+escaped(t("controls"))+'</h2><table>'+vars+'</table><h2>'+escaped(t("metrics"))+'</h2><table>'+rows+'</table><h2>'+escaped(detailsTitle)+'</h2><table>'+details+'</table><h2>'+escaped(t("formula"))+'</h2><p>'+escaped($("formula").textContent)+'</p><h2>'+escaped(t("limitations"))+'</h2><p>'+escaped($("limitations").textContent)+'</p><p>'+escaped(discuss)+' <a href="https://www.sc-analytics.io/contact">SC-Analytics</a></p><small>https://www.sc-analytics.io/ · '+escaped(new Date().toLocaleDateString(loc()))+'</small></html>';
  const blob=new Blob([html],{type:"text/html;charset=utf-8"}),url=URL.createObjectURL(blob);
  const a=document.createElement("a");a.href=url;a.download=sector.code.toLowerCase()+"-"+problem.id.toLowerCase()+"-sc-analytics.html";
  document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);

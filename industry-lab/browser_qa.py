@@ -108,6 +108,8 @@ def main():
             button.click()
             titles.append(page.locator(".case-head h2").inner_text())
             assert page.locator("#results .metric").count()>=2
+            assert page.locator("#try-preset").is_visible()
+            assert page.locator("#try-manual").is_visible()
             assert "NaN" not in page.locator("#results").inner_text()
         assert len(set(titles))==16
         page.locator("[data-case=rutas]").click()
@@ -118,6 +120,13 @@ def main():
         assert page.locator(".quantile").count()==4
         page.locator("#forecast-day").evaluate("(el) => { el.value = 7; el.dispatchEvent(new Event(\'input\', {bubbles:true})); }")
         assert page.locator("#forecast-day-label").inner_text()=="D+7"
+        assert page.locator(".percentile-explain > div").count()==4
+        page.locator('[data-policy="2"]').click()
+        assert page.locator("#forecast-day-label").inner_text()=="D+7"
+        assert "P90" in page.locator("#forecast-capacity").inner_text()
+        assert page.locator('[data-policy="2"]').get_attribute("aria-pressed")=="true"
+        page.locator("#try-preset").click()
+        assert "Prueba aplicada" in page.locator("#try-feedback").inner_text()
         page.locator("[data-case=simulacion]").click()
         assert "500" in page.locator("#results").inner_text()
         page.locator("#role-picker").select_option("finance")

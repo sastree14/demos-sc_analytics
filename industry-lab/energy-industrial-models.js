@@ -72,13 +72,20 @@ function peakLoad(p){
  const candidate=Math.min(p.flex,p.offCap,Math.max(0,load[ix]-p.contract));
  const basePeak=Math.max(...load);
  const before=Math.max(0,basePeak-p.contract)*p.penalty;
- const saving=candidate*p.penalty-candidate*p.moveCost;
- const chosen=saving>0?candidate:0;
- const after=load.slice();after[ix]-=chosen;
- // Offpeak assumes a single flexible block, verified below by remaining spare capacity.
- const off=1;after[off]+=chosen;
- const finalPeak=Math.max(...after);
- const finalCost=Math.max(0,finalPeak-p.contract)*p.penalty+chosen*p.moveCost;
+ const consider=(moved)=>{
+  const profile=load.slice();profile[ix]-=moved;profile[1]+=moved;
+  const peak=Math.max(...profile);
+  const cost=Math.max(0,peak-p.contract)*p.penalty+moved*p.moveCost;
+  return {moved,profile,peak,cost};
+ };
+ let best=consider(0);
+ // Search 100 candidate points including the exact feasible maximum;
+ // a second peak can arise in the receiving off-peak slot.
+ for(let k=1;k<=100;k++){
+  const proposal=consider(candidate*k/100);
+  if(proposal.cost<best.cost-1e-8)best=proposal;
+ }
+ const chosen=best.moved,after=best.profile,finalPeak=best.peak,finalCost=best.cost;
  return out([
  m("peak",finalPeak),m("delta",before-finalCost,"eur"),
  m("shifted",chosen),m("cost",finalCost,"eur")
@@ -129,7 +136,7 @@ function preventive(p){
  m("downtime",after*p.duration,"hours"),
  m("interventions",treated),m("cost",afterCost,"eur"),m("delta",beforeCost-afterCost,"eur")
  ],vis("bar",["Sin prevención","Plan calculado"],[
- sr("failures",[base,after]),sr("cost",[beforeCost,afterCost])],"eur"),
+ sr("failures",[base,after])],"number"),
  "Prevención de equipos dentro de presupuesto y ventana de mantenimiento. Selección cuando el coste evitado esperado supera el coste por intervención.",
  "Probabilidad de fallo, eficacia de intervención y ventana son supuestos; no autoriza paradas de equipos críticos ni sustituye permisos de trabajo.",
  [["Fallos esperados sin intervención",rnd(base)],["Fallos esperados tras plan",rnd(after)],["Coste preventivo (€)",rnd(spend)],["Equipos intervenidos",treated]]);

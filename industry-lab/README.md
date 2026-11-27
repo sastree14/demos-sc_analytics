@@ -5,10 +5,10 @@
 ## What is implemented
 
 - 18 sectors (`SC01` to `SC18`) and 108 challenges (six per sector).
-- 12 sectors (`SC01`–`SC12`) now have decision-specific models; `SC13`–`SC18` retain shared *illustrative* model families.
-- 85 model calculators shared across all 108 problem routes.
-- ES / CAT / EN catalogue, controls, model explanations, caveats, warnings, contextual first-screen wording and problem titles. Some calculation-data labels and tabular values in older/shared models remain Spanish; do not advertise full end-to-end localization as complete.
-- Problem-first UX, accessible language selector, guided tour, responsive sidebar/selector, input ranges, SVG charts, scenario A/B comparison and downloadable local HTML report.
+- All 18 sectors (`SC01`–`SC18`) now have six distinct, sector-specific numerical decision experiences each. They remain **synthetic demonstrations**, not validated operational or regulatory software.
+- 121 registered decision-model calculators. The 108 sector routes each select a specialised calculator, with common legacy models retained for other demo purposes.
+- ES / CAT / EN catalogue, controls, pain-point introductions, caveats, scenario report labels, charts, warnings and contextual questions for 78 cases in SC06–SC18. A final human copy-edit remains necessary, including dynamic values and underlying mathematical descriptions.
+- Decision-first UX, language selector, guided tour, responsive sidebar/selector, constrained sliders, SVG charts, scenario A/B comparison, and downloadable local HTML report with metrics, detail table, assumptions and a nonintrusive contact CTA.
 - Explicit model limitations, wholly synthetic datasets, brand identity, nonintrusive contextual CTA and links to SC-Analytics web/LinkedIn.
 
 ## Architecture
@@ -19,7 +19,7 @@
 | `experience.html`, `experience.css`, `experience.js` | Shared sector experience layout and navigation |
 | `catalog.js` | **Public-only** metadata derived from private sector research; no prospects, emails, or commercial notes |
 | `i18n.js` | Labels, sector titles, method/caveat translations, warning notices and contextual copy |
-| `problem-copy.js` | Forty-two sector-specific first-person business questions for SC06–SC12 |
+| `problem-copy.js` | 78 sector-specific business questions for SC06–SC18, each manually written in ES/CAT/EN |
 | `models.js` | Model registry, deterministic inputs, data formatting and execution |
 | `*-models.js` | Sector-specific numerical engines |
 | `*.test.mjs` | Model invariants, sector acceptance criteria and translation assertions |
@@ -47,6 +47,7 @@ node industry-lab/construction.test.mjs
 node industry-lab/real-estate.test.mjs
 node industry-lab/finance-insurance.test.mjs
 node industry-lab/problem-copy.test.mjs
+node industry-lab/final-sectors.test.mjs
 python industry-lab/browser_qa.py
 ```
 
@@ -60,7 +61,11 @@ The GitHub Pages workflow runs these checks on pull requests; on PRs it **does n
 - [ ] Confirm Spanish/Catalan/English coverage, including dynamic chart/table values and reports.
 - [ ] Verify first-party official branding and all outgoing domain/LinkedIn/contact links.
 - [ ] Recheck input bounds, model accuracy claims, accessibility, report export and URL query handling.
-- [ ] Decide when and how to release actual public demos; do not imply unbuilt sectors are finished.
+- [ ] Review examples with domain professionals and confirm demos' synthetic assumptions are not presented as measured client outcomes. All 18 sectors have working code; sector validation is **not** complete.
 - [ ] Approve final PR before merging or updating LinkedIn featured links.
 
 Source of truth: the private Industry Decision Lab master plan in Google Drive. The original commercial research stays private in the CMI.
+
+## Additional work in SC13–SC18
+
+The six new modules are `consulting-models.js`, `field-service-models.js`, `saas-models.js`, `education-models.js`, `energy-industrial-models.js`, and `events-models.js`. Their mathematical and multilingual regression checks live in `final-sectors.test.mjs`. They deliberately avoid making individual education or financial decisions, controlling electrical equipment, dispatching real workers, or planning crowd safety. The data are generated assumptions. Expert domain review, privacy review, accessibility checks and customer usability testing remain mandatory before publication.

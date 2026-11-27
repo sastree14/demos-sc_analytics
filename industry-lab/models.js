@@ -14,6 +14,12 @@ import {clinicModels,clinicCalculators} from "./clinic-models.js";
 import {constructionModels,constructionCalculators} from "./construction-models.js";
 import {realEstateModels,realEstateCalculators} from "./real-estate-models.js";
 import {financeInsuranceModels,financeInsuranceCalculators} from "./finance-insurance-models.js";
+import {consultingModels,consultingCalculators} from "./consulting-models.js";
+import {fieldServiceModels,fieldServiceCalculators} from "./field-service-models.js";
+import {saasModels,saasCalculators} from "./saas-models.js";
+import {educationModels,educationCalculators} from "./education-models.js";
+import {energyIndustrialModels,energyIndustrialCalculators} from "./energy-industrial-models.js";
+import {eventsModels,eventsCalculators} from "./events-models.js";
 const L=(es,ca,en)=>({es,ca,en});
 const field=(key,label,min,max,step,value,unit="number")=>({key,label,min,max,step,value,unit});
 const metric=(key,value,unit="number")=>({key,value:Number.isFinite(value)?value:0,unit});
@@ -24,6 +30,38 @@ const chart=(type,labels,series,unit="number")=>({type,labels,series,unit});
 const output=(metrics,visual,insight,formula,limitations,table=[],warning="")=>({metrics,visual,insight,formula,limitations,table,warning});
 const f=(key,es,ca,en,min,max,step,value,unit)=>field(key,L(es,ca,en),min,max,step,value,unit);
 const metricTitles={
+ nrr:L("Retención neta de ingresos iniciales","Retenció neta d'ingressos inicials","Net revenue retention"),
+ mrr:L("Ingresos mensuales recurrentes","Ingressos mensuals recurrents","Monthly recurring revenue"),
+ arr:L("Ingresos recurrentes anualizados","Ingressos recurrents anualitzats","Annualised recurring revenue"),
+ activation:L("Activación total de registros","Activació total de registres","Overall signup activation"),
+ timeToValue:L("Tiempo ilustrativo hasta primer valor","Temps il·lustratiu fins al primer valor","Illustrative time to first value"),
+ errors:L("Respuestas incorrectas sin revisión","Respostes incorrectes sense revisió","Unreviewed incorrect responses"),
+ reviewed:L("Respuestas revisadas por una persona","Respostes revisades per una persona","Outputs reviewed by a person"),
+ firstFix:L("Resolución a la primera (supuesto)","Resolució a la primera (supòsit)","Assumed first-time fix rate"),
+ repeat:L("Segundas visitas esperadas","Segones visites esperades","Expected repeat visits"),
+ unitCost:L("Coste unitario de prestación","Cost unitari de prestació","Unit delivery cost"),
+ dropout:L("Abandonos agregados hipotéticos","Abandonaments agregats hipotètics","Hypothetical aggregate non-completions"),
+ retention:L("Continuidad agregada esperada","Continuïtat agregada esperada","Assumed cohort retention"),
+ engagement:L("Participación agregada ilustrativa","Participació agregada il·lustrativa","Illustrative aggregate engagement"),
+ enrolled:L("Matrículas previstas (supuesto)","Matrícules previstes (supòsit)","Expected enrolments (assumed)"),
+ rooms:L("Aulas disponibles","Aules disponibles","Available classrooms"),
+ attendance:L("Asistencia esperada al evento","Assistència esperada a l'esdeveniment","Expected event attendance"),
+ available:L("Aforo disponible para nuevas ventas","Aforament disponible per a noves vendes","Remaining venue capacity"),
+ intensity:L("Consumo energético por unidad","Consum energètic per unitat","Energy use per produced unit"),
+ deviation:L("Desviación de intensidad respecto al objetivo","Desviació d'intensitat respecte a l'objectiu","Intensity deviation versus target"),
+ shifted:L("Carga o energía desplazada","Càrrega o energia desplaçada","Shifted load or energy"),
+ uncertainty:L("Amplitud del escenario ilustrativo","Amplitud de l'escenari il·lustratiu","Illustrative scenario spread"),
+ peak:L("Pico de demanda o consumo","Pic de demanda o consum","Peak demand or load"),
+ stock:L("Inventario necesario o asignado","Inventari necessari o assignat","Allocated stock"),
+ cost:L("Coste ilustrativo","Cost il·lustratiu","Illustrative cost"),
+ service:L("Cobertura de demanda","Cobertura de demanda","Demand coverage"),
+ shortage:L("Demanda sin cubrir","Demanda sense cobrir","Unserved demand"),
+ margin:L("Margen calculado","Marge calculat","Calculated contribution margin"),
+ profit:L("Contribución calculada","Contribució calculada","Calculated contribution"),
+ backlog:L("Cola pendiente","Cua pendent","Outstanding backlog"),
+ hours:L("Horas de trabajo o proceso","Hores de treball o procés","Work or processing hours"),
+ delta:L("Cambio respecto al escenario base","Canvi respecte a l'escenari base","Change vs baseline"),
+
  exposure:L("Exposición en seguimiento","Exposició en seguiment","Aggregate exposure on watch"),
  loss:L("Pérdida agregada ilustrativa","Pèrdua agregada il·lustrativa","Illustrative aggregate loss"),
  reserve:L("Reserva agregada de estrés ilustrativo","Reserva agregada d'estrès il·lustratiu","Illustrative stressed aggregate reserve"),
@@ -125,7 +163,7 @@ selected:L("Iniciativas seleccionadas","Iniciatives seleccionades","Selected ini
 export const metricLabel=(key,language="es")=>(metricTitles[key]||L(key,key,key))[language]||key;
 const series=(key,values)=>({key,values:values.map(x=>rnd(x,2))});
 const minPrice=1;
-const models={...logisticsModels,...wholesaleModels,...manufacturingModels,...foodModels,...pharmaModels,...restaurantModels,...hotelModels,...retailModels,...clinicModels,...constructionModels,...realEstateModels,...financeInsuranceModels,
+const models={...logisticsModels,...wholesaleModels,...manufacturingModels,...foodModels,...pharmaModels,...restaurantModels,...hotelModels,...retailModels,...clinicModels,...constructionModels,...realEstateModels,...financeInsuranceModels,...consultingModels,...fieldServiceModels,...saasModels,...educationModels,...energyIndustrialModels,...eventsModels,
 fleet:{
 title:L("Planificación de recursos y demanda","Planificació de recursos i demanda","Resource and demand planning"),
 inputs:[
@@ -597,7 +635,7 @@ function portfolio(p){
  [["Presupuesto comprometido",rnd(best.money,0)],["Capacidad usada",best.hours],["Combinaciones evaluadas",64]]
  );
 }
-const runners={...logisticsCalculators,...wholesaleCalculators,...manufacturingCalculators,...foodCalculators,...pharmaCalculators,...restaurantCalculators,...hotelCalculators,...retailCalculators,...clinicCalculators,...constructionCalculators,...realEstateCalculators,...financeInsuranceCalculators,fleet,forecast,pricing,inventory,queue,production,maintenance,quality,energy,reconcile,capacity,risk,cohort,cost,cash,portfolio};
+const runners={...logisticsCalculators,...wholesaleCalculators,...manufacturingCalculators,...foodCalculators,...pharmaCalculators,...restaurantCalculators,...hotelCalculators,...retailCalculators,...clinicCalculators,...constructionCalculators,...realEstateCalculators,...financeInsuranceCalculators,...consultingCalculators,...fieldServiceCalculators,...saasCalculators,...educationCalculators,...energyIndustrialCalculators,...eventsCalculators,fleet,forecast,pricing,inventory,queue,production,maintenance,quality,energy,reconcile,capacity,risk,cohort,cost,cash,portfolio};
 export function calculate(kind,values={}){
  const definition=getDefinition(kind),p={};
  for(const x of definition.inputs){

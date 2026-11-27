@@ -686,7 +686,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Rentabilidad de proyectos cerrados",
           "example_controls": "Presupuesto fijo, horas y desviaciones",
           "indicative_kpi": "Margen y esfuerzo no facturable",
-          "model": "cost",
+          "model": "csProjects",
           "scenario_seed": 3149
         },
         {
@@ -694,7 +694,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Planificación de capacidad",
           "example_controls": "Consultores, skills, disponibilidad",
           "indicative_kpi": "Utilización y retrasos",
-          "model": "queue",
+          "model": "csCapacity",
           "scenario_seed": 3190
         },
         {
@@ -702,7 +702,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Forecast de ventas/proyectos",
           "example_controls": "Pipeline, probabilidad y duración",
           "indicative_kpi": "Ingresos y necesidad de capacidad",
-          "model": "forecast",
+          "model": "csPipeline",
           "scenario_seed": 3231
         },
         {
@@ -710,7 +710,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Scope creep y desviaciones",
           "example_controls": "Cambios, horas y entregables",
           "indicative_kpi": "Coste de ampliaciones",
-          "model": "cost",
+          "model": "csScope",
           "scenario_seed": 3272
         },
         {
@@ -718,7 +718,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Automatización documental",
           "example_controls": "Plantillas, aprobaciones y errores",
           "indicative_kpi": "Horas y calidad de entrega",
-          "model": "reconcile",
+          "model": "csDocs",
           "scenario_seed": 3313
         },
         {
@@ -726,7 +726,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Partner de entrega especializada",
           "example_controls": "Brief cliente, alcance y capacidades internas",
           "indicative_kpi": "Encaje técnico y esfuerzo",
-          "model": "portfolio",
+          "model": "csPartner",
           "scenario_seed": 3354
         }
       ]
@@ -742,7 +742,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Asignación técnico-aviso",
           "example_controls": "Skills, ubicación, prioridad y turnos",
           "indicative_kpi": "SLA y coste por orden",
-          "model": "fleet",
+          "model": "svDispatch",
           "scenario_seed": 3400
         },
         {
@@ -750,7 +750,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Primer arreglo a la primera",
           "example_controls": "Inventario de piezas, tipo de avería",
           "indicative_kpi": "First-time-fix y segundas visitas",
-          "model": "maintenance",
+          "model": "svFirstFix",
           "scenario_seed": 3441
         },
         {
@@ -758,7 +758,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Mantenimiento preventivo",
           "example_controls": "Frecuencia, criticidad y riesgo",
           "indicative_kpi": "Averías y coste preventivo",
-          "model": "maintenance",
+          "model": "svPreventive",
           "scenario_seed": 3482
         },
         {
@@ -766,7 +766,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Urgencias y replanificación",
           "example_controls": "Nuevos avisos, disponibilidad",
           "indicative_kpi": "SLA incumplidos y tiempo de llegada",
-          "model": "fleet",
+          "model": "svUrgent",
           "scenario_seed": 3523
         },
         {
@@ -774,7 +774,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Rentabilidad por contrato",
           "example_controls": "Visitas, km y horas",
           "indicative_kpi": "Margen por cliente/contrato",
-          "model": "cost",
+          "model": "svContract",
           "scenario_seed": 3564
         },
         {
@@ -782,7 +782,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Repuestos en vehículos",
           "example_controls": "Consumo, técnicos y lead times",
           "indicative_kpi": "Roturas y capital en stock",
-          "model": "inventory",
+          "model": "svVans",
           "scenario_seed": 3605
         }
       ]
@@ -798,7 +798,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Churn y retención",
           "example_controls": "Cohortes, uso y supuestos",
           "indicative_kpi": "NRR y cuentas en riesgo",
-          "model": "cohort",
+          "model": "saRetention",
           "scenario_seed": 3651
         },
         {
@@ -806,7 +806,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Onboarding que no activa",
           "example_controls": "Eventos de producto y tareas",
           "indicative_kpi": "Time-to-value y activación",
-          "model": "cohort",
+          "model": "saActivation",
           "scenario_seed": 3692
         },
         {
@@ -814,7 +814,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Errores de agentes IA",
           "example_controls": "Umbrales, casos sintéticos y feedback",
           "indicative_kpi": "Tasa de error y escalados",
-          "model": "risk",
+          "model": "saAgents",
           "scenario_seed": 3733
         },
         {
@@ -822,7 +822,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Coste de inferencia y soporte",
           "example_controls": "Volumen, rutas y modelos",
           "indicative_kpi": "€/ticket y coste mensual",
-          "model": "cost",
+          "model": "saCost",
           "scenario_seed": 3774
         },
         {
@@ -830,7 +830,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Forecast de MRR/ARR",
           "example_controls": "Altas, expansión y bajas",
           "indicative_kpi": "MRR, ARR y rango",
-          "model": "forecast",
+          "model": "saMRR",
           "scenario_seed": 3815
         },
         {
@@ -838,7 +838,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Colas de soporte e integración",
           "example_controls": "Tickets, SLAs y personal",
           "indicative_kpi": "Tiempo de resolución y backlog",
-          "model": "queue",
+          "model": "saSupport",
           "scenario_seed": 3856
         }
       ]
@@ -854,7 +854,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Abandono y desvinculación",
           "example_controls": "Asistencia agregada y comportamiento LMS ficticio",
           "indicative_kpi": "Retención y alertas revisables",
-          "model": "risk",
+          "model": "edEngagement",
           "scenario_seed": 3902
         },
         {
@@ -862,7 +862,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Programación de horarios",
           "example_controls": "Profesores, aulas, disponibilidades",
           "indicative_kpi": "Conflictos y utilización",
-          "model": "queue",
+          "model": "edTimetable",
           "scenario_seed": 3943
         },
         {
@@ -870,7 +870,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Rentabilidad por curso",
           "example_controls": "Matrículas, costes y capacidad",
           "indicative_kpi": "Margen por cohorte",
-          "model": "cost",
+          "model": "edCourse",
           "scenario_seed": 3984
         },
         {
@@ -878,7 +878,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Demanda de nuevas matrículas",
           "example_controls": "Canal, calendario y cohorte",
           "indicative_kpi": "Plazas necesarias",
-          "model": "forecast",
+          "model": "edEnroll",
           "scenario_seed": 4025
         },
         {
@@ -886,7 +886,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Atención al alumno",
           "example_controls": "Solicitudes, prioridades y equipo",
           "indicative_kpi": "Tiempo de respuesta",
-          "model": "queue",
+          "model": "edSupport",
           "scenario_seed": 4066
         },
         {
@@ -894,7 +894,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Distribución de recursos docentes",
           "example_controls": "Asignaturas, carga y restricciones",
           "indicative_kpi": "Horas y cobertura",
-          "model": "queue",
+          "model": "edResources",
           "scenario_seed": 4107
         }
       ]
@@ -910,7 +910,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Picos de potencia",
           "example_controls": "Perfil de consumo y restricciones",
           "indicative_kpi": "Potencia pico y coste",
-          "model": "energy",
+          "model": "enPeak",
           "scenario_seed": 4153
         },
         {
@@ -918,7 +918,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Previsión de demanda energética",
           "example_controls": "Producción, calendario y clima sintético",
           "indicative_kpi": "MWh esperados y rango",
-          "model": "forecast",
+          "model": "enForecast",
           "scenario_seed": 4194
         },
         {
@@ -926,7 +926,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Anomalías en equipos",
           "example_controls": "Sensores ficticios y umbrales",
           "indicative_kpi": "Alertas y paradas",
-          "model": "quality",
+          "model": "enSensors",
           "scenario_seed": 4235
         },
         {
@@ -934,7 +934,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Mantenimiento por criticidad",
           "example_controls": "Probabilidad de fallo y ventanas",
           "indicative_kpi": "Horas de parada esperadas",
-          "model": "maintenance",
+          "model": "enPrevent",
           "scenario_seed": 4276
         },
         {
@@ -942,7 +942,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Tarifas y periodos horarios",
           "example_controls": "Contratos, curvas y desplazamiento posible",
           "indicative_kpi": "Coste y ahorro simulado",
-          "model": "energy",
+          "model": "enTariff",
           "scenario_seed": 4317
         },
         {
@@ -950,7 +950,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Eficiencia por línea",
           "example_controls": "Energía y unidades producidas",
           "indicative_kpi": "kWh/unidad y desviaciones",
-          "model": "energy",
+          "model": "enEfficiency",
           "scenario_seed": 4358
         }
       ]
@@ -966,7 +966,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Previsión de asistencia",
           "example_controls": "Reservas, cancelaciones y temporada",
           "indicative_kpi": "Aforo estimado y entradas",
-          "model": "forecast",
+          "model": "evAttendance",
           "scenario_seed": 4404
         },
         {
@@ -974,7 +974,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Precio por zona y día",
           "example_controls": "Capacidad, tarifa y demanda",
           "indicative_kpi": "Ingreso y ocupación",
-          "model": "pricing",
+          "model": "evPricing",
           "scenario_seed": 4445
         },
         {
@@ -982,7 +982,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Dimensionamiento de personal",
           "example_controls": "Aforo, accesos y franjas",
           "indicative_kpi": "Coste y tiempo de espera",
-          "model": "queue",
+          "model": "evStaff",
           "scenario_seed": 4486
         },
         {
@@ -990,7 +990,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Cancelación y meteorología",
           "example_controls": "Escenarios, cobertura y costes",
           "indicative_kpi": "Margen en contingencias",
-          "model": "risk",
+          "model": "evWeather",
           "scenario_seed": 4527
         },
         {
@@ -998,7 +998,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Colas de acceso y servicios",
           "example_controls": "Llegadas, capacidad y aperturas",
           "indicative_kpi": "Espera y throughput",
-          "model": "queue",
+          "model": "evQueue",
           "scenario_seed": 4568
         },
         {
@@ -1006,7 +1006,7 @@ export const INDUSTRY_CATALOG = {
           "title": "Rentabilidad por evento",
           "example_controls": "Ingresos, comisiones y producción",
           "indicative_kpi": "Margen por evento",
-          "model": "cost",
+          "model": "evProfit",
           "scenario_seed": 4609
         }
       ]

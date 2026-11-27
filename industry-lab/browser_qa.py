@@ -102,6 +102,7 @@ def main():
         page.goto(base+"sc01/",wait_until="networkidle")
         page.locator(".navcase").first.wait_for()
         assert page.locator(".navcase").count()==16
+        assert page.locator(".navcase .num").all_text_contents()==[f"{i:02d}" for i in range(1,17)]
         titles=[]
         for button in page.locator(".navcase").all():
             button.click()
@@ -114,6 +115,9 @@ def main():
         assert page.locator("#results table").count()==3
         page.locator("[data-case=demanda]").click()
         assert page.locator("#results svg").count()==1
+        assert page.locator(".quantile").count()==4
+        page.locator("#forecast-day").evaluate("(el) => { el.value = 7; el.dispatchEvent(new Event(\'input\', {bubbles:true})); }")
+        assert page.locator("#forecast-day-label").inner_text()=="D+7"
         page.locator("[data-case=simulacion]").click()
         assert "500" in page.locator("#results").inner_text()
         page.locator("#role-picker").select_option("finance")
@@ -122,7 +126,7 @@ def main():
         page.locator("#role-picker").select_option("ops")
         assert page.locator(".navcase").count()==10
         assert "rutas" in page.url
-        page.locator("[data-input=1]").evaluate("(el) => { el.value = 2; el.dispatchEvent(new Event('input', {bubbles:true})); }")
+        page.locator('[data-input="1"]').evaluate("(el) => { el.value = 2; el.dispatchEvent(new Event('input', {bubbles:true})); }")
         assert "pendientes" in page.locator("#execution-status").inner_text()
         page.locator("#run-model").click()
         page.locator("#execution-status.done").wait_for()
@@ -134,6 +138,15 @@ def main():
         page.locator(".assistant-reply").wait_for()
         assert page.locator(".assistant-metric").count()>=2
         page.locator("#role-picker").select_option("all")
+        page.locator("[data-case=demanda]").click()
+        for width in [1920,1366,768,390,320]:
+            page.set_viewport_size({"width":width,"height":900})
+            assert page.evaluate("document.documentElement.scrollWidth <= innerWidth + 2"), width
+            if width<=820:
+                assert page.locator("#mobile-tools").is_visible()
+                page.locator("#mobile-tools").select_option("demanda")
+            page.screenshot(path=f"qa-evidence/logistics-forecast-{width}.png",full_page=True)
+        page.set_viewport_size({"width":1366,"height":850})
         page.screenshot(path="qa-evidence/logistics-executive.png",full_page=True)
         assert not failures,failures
         browser.close()

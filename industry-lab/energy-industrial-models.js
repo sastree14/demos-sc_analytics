@@ -31,7 +31,7 @@ export const energyIndustrialModels={
  f("mean","Valor de referencia del sensor","Valor de referència del sensor","Sensor baseline level",20,250,5,105),
  f("noise","Variación típica hipotética","Variació típica hipotètica","Assumed normal variation",1,25,1,7),
  f("drift","Deriva del equipo a lo largo del periodo","Deriva de l'equip al llarg del període","Assumed signal drift",-35,40,5,16),
- f("threshold","Umbral de alarma (sigmas)","Llindar alarma (sigmes)","Alert threshold in sigmas",1,5,0.5,2.5),
+ f("threshold","Umbral de alarma (sigmas)","Llindar alarma (sigmes)","Alert threshold in sigmas",1,5,0.5,1.5),
  f("review","Tiempo de revisión por alerta (min)","Temps de revisió per alerta (min)","Review time per alert",5,90,5,25,"minutes"),
  f("hourCost","Coste de revisión/hora (€)","Cost revisió/hora (€)","Human review hourly cost (€)",15,160,5,55,"eur")
  ]},
@@ -40,8 +40,8 @@ export const energyIndustrialModels={
  f("failure","Probabilidad de fallo por equipo (%)","Probabilitat fallada per equip (%)","Assumed failure probability (%)",1,50,1,16,"pct"),
  f("duration","Horas de parada por fallo","Hores parada per fallada","Expected incident downtime hours",1,120,1,18,"hours"),
  f("downtimeCost","Coste por hora de parada (€)","Cost per hora aturada (€)","Downtime cost per hour (€)",50,4000,50,700,"eur"),
- f("budget","Presupuesto de prevención (€)","Pressupost de prevenció (€)","Maintenance budget (€)",5000,350000,5000,80000,"eur"),
- f("intervention","Coste de intervención por equipo (€)","Cost intervenció per equip (€)","Intervention cost per asset (€)",100,6000,100,1400,"eur"),
+ f("budget","Presupuesto de prevención (€)","Pressupost de prevenció (€)","Maintenance budget (€)",5000,350000,5000,30000,"eur"),
+ f("intervention","Coste de intervención por equipo (€)","Cost intervenció per equip (€)","Intervention cost per asset (€)",100,6000,100,900,"eur"),
  f("riskReduction","Eficacia preventiva hipotética (%)","Eficàcia preventiva hipotètica (%)","Assumed relative risk reduction (%)",10,90,5,65,"pct"),
  f("window","Equipos accesibles en parada programada","Equips accessibles en parada programada","Assets available in approved maintenance window",0,250,5,45)
  ]},

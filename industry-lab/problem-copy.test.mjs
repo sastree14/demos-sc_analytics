@@ -1,8 +1,8 @@
 import assert from "node:assert/strict";
 import {BUSINESS_QUESTIONS} from "./problem-copy.js";
 import {INDUSTRY_CATALOG} from "./catalog.js";
-const sectors=INDUSTRY_CATALOG.sectors.filter(s=>Number(s.code.slice(2))>=6&&Number(s.code.slice(2))<=12);
-assert.equal(sectors.length,7);
+const sectors=INDUSTRY_CATALOG.sectors.filter(s=>Number(s.code.slice(2))>=6&&Number(s.code.slice(2))<=18);
+assert.equal(sectors.length,13);
 let count=0;
 for(const sector of sectors){
  const questions=BUSINESS_QUESTIONS[sector.code];

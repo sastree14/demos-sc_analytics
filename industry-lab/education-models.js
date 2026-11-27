@@ -40,14 +40,14 @@ export const educationModels={
  f("qualified","Consultas de elegibilidad estimada (%)","Consultes d'elegibilitat estimada (%)","Eligible inquiry share (%)",20,100,5,65,"pct"),
  f("convert","Matrícula hipotética por elegible (%)","Matrícula hipotètica per elegible (%)","Assumed enrollment conversion (%)",5,90,5,30,"pct"),
  f("dropoff","No incorporaciones tras matrícula (%)","No incorporacions després de matrícula (%)","Assumed pre-start withdrawals (%)",0,45,5,12,"pct"),
- f("seats","Plazas disponibles","Places disponibles","Available seats",50,2000,50,480),
+ f("seats","Plazas disponibles","Places disponibles","Available seats",50,2000,50,300),
  f("newSeats","Plazas nuevas posibles","Places noves possibles","Additional seats available",0,700,25,160),
  f("unitValue","Valor medio por matrícula (€)","Valor mitjà per matrícula (€)","Average enrollment revenue (€)",100,10000,100,1900,"eur")
  ]},
  edSupport:{title:L("Soporte académico-administrativo y respuesta","Suport acadèmic-administratiu i resposta","Student support request backlog"),inputs:[
  f("backlog","Consultas pendientes","Consultes pendents","Starting requests backlog",0,1400,50,170),
  f("arrivals","Solicitudes por semana","Sol·licituds per setmana","Weekly support requests",30,1200,30,360),
- f("staff","Personas del equipo de soporte","Persones equip suport","Support staff",1,45,1,12),
+ f("staff","Personas del equipo de soporte","Persones equip suport","Support staff",1,45,1,6),
  f("hours","Horas disponibles/persona","Hores disponibles/persona","Productive hours per person",10,45,5,28,"hours"),
  f("handle","Minutos por consulta","Minuts per consulta","Minutes per support request",3,120,3,32,"minutes"),
  f("extra","Refuerzo de personas","Reforç de persones","Additional staff",0,25,1,4),

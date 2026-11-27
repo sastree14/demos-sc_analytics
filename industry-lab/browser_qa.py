@@ -21,7 +21,13 @@ def main():
         page=context.new_page()
         page.set_default_timeout(9000)
         page.on("pageerror",lambda err: failures.append(str(err)))
+        page.goto(base+"../",wait_until="networkidle")
+        page.get_by_role("button",name="Català",exact=True).click()
+        assert page.locator("html").get_attribute("lang")=="ca"
+        assert page.locator(".grid a").count()==7
+        assert page.locator("#sector-hub").is_visible()
         page.goto(base+"index.html",wait_until="networkidle")
+        page.get_by_role("button",name="Castellano",exact=True).click()
         assert page.locator("#industry-grid article").count()==18,"Industry catalog is incomplete"
         if page.locator("#tour").evaluate("el => el.open"):
             page.locator("#tour-skip").click()
@@ -30,12 +36,24 @@ def main():
         assert page.locator("#capability-grid article").count()==7
         for sector in SECTORS:
             page.goto(base+f"experience.html?sector={sector}",wait_until="networkidle")
+            page.get_by_role("button",name="English",exact=True).click()
+            assert page.locator("html").get_attribute("lang")=="en"
             if page.locator("#guide-dialog").evaluate("el => el.open"):
                 page.locator("#guide-skip").click()
             assert page.locator("#case-nav button").count()==6,sector
             assert page.locator("#sector-code").inner_text()==sector
             for idx in range(6):
                 page.locator("#case-nav button").nth(idx).click()
+                for language in ("es","ca","en"):
+                    page.locator("[data-locale="+language+"]").click()
+                    assert page.locator("html").get_attribute("lang")==language
+                    assert page.locator("#case-description").inner_text().strip()
+                    assert page.locator("#contact-link").get_attribute("href").endswith("case="+sector+"-P"+str(idx+1).zfill(2))
+                if sector=="SC02" and idx==5:
+                    page.locator("#stock-groups select").select_option("4")
+                    assert page.locator("#stock-groups circle").count()==24
+                if sector=="SC03" and idx==4:
+                    assert "Optimum" in page.locator("#legend").inner_text()
                 assert page.locator("#metrics .metric").count()==4,(sector,idx)
                 sliders=page.locator("#input-grid input[type=range]")
                 assert sliders.count()>=3,(sector,idx)

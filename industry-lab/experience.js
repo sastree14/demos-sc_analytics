@@ -1,3 +1,5 @@
+import {allocationPlot,stockGroups} from "./decision-plots.js";
+import {chooseLanguage} from "./language.js";
 import {INDUSTRY_CATALOG} from "./catalog.js";
 import {BUSINESS_QUESTIONS} from "./problem-copy.js";
 import {MODELS,modelNames,calculate,defaultInputs,metricLabel} from "./models.js";
@@ -143,6 +145,9 @@ function renderResults(){
   row.append(label,data);tbody.append(row);
  }
  renderChart(result.visual);
+ const grouping=$("stock-groups");
+ grouping.hidden=problem.id!=="SC02-P06";
+ if(!grouping.hidden)stockGroups(grouping,language);
 }
 const seriesExtras = {
   "capacity": [
@@ -478,6 +483,7 @@ if(type==="waterfall"){
 }
 
 function renderChart(visual){
+ if(visual.plan){allocationPlot($("chart"),$("legend"),visual.plan,language);return;}
  if(renderSpecialChart(visual))return;
  const svg=$("chart");svg.replaceChildren();
  const width=760,height=300,left=68,right=18,top=19,bottom=50,plotW=width-left-right,plotH=height-top-bottom;
@@ -502,7 +508,7 @@ function renderChart(visual){
    }
    for(const pt of pts){
     const circle=svgEl("circle",{cx:x(pt.i),cy:y(pt.value),r:4,fill:palette[j%palette.length],stroke:"#fff","stroke-width":1.6});
-    circle.append(svgEl("title",{},visual.labels[pt.i]+": "+seriesName(s.key)+" "+format(pt.value,visual.unit)));
+    circle.append(svgEl("title",{},labelFor(visual.labels[pt.i])+": "+seriesName(s.key)+" "+format(pt.value,visual.unit)));
     svg.append(circle);
    }
   });
@@ -514,14 +520,15 @@ function renderChart(visual){
     const pos=x(i)+(j-(visual.series.length-1)/2)*barW*1.12;
     const boxY=Math.min(y(v),y(0)),boxH=Math.max(1,Math.abs(y(v)-y(0)));
     const rect=svgEl("rect",{x:pos-barW/2,y:boxY,width:barW,height:boxH,fill:palette[j%palette.length],rx:2});
-    rect.append(svgEl("title",{},visual.labels[i]+": "+seriesName(s.key)+" "+format(v,visual.unit)));
+    rect.append(svgEl("title",{},labelFor(visual.labels[i])+": "+seriesName(s.key)+" "+format(v,visual.unit)));
     svg.append(rect);
    });
   });
  }
  const every=Math.ceil(visual.labels.length/10);
  visual.labels.forEach((name,i)=>{if(i%every!==0)return;
-  const text=String(name).length>16?String(name).slice(0,15)+"…":String(name);
+  const localized=String(labelFor(name));
+  const text=localized.length>16?localized.slice(0,15)+"…":localized;
   svg.append(svgEl("text",{x:x(i),y:height-22,"text-anchor":"middle"},text));
  });
  const legend=$("legend");legend.replaceChildren();
@@ -611,6 +618,6 @@ function configure(){
  $("guide-next").addEventListener("click",()=>{if(tutorialStep===4){closeTour();$("input-grid").scrollIntoView({block:"center",behavior:"smooth"});}else{tutorialStep++;renderTour();}});
  dialog.addEventListener("close",()=>{try{sessionStorage.setItem("scIndustryTourSeen","yes");}catch(_){}});
  applyLanguage(language);
- try{if(sessionStorage.getItem("scIndustryTourSeen")!=="yes"){openTour();}}catch(_){openTour();}
+ chooseLanguage(language,applyLanguage);
 }
 configure();

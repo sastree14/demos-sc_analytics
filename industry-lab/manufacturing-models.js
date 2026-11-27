@@ -194,12 +194,16 @@ function materials(p){
  const minimumB=Math.ceil(p.ordersB*p.minShare/100);
  const enoughForMinimum=2*minimumA+minimumB<=p.materialX&&minimumA+3*minimumB<=p.materialY;
  let best=null,baseline=null;
+ const columns=[];
  // BOM: one A batch needs (2 X, 1 Y), one B batch (1 X, 3 Y).
  for(let a=0;a<=p.ordersA;a++)for(let b=0;b<=p.ordersB;b++){
   const x=2*a+b,y=a+3*b;
   if(x>p.materialX||y>p.materialY)continue;
   const feasibleMinimum=(!enoughForMinimum)||(a>=minimumA&&b>=minimumB);
   if(!feasibleMinimum)continue;
+  const last=columns.at(-1);
+  if(last && last[0]===a)last[2]=b;
+  else columns.push([a,b,b]);
   const objective=a*p.profitA+b*p.profitB;
   const candidate={a,b,x,y,objective};
   if(!best||objective>best.objective)best=candidate;
@@ -215,7 +219,7 @@ function materials(p){
   metric("produced",achieved),metric("service",total?100*achieved/total:100,"pct"),
   metric("profit",best.objective,"eur"),metric("delta",best.objective-baseline.objective,"eur")
  ],chart("bar",["Familia A","Familia B"],
- [series("target",[p.ordersA,p.ordersB]),series("actual",[best.a,best.b])]),
+ [series("target",[p.ordersA,p.ordersB]),series("actual",[best.a,best.b])],"number",{plan:{columns,ordersA:p.ordersA,ordersB:p.ordersB,optimum:[best.a,best.b],reference:[ra,rb]}}),
  "Búsqueda entera de combinación de lotes A/B con una lista de materiales fija: A consume 2 X + 1 Y; B consume 1 X + 3 Y. Maximiza contribución dentro de stock y, si es viable, cobertura mínima por familia.",
  "No incluye plazos de compra, costes fijos, rutas de fabricación, sustitución de materiales ni múltiples recetas. La contribución es supuesta.",
  [["Materia X consumida",best.x],["Materia Y consumida",best.y],["Lotes A",best.a],["Lotes B",best.b]],

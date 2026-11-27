@@ -2352,6 +2352,282 @@ export const DETAIL_TRANSLATIONS = {
   "Coste con equipo seleccionado (€)": [
     "Cost amb equip seleccionat (€)",
     "Cost with selected staffing (€)"
+  ],
+  "Alumnado de grupo": [
+    "Alumnat del grup",
+    "Learners in cohort"
+  ],
+  "Abandonos de referencia": [
+    "Abandonaments de referència",
+    "Baseline non-completions"
+  ],
+  "Abandonos con apoyo": [
+    "Abandonaments amb suport",
+    "Non-completions with support"
+  ],
+  "Asistencia media (%)": [
+    "Assistència mitjana (%)",
+    "Average attendance (%)"
+  ],
+  "Sesiones cubiertas": [
+    "Sessions cobertes",
+    "Covered sessions"
+  ],
+  "Sesiones sin aula/docente": [
+    "Sessions sense aula/docent",
+    "Sessions without room or teacher"
+  ],
+  "Sesiones posibles por semana": [
+    "Sessions possibles per setmana",
+    "Feasible weekly sessions"
+  ],
+  "Sesiones de C con sala": [
+    "Sessions C amb sala",
+    "Type C sessions assigned"
+  ],
+  "Matrículas servidas": [
+    "Matrícules ateses",
+    "Enrolments accommodated"
+  ],
+  "Punto de equilibrio (plazas)": [
+    "Punt d'equilibri (places)",
+    "Break-even seat count"
+  ],
+  "Coste total curso (€)": [
+    "Cost total del curs (€)",
+    "Total course cost (€)"
+  ],
+  "Contribución (€)": [
+    "Contribució (€)",
+    "Contribution (€)"
+  ],
+  "Alumnos esperados": [
+    "Alumnes esperats",
+    "Expected learners"
+  ],
+  "Matriculados sin ampliar": [
+    "Matriculats sense ampliar",
+    "Enrolments without additional seats"
+  ],
+  "Matriculados con ampliación": [
+    "Matriculats amb ampliació",
+    "Enrolments with additional seats"
+  ],
+  "Ingresos brutos del escenario (€)": [
+    "Ingressos bruts de l'escenari (€)",
+    "Scenario gross revenue (€)"
+  ],
+  "Solicitudes en cola inicial": [
+    "Sol·licituds a la cua inicial",
+    "Initial request backlog"
+  ],
+  "Capacidad del equipo elegido": [
+    "Capacitat de l'equip escollit",
+    "Chosen team capacity"
+  ],
+  "Horas docentes requeridas": [
+    "Hores docents necessàries",
+    "Required teaching hours"
+  ],
+  "Horas docentes cubiertas": [
+    "Hores docents cobertes",
+    "Covered teaching hours"
+  ],
+  "Capacidad flexible remanente": [
+    "Capacitat flexible restant",
+    "Remaining flexible capacity"
+  ],
+  "Pico inicial (kW)": [
+    "Pic inicial (kW)",
+    "Initial peak (kW)"
+  ],
+  "Pico resultante (kW)": [
+    "Pic resultant (kW)",
+    "Resulting peak (kW)"
+  ],
+  "Carga desplazada (kW)": [
+    "Càrrega desplaçada (kW)",
+    "Shifted load (kW)"
+  ],
+  "Coste de exceso resultante (€)": [
+    "Cost d'excés resultant (€)",
+    "Resulting excess-power cost (€)"
+  ],
+  "MWh semanales ilustrativos": [
+    "MWh setmanals il·lustratius",
+    "Illustrative weekly MWh"
+  ],
+  "Escenario inferior MWh": [
+    "Escenari inferior MWh",
+    "Lower scenario MWh"
+  ],
+  "Escenario superior MWh": [
+    "Escenari superior MWh",
+    "Upper scenario MWh"
+  ],
+  "Consumo diario máximo MWh": [
+    "Consum diari màxim MWh",
+    "Maximum daily MWh"
+  ],
+  "Lecturas simuladas": [
+    "Lectures simulades",
+    "Simulated readings"
+  ],
+  "Alertas por umbral": [
+    "Alertes per llindar",
+    "Threshold-based alerts"
+  ],
+  "Umbral superior": [
+    "Llindar superior",
+    "Upper threshold"
+  ],
+  "Umbral inferior": [
+    "Llindar inferior",
+    "Lower threshold"
+  ],
+  "Fallos esperados sin intervención": [
+    "Fallades esperades sense intervenció",
+    "Expected failures without prevention"
+  ],
+  "Fallos esperados tras plan": [
+    "Fallades esperades després del pla",
+    "Expected failures after intervention"
+  ],
+  "Coste preventivo (€)": [
+    "Cost preventiu (€)",
+    "Preventive maintenance cost (€)"
+  ],
+  "Equipos intervenidos": [
+    "Equips intervinguts",
+    "Assets treated"
+  ],
+  "Coste sin mover (€)": [
+    "Cost sense desplaçament (€)",
+    "Cost without shifting (€)"
+  ],
+  "Coste tras mover (€)": [
+    "Cost després de desplaçament (€)",
+    "Cost after shifting (€)"
+  ],
+  "kWh trasladados": [
+    "kWh traslladats",
+    "kWh shifted"
+  ],
+  "Tarifa diferencial (€/kWh)": [
+    "Diferència tarifària (€/kWh)",
+    "Tariff difference (€ / kWh)"
+  ],
+  "kWh iniciales": [
+    "kWh inicials",
+    "Initial kWh"
+  ],
+  "kWh en escenario": [
+    "kWh a l'escenari",
+    "Scenario kWh"
+  ],
+  "Coste de intervención (€)": [
+    "Cost d'intervenció (€)",
+    "Intervention cost (€)"
+  ],
+  "Objetivo kWh por unidad": [
+    "Objectiu kWh per unitat",
+    "Target kWh per unit"
+  ],
+  "Asistencia inferior estimada": [
+    "Assistència inferior estimada",
+    "Illustrative lower attendance"
+  ],
+  "Asistencia superior estimada": [
+    "Assistència superior estimada",
+    "Illustrative upper attendance"
+  ],
+  "Aforo remanente sobre entradas": [
+    "Aforament restant sobre entrades",
+    "Capacity remaining after tickets sold"
+  ],
+  "Entradas estimadas totales": [
+    "Entrades totals estimades",
+    "Estimated tickets sold"
+  ],
+  "Tarifa A calculada (€)": [
+    "Tarifa A calculada (€)",
+    "Calculated zone A ticket price (€)"
+  ],
+  "Tarifa B calculada (€)": [
+    "Tarifa B calculada (€)",
+    "Calculated zone B ticket price (€)"
+  ],
+  "Tarifa C calculada (€)": [
+    "Tarifa C calculada (€)",
+    "Calculated zone C ticket price (€)"
+  ],
+  "Asistentes previstos en las tres zonas": [
+    "Assistents previstos a les tres zones",
+    "Projected guests across three zones"
+  ],
+  "Llegadas en hora punta": [
+    "Arribades en hora punta",
+    "Peak hour arrivals"
+  ],
+  "Sin procesar con equipo actual": [
+    "Sense processar amb l'equip actual",
+    "Unprocessed with current team"
+  ],
+  "Sin procesar con refuerzo": [
+    "Sense processar amb reforç",
+    "Unprocessed with additional staff"
+  ],
+  "¿Refuerzo seleccionado?": [
+    "S'ha seleccionat el reforç?",
+    "Extra staffing selected?"
+  ],
+  "Resultado si se celebra (€)": [
+    "Resultat si se celebra (€)",
+    "Contribution if held (€)"
+  ],
+  "Resultado si se suspende (€)": [
+    "Resultat si se suspèn (€)",
+    "Contribution if cancelled (€)"
+  ],
+  "Resultado esperado sin plan (€)": [
+    "Resultat esperat sense pla (€)",
+    "Expected contribution without plan (€)"
+  ],
+  "Resultado esperado con plan (€)": [
+    "Resultat esperat amb pla (€)",
+    "Expected contribution with plan (€)"
+  ],
+  "Pendientes con configuración actual": [
+    "Pendents amb configuració actual",
+    "Backlog under current configuration"
+  ],
+  "Pendientes si se amplía": [
+    "Pendents amb ampliació",
+    "Backlog after adding capacity"
+  ],
+  "Puntos extra por etapa": [
+    "Punts addicionals per etapa",
+    "Extra lanes per stage"
+  ],
+  "Coste del plan elegido (€)": [
+    "Cost del pla escollit (€)",
+    "Chosen plan cost (€)"
+  ],
+  "Entradas de equilibrio (supuesto)": [
+    "Entrades d'equilibri (supòsit)",
+    "Illustrative break-even ticket count"
+  ],
+  "Comisiones de entradas (€)": [
+    "Comissions d'entrades (€)",
+    "Ticketing fees (€)"
+  ],
+  "Ingresos totales (€)": [
+    "Ingressos totals (€)",
+    "Total revenue (€)"
+  ],
+  "Resultado del evento (€)": [
+    "Resultat de l'esdeveniment (€)",
+    "Event contribution (€)"
   ]
 };
 export const WARNING_TRANSLATIONS = {
@@ -2478,6 +2754,22 @@ export const WARNING_TRANSLATIONS = {
   "El escenario conserva respuestas potencialmente incorrectas sin revisión.": [
     "L'escenari manté respostes potencialment incorrectes sense revisar.",
     "The scenario leaves potentially incorrect agent outputs unreviewed."
+  ],
+  "El curso no cubre sus costes bajo los supuestos indicados.": [
+    "El curs no cobreix els seus costos amb aquests supòsits.",
+    "The course does not cover its costs under these assumptions."
+  ],
+  "La intensidad supera el objetivo supuesto bajo este escenario.": [
+    "La intensitat supera l'objectiu suposat en aquest escenari.",
+    "Energy intensity exceeds the assumed target in this scenario."
+  ],
+  "El resultado esperado de la alternativa preferida sería negativo bajo estas hipótesis.": [
+    "El resultat esperat de l'alternativa preferida seria negatiu amb aquestes hipòtesis.",
+    "The preferred alternative has a negative expected contribution under these assumptions."
+  ],
+  "Con estos supuestos el evento arroja contribución negativa.": [
+    "Amb aquests supòsits l'esdeveniment té contribució negativa.",
+    "The event has negative contribution under these assumptions."
   ]
 };
 export const SECTOR_CONTEXT = {

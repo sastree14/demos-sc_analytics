@@ -790,6 +790,42 @@ export const UI = {
   }
 };
 export const EXPLANATIONS = {
+ "csProjects": ["Descubre cómo las horas reales, el esfuerzo no facturable y la subcontratación alteran el margen de un proyecto a precio cerrado.","Descobreix com hores reals, feina no facturable i subcontractació alteren el marge d'un projecte tancat.","Explore how actual hours, non-billable work and subcontracting affect a fixed-fee project margin."],
+ "csCapacity": ["Compara carga por especialidad con consultores disponibles y refuerzos externos sin mezclar habilidades.","Compara càrrega per especialitat amb consultors disponibles i reforços externs sense barrejar habilitats.","Compare skill-specific workload, staffing capacity and optional specialist capacity."],
+ "csPipeline": ["Convierte el pipeline por fases en proyectos e ingresos esperados con probabilidades totalmente hipotéticas.","Converteix el pipeline per fases en projectes i ingressos esperats amb probabilitats hipotètiques.","Turn stage-level opportunities into assumed expected project revenue and future delivery workload."],
+ "csScope": ["Prueba cómo las solicitudes adicionales no aprobadas erosionan la contribución de un contrato.","Prova com els canvis d'abast no aprovats erosionen la contribució d'un contracte.","Explore how unapproved scope changes can erode project contribution."],
+ "csDocs": ["Simula el ahorro de plantillas manteniendo revisión humana de entregables y errores.","Simula l'estalvi de plantilles mantenint revisió humana de lliurables i errors.","Estimate time saved with reusable templates while retaining human document review."],
+ "csPartner": ["Visualiza si la capacidad y habilidades de un socio técnico cubren un proyecto dentro del presupuesto.","Visualitza si la capacitat i habilitats d'un soci tècnic cobreixen un projecte dins pressupost.","Explore whether a hypothetical delivery partner covers specialist work within budget."],
+ "svDispatch": ["Compara avisos eléctricos y mecánicos con técnicos cualificados y capacidad polivalente.","Compara avisos elèctrics i mecànics amb tècnics especialistes i polivalents.","Match fictional mechanical/electrical service demand to qualified capacity."],
+ "svFirstFix": ["Simula el efecto de piezas, diagnóstico y habilidades sobre la resolución en primera visita.","Simula l'efecte de recanvis, diagnòstic i habilitats en la primera resolució.","Model the combined impact of spares, initial diagnosis and skills on first-time fix."],
+ "svPreventive": ["Prioriza grupos de equipos preventivos con coste de parada, presupuesto y eficacia supuestos.","Prioritza grups d'equips amb cost d'aturada, pressupost i eficàcia suposats.","Compare preventive equipment groups under downtime costs and a fixed maintenance budget."],
+ "svUrgent": ["Comprueba la asignación de capacidad a urgencias y trabajos programados con penalizaciones distintas.","Comprova com reservar capacitat a urgències i treballs programats amb costos diferents.","Compare emergency capacity reservation against scheduled field work."],
+ "svContract": ["Calcula cuotas frente a visitas, desplazamiento, horas y repuestos por contrato.","Calcula quotes davant visites, trajectes, hores i recanvis per contracte.","Calculate maintenance-contract contribution after service, travel and spare parts."],
+ "svVans": ["Reparte un presupuesto de repuestos entre tres referencias y la capacidad de furgonetas.","Reparteix pressupost de recanvis entre tres referències i la capacitat de furgonetes.","Allocate synthetic spare inventory under vehicle space and budget limits."],
+ "saRetention": ["Distingue el MRR total de la retención neta de la cohorte inicial, excluyendo nuevas altas del cálculo de NRR.","Distingeix MRR total i retenció neta de la cohort inicial sense comptar noves altes a NRR.","Separate total MRR from existing-cohort NRR so new accounts do not inflate retention."],
+ "saActivation": ["Prueba cada paso de un onboarding hasta el primer valor y el impacto hipotético de una guía.","Prova cada pas d'onboarding fins al primer valor i l'impacte hipotètic d'una guia.","Explore verification, setup and first value, including assumed benefits from a guided flow."],
+ "saAgents": ["Cuantifica errores inventados de un agente, falsos avisos y capacidad de revisión humana.","Quantifica errors inventats d'un agent, alertes falses i capacitat de revisió humana.","Quantify hypothetical agent errors, review alerts and human oversight capacity."],
+ "saCost": ["Separa gasto por tokens de entrada, salida, caché y soporte humano.","Separa despesa per tokens d'entrada, sortida, caché i suport humà.","Break down input/output token costs, caching effects and human support expense."],
+ "saMRR": ["Modifica altas, churn y expansión para ver una trayectoria ilustrativa de MRR y ARR.","Modifica altes, churn i expansió per veure trajectòries il·lustratives de MRR i ARR.","Adjust new business, churn and expansion to see illustrative MRR/ARR trajectories."],
+ "saSupport": ["Compara seis semanas de tickets de soporte con la capacidad disponible y el coste de refuerzo.","Compara sis setmanes de tiquets de suport amb la capacitat i el cost del reforç.","Compare six weeks of support backlog with staffing and optional reinforcement."],
+ "edEngagement": ["Explora continuidad del grupo con participación y medidas voluntarias de acompañamiento agregadas.","Explora continuïtat del grup amb participació i mesures voluntàries d'acompanyament agregades.","Explore aggregate cohort continuity and voluntary student-support scenarios."],
+ "edTimetable": ["Compara sesiones demandadas con aulas, docentes y capacidad equipada.","Compara sessions necessàries amb aules, docents i capacitat equipada.","Compare planned class sessions with room, staff and specialist-room availability."],
+ "edCourse": ["Muestra la contribución de una edición según matrículas, docentes y costes fijos.","Mostra la contribució d'una edició segons matrícula, docents i fixos.","Show cohort contribution given tuition, teaching effort and fixed delivery expense."],
+ "edEnroll": ["Construye un embudo agregado de consultas a matrícula bajo cupos limitados.","Construeix un embut agregat de consultes a matrícula amb places limitades.","Map aggregate enquiries into potential enrolments under seat capacity."],
+ "edSupport": ["Simula consultas administrativas, capacidad de respuesta y carga pendiente semanal.","Simula consultes administratives, capacitat de resposta i cua setmanal.","Simulate weekly administrative support requests and staffing capacity."],
+ "edResources": ["Distribuye horas de teoría, laboratorio y tutoría entre personal habilitado.","Distribueix hores de teoria, laboratori i tutoria entre personal habilitat.","Allocate theoretical, laboratory and tutoring hours across qualified capacity."],
+ "enPeak": ["Prueba cuánto pico de potencia ficticio podría reducir un desplazamiento de carga compatible.","Prova quant pic de potència fictici pot reduir desplaçant càrrega compatible.","Test how much hypothetical peak power can be shaved through flexible load shifting."],
+ "enForecast": ["Simula energía semanal según producción, clima y días sin entrenar ningún modelo.","Simula energia setmanal segons producció, clima i dies sense entrenar cap model.","Illustrate weekly energy demand with production, weather and calendar assumptions."],
+ "enSensors": ["Inspecciona dieciocho lecturas sintéticas y los umbrales que dispararían alertas para un humano.","Inspecciona divuit lectures sintètiques i llindars que activarien alertes per a una persona.","Review eighteen synthetic readings against manually chosen alert thresholds."],
+ "enPrevent": ["Compara prevención y coste esperado de fallos bajo presupuesto y una ventana operativa.","Compara prevenció i cost esperat de fallades amb pressupost i finestra operativa.","Compare preventive maintenance against expected failures under budget and available downtime windows."],
+ "enTariff": ["Desplaza energía a franjas más baratas cuando supera el coste de reprogramación.","Desplaça energia a franges més barates si supera el cost de reprogramació.","Shift hypothetical kWh to lower-tariff periods when the savings justify operational cost."],
+ "enEfficiency": ["Relaciona kWh consumidos y unidades producidas para ilustrar intensidad energética por línea.","Relaciona kWh consumits i unitats produïdes per il·lustrar intensitat per línia.","Compare two production lines by energy consumed per unit and assumed efficiency measures."],
+ "evAttendance": ["Compara entradas vendidas, cancelaciones, no-shows y aforo hipotético.","Compara entrades venudes, cancel·lacions, no-shows i aforament hipotètic.","Compare tickets sold, cancellations, no-shows and illustrative venue capacity."],
+ "evPricing": ["Explora precios y demanda elástica por tres zonas sin exceder el aforo.","Explora preus i demanda elàstica a tres zones sense excedir aforament.","Compare zone pricing under assumed demand response and seat capacity."],
+ "evStaff": ["Muestra el cuello de botella en entradas y el efecto económico de abrir accesos adicionales.","Mostra el coll d'ampolla d'entrades i l'efecte d'obrir accessos nous.","Compare expected arrivals and gate throughput with optional extra entry staffing."],
+ "evWeather": ["Compara contribución esperada de celebrar o suspender con una cobertura hipotética y plan de contingencia.","Compara contribució esperada de celebrar o suspendre amb cobertura i contingència hipotètiques.","Compare financial outcomes of disruption with assumed refunds, recoveries and contingency expense."],
+ "evQueue": ["Evalúa colas de acceso y restauración si se abren puntos de servicio adicionales.","Avalua cues d'accés i restauració si s'obren punts de servei nous.","Compare entrance and concession backlog with additional processing lanes."],
+ "evProfit": ["Descompone ingresos de entradas y patrocinio frente a producción, personal, recinto y comisiones.","Descompon entrades i patrocinis davant producció, personal, recinte i comissions.","Break down ticketing and sponsor revenue against production, staffing, venue and fees."],
   "fiAlerts": ["Matriz de alertas con rendimiento INVENTADO y umbral hipotético; se calcula carga de revisión y casos pendientes por capacidad humana.","Matriu d'alertes amb rendiment INVENTAT i llindar suposat; calcula càrrega de revisió.","Synthetic alert matrix with INVENTED sensitivity and specificity, showing human review capacity constraints."],
   "fiPortfolio": ["Evolución de exposición agregada al día y en seguimiento, con migración y recuperación supuestas en seis periodos.","Evolució agregada d'exposició al dia i en seguiment, amb migració i recuperació suposades.","Six-period synthetic migration of aggregate performing and watched exposures."],
   "fiReconcile": ["Conciliación de excepciones contables basada en reglas, dejando revisión humana para divergencias no resueltas.","Conciliació d'excepcions comptables per regles amb revisió humana de casos pendents.","Rules-based aggregate reconciliation with unresolved cases requiring human review."],
@@ -941,6 +977,42 @@ export const EXPLANATIONS = {
   ]
 };
 export const CONSTRAINTS = {
+ "csProjects": ["No son costes contables de clientes reales ni valida contratos o remuneración.","No són costos comptables de clients reals ni valida contractes o remuneracions.","Not real client accounting, contracts or verified staff compensation."],
+ "csCapacity": ["No representa asignación individual, convenios ni disponibilidad real.","No representa assignació individual, convenis ni disponibilitat real.","No individual assignment, labour rules or real-world availability."],
+ "csPipeline": ["No hay conexión con un CRM ni probabilidades de cierre calibradas.","No hi ha CRM connectat ni probabilitats de tancament calibrades.","No live CRM or historically calibrated win probabilities."],
+ "csScope": ["No determina si un cambio es legalmente facturable.","No determina si un canvi es pot facturar legalment.","Does not determine contractual or legal billability."],
+ "csDocs": ["La reutilización no demuestra calidad ni reemplaza aprobaciones profesionales.","La reutilització no demostra qualitat ni substitueix aprovacions professionals.","Template reuse does not certify quality or replace professional approval."],
+ "csPartner": ["No verifica competencia, disponibilidad, solvencia ni condiciones reales de ningún partner.","No verifica competència, disponibilitat, solvència ni condicions reals de cap partner.","No actual partner due diligence, availability, financial standing or contracting."],
+ "svDispatch": ["Sin rutas reales, autorizaciones técnicas, geolocalización ni despacho automático.","Sense rutes reals, autoritzacions, geolocalització o despatx automàtic.","No live maps, required licences, tracking or automated dispatch."],
+ "svFirstFix": ["Probabilidades independientes hipotéticas, no medidas reales de reparaciones.","Probabilitats independents hipotètiques, no mesures de reparacions reals.","Illustrative independent probabilities, not measured repair outcomes."],
+ "svPreventive": ["Sin sensor conectado, diagnóstico de fallo o certificación de seguridad.","Sense sensor connectat, diagnòstic o certificació de seguretat.","No connected sensor, failure prediction or safety certification."],
+ "svUrgent": ["Urgencia solo significa prioridad operativa ficticia, nunca médica o de seguridad.","Urgència només indica prioritat operativa fictícia, mai mèdica ni de seguretat.","Urgent means an illustrative operational priority, not real emergency triage."],
+ "svContract": ["Costes, kilómetros y cláusulas contractuales sin validar.","Costos, quilòmetres i clàusules contractuals sense validar.","Synthetic costs, distances and unverified agreement terms."],
+ "svVans": ["No considera compatibilidad de piezas, ubicación ni stock reservado real.","No considera compatibilitat, ubicació ni estoc reservat real.","No part compatibility, actual vehicle locations or reserved stock."],
+ "saRetention": ["No incluye cohortes observadas ni pronóstico estadístico calibrado.","No inclou cohorts observades ni pronòstic estadístic calibrat.","No measured cohorts or calibrated revenue prediction."],
+ "saActivation": ["Sin datos de producto, instrumentación ni prueba causal de mejora.","Sense dades de producte, instrumentació o prova causal de millora.","No tracked product events or causal evidence of improvement."],
+ "saAgents": ["No hay agente real, modelo evaluador validado ni acciones automáticas.","No hi ha agent real, model validador ni accions automàtiques.","No real agent execution, calibrated evaluator or automated actions."],
+ "saCost": ["Precios y volúmenes hipotéticos, no facturas ni tarifas confirmadas.","Preus i volums hipotètics, no factures ni tarifes confirmades.","Assumed usage and prices, not verified provider quotations."],
+ "saMRR": ["Las bandas no son intervalos predictivos calibrados ni ingresos facturados.","Les bandes no són intervals calibrats ni ingressos facturats.","Bands are not calibrated forecasts or invoiced receipts."],
+ "saSupport": ["No gestiona tickets reales, SLA contractuales o gravedad técnica.","No gestiona tiquets reals, SLA contractuals o gravetat tècnica.","No live ticketing, binding SLA or actual incident severity."],
+ "edEngagement": ["No identifica estudiantes, pronostica abandono individual ni decide apoyos.","No identifica estudiants, prediu abandonament individual ni decideix suports.","No student identification, individual dropout prediction or support allocation."],
+ "edTimetable": ["No valida horarios oficiales, licencias, accesibilidad ni conflictos individuales.","No valida horaris oficials, permisos, accessibilitat ni conflictes individuals.","Not a validated timetable, staff licence or accessible scheduling system."],
+ "edCourse": ["Sin becas, impuestos, acreditaciones ni calidad educativa medida.","Sense beques, impostos, acreditacions o qualitat educativa mesurada.","No scholarships, taxes, accreditation or measured learning quality."],
+ "edEnroll": ["No determina admisión o elegibilidad individual ni estima conversiones reales.","No determina admissió individual ni estima conversions reals.","No individual admissions or empirically estimated conversions."],
+ "edSupport": ["No identifica ni prioriza estudiantes ni opera la mesa de ayuda real.","No identifica ni prioritza estudiants ni opera el helpdesk real.","No learner identification, individual prioritisation or live helpdesk."],
+ "edResources": ["No asigna docentes reales ni verifica obligaciones laborales y habilitaciones.","No assigna docents reals ni verifica convenis i habilitacions.","No named staff scheduling, employment compliance or qualifications check."],
+ "enPeak": ["Sin control eléctrico real, contratos, protecciones o restricciones de red verificadas.","Sense control elèctric real, contractes, proteccions ni xarxa verificada.","No real electrical controls, contracts, protections or grid constraints."],
+ "enForecast": ["Rangos sin calibración, ni lecturas de contadores o meteorología real.","Rangs sense calibratge ni lectures de comptadors o meteorologia real.","Uncalibrated bands, no actual meter or weather records."],
+ "enSensors": ["No certifica fallos, mantenimiento ni seguridad; no hay sensores conectados.","No certifica fallades, manteniment ni seguretat; sense sensors connectats.","No connected sensors, failure confirmation or safety certification."],
+ "enPrevent": ["Ninguna intervención se autoriza ni se detiene maquinaria real.","No autoritza intervencions ni deté maquinària real.","No work authorisation or live machinery shutdown."],
+ "enTariff": ["No verifica tarifas reales, potencia instantánea ni contrato eléctrico.","No verifica tarifes reals, potència instantània ni contracte elèctric.","No real grid tariff, instantaneous power or contractual verification."],
+ "enEfficiency": ["No es auditoría energética, medida ISO 50001 ni garantía de ahorro.","No és auditoria energètica, mesura ISO 50001 ni garantia d'estalvi.","Not an energy audit, ISO 50001 verification or savings guarantee."],
+ "evAttendance": ["No certifica aforo legal, control de accesos ni seguridad del público.","No certifica aforament legal, control d'accessos ni seguretat del públic.","No legal venue capacity, access control or public-safety certification."],
+ "evPricing": ["Elasticidad inventada y precios no aprobados por ningún promotor.","Elasticitat inventada i preus no aprovats per cap promotor.","Assumed elasticity and no promoter-authorised live prices."],
+ "evStaff": ["No dimensiona evacuación, emergencias ni requisitos de autoprotección.","No dimensiona evacuació, emergències ni requisits d'autoprotecció.","Not an evacuation, emergency staffing or crowd-safety model."],
+ "evWeather": ["No es previsión meteorológica, asesoría aseguradora ni decisión de cancelación.","No és previsió meteorològica, assessorament assegurador ni decisió de cancel·lació.","Not a weather forecast, insurance advice or cancellation decision."],
+ "evQueue": ["No sustituye cálculos de seguridad, evacuación o emergencia.","No substitueix càlculs de seguretat, evacuació o emergència.","Not suitable for crowd safety, evacuation or emergency planning."],
+ "evProfit": ["Sin impuestos, liquidación final, patrocinio confirmado ni garantías de beneficio.","Sense impostos, liquidació final, patrocini confirmat ni garanties de benefici.","No taxes, actual settlements, verified sponsorship or assured profits."],
   "fiAlerts": ["No hay modelo antifraude entrenado, evaluación de falsos positivos real ni facultad de bloquear operaciones.","No hi ha model antifrau entrenat ni avaluació real; no bloqueja operacions.","No trained fraud model, empirically validated performance or transaction blocking."],
   "fiPortfolio": ["No es provisión IFRS 9, scoring individual, concesión o denegación crediticia ni asesoramiento de inversión.","No és provisió IFRS 9, scoring individual o decisió creditícia.","Not IFRS 9 provisioning, individual underwriting, lending decisions or investment advice."],
   "fiReconcile": ["No afecta a saldos, cuentas, pagos, movimientos o sistemas bancarios reales.","No afecta saldos, comptes, pagaments o sistemes bancaris reals.","No live account, payment, ledger or bank system action."],
@@ -2156,5 +2228,29 @@ export const SECTOR_CONTEXT = {
   "SC12": {
     "ca": "Anàlisi agregada d'excepcions, capacitat de revisió, riscos suposats i reserves il·lustratives, sense decisions automàtiques.",
     "en": "Aggregate exceptions, review capacity, hypothetical risk and illustrative reserves without automated decisions."
+  },
+  "SC13": {
+    "ca": "Projectes tancats, hores internes, pipeline i opcions de partners tècnics.",
+    "en": "Fixed-fee delivery, team hours, pipeline and specialist partner options."
+  },
+  "SC14": {
+    "ca": "Avisos de servei, tècnics, recanvis, urgències i cost per contracte.",
+    "en": "Field service jobs, technicians, spare parts, operational priorities and contract margins."
+  },
+  "SC15": {
+    "ca": "Cohorts, activació, MRR, agents amb supervisió humana i costos de suport.",
+    "en": "Cohorts, activation, MRR, human-reviewed AI outputs and support cost."
+  },
+  "SC16": {
+    "ca": "Places, grups, càrrega docent i consultes administratives en dades agregades.",
+    "en": "Course seats, cohorts, teaching capacity and aggregate administrative support."
+  },
+  "SC17": {
+    "ca": "Perfils elèctrics, consum per línia, alertes sintètiques i decisions de manteniment.",
+    "en": "Energy load profiles, line intensity, synthetic alerts and maintenance planning."
+  },
+  "SC18": {
+    "ca": "Entrades, aforament, zones, cues i contribució econòmica amb dades hipotètiques.",
+    "en": "Tickets, capacity, pricing zones, queues and event contribution under assumed data."
   }
 };

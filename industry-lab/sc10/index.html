@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#102332">
+<meta name="robots" content="noindex,nofollow">
+<meta name="description" content="Sistemas de decisión personalizados por sector. Datos sintéticos.">
+<title>Construcción e instalaciones · SC-Analytics</title>
+<link rel="stylesheet" href="../experience.css">
+<script type="module" src="../experience.js"></script>
+<link rel="stylesheet" href="../language.css">
+<link rel="stylesheet" href="../executive.css"><link rel="stylesheet" href="../sector-executive.css"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap">
+</head>
+<body data-initial-sector="SC10" data-executive="true">
+<a href="#workspace" class="skip">Saltar a la simulación</a>
+<header class="topbar">
+ <a class="brand" href="../" aria-label="SC-Analytics, volver al catálogo">
+  <img class="official-logo" src="https://www.sc-analytics.io/brand/logo-white.png" width="95" height="58" alt="SC-Analytics" loading="eager">
+  <span><strong>SC-Analytics</strong><small>DEMOSTRACIONES SECTORIALES</small></span>
+ </a>
+ <nav class="toplinks" aria-label="Enlaces">
+  <a class="nav-industries" href="../" data-i18n="all">Todas las industrias</a>
+  
+  
+  <a class="nav-contact" href="https://www.sc-analytics.io/contact?intent=problem" target="_blank" rel="noopener" data-i18n="contact">Contactar</a>
+ </nav>
+ <div class="locales" role="group" aria-label="Idioma / Language">
+  <button data-locale="es" type="button" aria-pressed="true">ES</button>
+  <button data-locale="ca" type="button" aria-pressed="false">CAT</button>
+  <button data-locale="en" type="button" aria-pressed="false">EN</button>
+ </div>
+</header>
+<main id="workspace">
+ <section class="hero" aria-labelledby="industry-name">
+  <div class="hero-context">
+   <p class="eyebrow" data-i18n="tagline">EXPERIENCIAS POR INDUSTRIA</p>
+   <span id="sector-code" class="sector-code">SC10</span>
+  </div>
+  <h1 id="industry-name">Construcción e instalaciones</h1>
+  <p class="hero-lead" data-i18n="welcome">Una decisión empresarial, varias alternativas posibles.</p>
+  <p class="hero-contextline" id="industry-context"></p>
+  <a class="hero-jump" id="hero-jump" href="#plan-board"></a>
+  <p class="hero-note" data-i18n="context">Demo con datos sintéticos · no representa una implementación real</p>
+ </section>
+ <section class="experience">
+  <div class="mobile-sector-nav">
+   <label for="mobile-case" data-i18n="selector">¿Qué problema quieres explorar?</label>
+   <select id="mobile-case"></select>
+  </div>
+  <aside class="sidebar" aria-labelledby="case-nav-title">
+   <div class="sidebar-intro">
+    <span class="number-kicker">06 / PROBLEMS</span>
+    <h2 id="case-nav-title" data-i18n="selector">¿Qué problema quieres explorar?</h2>
+    <p data-i18n="intro">Selecciona un problema que te resulte familiar. Cambia supuestos, ejecuta el modelo y compara los resultados.</p>
+   </div>
+   <nav id="case-nav" aria-label="Problemas sectoriales"></nav>
+   <button id="restart-tour" class="side-help" type="button"><span class="help-icon">?</span><span data-i18n="help">¿Cómo funciona?</span></button>
+  </aside>
+  <div class="maincol">
+   <div class="problem-heading">
+    <div>
+      <p class="eyebrow"><span id="case-count">01 / 06</span> <span data-i18n="model">Modelo ilustrativo</span></p>
+      <h2 id="case-title">Rentabilidad por ruta y cliente</h2>
+      <p id="case-description" class="problem-description"></p>
+    </div>
+    <button type="button" id="copy-link" class="copy-link"><span aria-hidden="true">↗</span><span data-i18n="copy">Copiar enlace al problema</span></button>
+   </div>
+   <section id="route-studio" class="route-studio" hidden></section>
+   <section id="plan-board" class="plan-board" aria-live="polite"></section>
+   <section class="controls-panel" aria-labelledby="controls-title">
+    <div class="panel-heading">
+     <div>
+      <p class="eyebrow">01 / INPUTS</p>
+      <h3 id="controls-title" data-i18n="controls">Ajusta las condiciones</h3>
+     </div>
+     <p class="panel-side-note" data-i18n="currency">Importes en euros · resultados exclusivamente ilustrativos</p>
+    </div>
+    <div class="controls-grid" id="input-grid"></div>
+    <div class="run-row">
+      <button id="run" type="button" class="button-primary"><span data-i18n="action">Ejecutar escenario</span><span aria-hidden="true">→</span></button>
+      <button id="reset" type="button" class="button-outline" data-i18n="reset">Restablecer</button>
+      <span id="unsaved" class="unsaved" role="status" aria-live="polite" hidden>Hay cambios sin ejecutar</span>
+    </div>
+   </section>
+   <section class="output-panel" aria-labelledby="metrics-title">
+    <div class="panel-heading"><div><p class="eyebrow">02 / RESULTS</p><h3 id="metrics-title" data-i18n="metrics">Indicadores del escenario</h3></div></div>
+    <div id="warnings" role="status" aria-live="polite"></div>
+    <div id="metrics" class="metric-grid" aria-live="polite"></div>
+    <div class="figure-header"><h3 data-i18n="chart">Comparación visual</h3><span id="chart-unit"></span></div>
+    <div class="figure" id="chart-container"><svg id="chart" viewBox="0 0 760 300" role="img" aria-label="Visualización calculada"></svg></div>
+    <div id="period-inspect" hidden></div>
+    <div id="legend" class="legend"></div>
+    <section id="stock-groups" hidden></section>
+    <div class="insight"><span class="insight-symbol">i</span><div><h3 data-i18n="interpretation">Qué nos dice este resultado</h3><p id="explanation"></p></div></div>
+    <details class="method">
+      <summary data-i18n="assumptions">Método y límites</summary>
+      <div class="method-content">
+        <h4 data-i18n="formula">Cómo se calcula</h4><p id="formula"></p>
+        <h4 data-i18n="limitations">Lo que esta demo no demuestra</h4><p id="limitations"></p>
+      </div>
+    </details>
+    <details class="details-table">
+      <summary data-i18n="table">Detalles calculados</summary>
+      <table><tbody id="detail-rows"></tbody></table>
+    </details>
+   </section>
+   <section class="comparison" aria-labelledby="compare-title">
+    <div class="panel-heading"><div><p class="eyebrow">03 / WHAT-IF</p><h3 id="compare-title" data-i18n="compare">Comparar escenarios</h3></div></div>
+    <div class="compare-controls">
+      <button id="save-a" class="button-outline" type="button" data-i18n="saveA">Guardar escenario A</button>
+      <button id="save-b" class="button-outline" type="button" data-i18n="saveB">Guardar escenario B</button>
+      <button id="save-c" class="button-outline" type="button"></button>
+      <button id="download" class="text-button" type="button"><span aria-hidden="true">↓</span><span data-i18n="download">Descargar informe</span></button>
+    </div>
+    <p id="compare-hint" data-i18n="emptyCompare">Guarda A y B para comparar.</p>
+    <div id="compare-result" aria-live="polite"></div>
+   </section>
+   <section class="conversation" aria-labelledby="conversation-title">
+     <p class="eyebrow">SC-ANALYTICS / BUILT AROUND YOUR BUSINESS</p>
+     <h2 id="conversation-title" data-i18n="insightCta">¿Y si estas condiciones fueran las de tu empresa?</h2>
+     <p data-i18n="insightCtaBody">En SC-Analytics desarrollamos sistemas adaptados a procesos, datos, restricciones y objetivos concretos.</p>
+     <div class="conversation-actions">
+      <a id="contact-link" class="button-primary" href="https://www.sc-analytics.io/contact?intent=problem" target="_blank" rel="noopener"><span data-i18n="letsTalk">Comentar este problema</span><span aria-hidden="true">→</span></a>
+      <a class="button-outline" href="../" data-i18n="viewOther">Cambiar de industria</a>
+     </div>
+   </section>
+  </div>
+ </section>
+</main>
+<footer class="footer">
+  <a href="https://www.sc-analytics.io/">SC-Analytics</a>
+  <span data-i18n="reportSource">Ejemplo ilustrativo generado localmente, sin datos reales de empresas ni garantías de resultados.</span>
+  <a href="../" data-i18n="all">Todas las industrias</a>
+</footer>
+<dialog id="guide-dialog" class="guide-dialog" aria-labelledby="guide-title">
+  <div class="guide-inside">
+    <div class="guide-top"><span class="eyebrow">SC-ANALYTICS GUIDE</span><button id="close-guide" type="button" class="close-guide" aria-label="Cerrar guía">×</button></div>
+    <p id="guide-progress" class="guide-progress"></p>
+    <h2 id="guide-title"></h2>
+    <p id="guide-body"></p>
+    <div id="guide-locales" class="guide-locales"></div>
+    <div class="guide-bottom">
+      <button id="guide-back" class="button-outline" type="button" data-i18n="back">Anterior</button>
+      <button id="guide-next" class="button-primary" type="button" data-i18n="next">Siguiente</button>
+    </div>
+    <button id="guide-skip" class="guide-skip" type="button" data-i18n="skip">Saltar guía</button>
+  </div>
+</dialog>
+</body>
+</html>

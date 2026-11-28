@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#0d1b2a">
+  <meta name="description" content="Explora situaciones de planificación, optimización y análisis en 18 industrias, con ejemplos interactivos de SC-Analytics.">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Demostraciones por sector · SC-Analytics</title>
+  <link rel="stylesheet" href="./app.css">
+  <script type="module" src="./app.js"></script>
+<link rel="stylesheet" href="./language.css">
+<link rel="stylesheet" href="./executive-index.css">
+</head>
+<body>
+  <a href="#main" class="skip" data-i18n="skip">Saltar al contenido</a>
+  <header class="site-header">
+    <a class="brand" href="https://www.sc-analytics.io/" aria-label="SC-Analytics: sitio corporativo">
+      <img src="https://www.sc-analytics.io/brand/logo-white.png" alt="" width="126" height="56" loading="eager" onerror="this.style.display='none'">
+      <span class="brand-text">SC-Analytics <small>DECISION SYSTEMS</small></span>
+    </a>
+    <nav class="header-links" aria-label="Enlaces corporativos">
+      <a href="../" data-i18n="allDemos">Todas las demos</a>
+      <a href="https://www.sc-analytics.io/" target="_blank" rel="noopener" data-i18n="website">Web oficial</a>
+      <a href="https://www.linkedin.com/company/sc-analytics/" target="_blank" rel="noopener">LinkedIn</a>
+    </nav>
+    <div class="language" role="group" aria-label="Idioma / Language">
+      <button type="button" data-lang="es" aria-pressed="true">ES</button>
+      <button type="button" data-lang="ca" aria-pressed="false">CAT</button>
+      <button type="button" data-lang="en" aria-pressed="false">EN</button>
+    </div>
+  </header>
+  <main id="main">
+    <section class="hero">
+      <p class="eyebrow">SC-ANALYTICS / INDUSTRY DECISION LAB</p>
+      <h1 data-i18n="heroTitle">Empieza por el problema. Descubre cómo tomar mejores decisiones.</h1>
+      <p class="lead" data-i18n="heroLead">Ejemplos interactivos basados en situaciones empresariales ilustrativas. Explora por sector o por capacidad técnica; las soluciones reales se diseñan a medida.</p>
+      <div class="hero-actions">
+        <a href="#discover" class="primary" data-i18n="explore">Explorar experiencias</a>
+        <button type="button" id="open-tour" class="ghost" data-i18n="tour">¿Cómo navegar?</button>
+      </div>
+      <p class="hero-note" data-i18n="synthetic">Los datos de las demostraciones son sintéticos. No representan resultados obtenidos para clientes.</p>
+    </section>
+    <section id="discover" class="explore" aria-labelledby="explore-title">
+      <div class="section-top">
+        <div>
+          <p class="eyebrow" data-i18n="discoverEyebrow">ENCUENTRA TU PUNTO DE PARTIDA</p>
+          <h2 id="explore-title" data-i18n="discoverTitle">¿Qué te gustaría explorar?</h2>
+        </div>
+        <div class="switcher" role="tablist" aria-label="Modo de exploración">
+          <button type="button" role="tab" id="tab-industries" aria-selected="true" aria-controls="industries" data-i18n="industryTab">Por industria</button>
+          <button type="button" role="tab" id="tab-capabilities" aria-selected="false" aria-controls="capabilities" data-i18n="capabilityTab">Por capacidad</button>
+        </div>
+      </div>
+      <section id="industries" role="tabpanel" aria-labelledby="tab-industries">
+        <p class="section-desc" data-i18n="industriesIntro">Dieciocho sectores para explorar. Las experiencias aún no publicadas se identifican claramente; mientras tanto puedes probar las demos técnicas disponibles.</p>
+        <div class="industry-grid" id="industry-grid"></div>
+      </section>
+      <section id="capabilities" role="tabpanel" aria-labelledby="tab-capabilities" hidden>
+        <p class="section-desc" data-i18n="capabilitiesIntro">Siete familias de capacidades técnicas con demostraciones públicas y modelos interactivos.</p>
+        <div class="capability-grid" id="capability-grid"></div>
+      </section>
+    </section>
+    <section id="logistics-pilot" class="pilot" aria-labelledby="pilot-title">
+      <div>
+        <p class="eyebrow" data-i18n="pilotEyebrow">PRIMER SECTOR EN DESARROLLO · SC01</p>
+        <h2 id="pilot-title" data-i18n="pilotTitle">Logística y transporte: del plan al escenario.</h2>
+        <p data-i18n="pilotCopy">Estamos preparando una experiencia sectorial conectada. Por ahora puedes explorar la demostración general de optimización y contarnos qué decisión logística te interesaría simular.</p>
+      </div>
+      <div class="pilot-actions">
+        <a class="primary" href="./experience.html?sector=SC01" data-i18n="pilotExisting">Explorar la demo de optimización existente</a>
+        <a class="outline" href="https://www.sc-analytics.io/contact?intent=problem" target="_blank" rel="noopener" data-i18n="pilotContact">Comentar un problema de logística</a>
+      </div>
+    </section>
+    <section class="contact" aria-labelledby="contact-title">
+      <p class="eyebrow">SC-ANALYTICS / TAILORED SYSTEMS</p>
+      <h2 id="contact-title" data-i18n="ctaTitle">¿Y si las restricciones fueran las de tu organización?</h2>
+      <p data-i18n="ctaCopy">Estas demostraciones son ejemplos. En SC-Analytics diseñamos modelos, algoritmos y aplicaciones adaptados a los sistemas y decisiones de cada empresa. También nos interesa intercambiar perspectivas con profesionales de distintos sectores.</p>
+      <div class="contact-actions">
+        <a class="primary" href="https://www.sc-analytics.io/contact?intent=discovery" target="_blank" rel="noopener" data-i18n="ctaButton">Conversemos sobre tu caso</a>
+        <a class="outline" href="https://www.linkedin.com/company/sc-analytics/" target="_blank" rel="noopener" data-i18n="ctaLinkedIn">Seguir el trabajo en LinkedIn</a>
+      </div>
+    </section>
+  </main>
+  <footer>
+    <a href="https://www.sc-analytics.io/">SC-Analytics</a>
+    <span data-i18n="footer">Experiencias ilustrativas, sistemas empresariales a medida.</span>
+    <a href="../" data-i18n="backDemos">Volver a las demos</a>
+  </footer>
+  <dialog id="tour" aria-labelledby="tour-title">
+    <div class="tour-content">
+      <div class="tour-header"><span class="eyebrow">SC-ANALYTICS GUIDE</span><button type="button" id="close-tour" class="close" aria-label="Cerrar">×</button></div>
+      <p id="tour-counter" class="tour-counter"></p>
+      <h2 id="tour-title"></h2>
+      <p id="tour-text"></p>
+      <div id="tour-language" class="tour-language" role="group" aria-label="Elige idioma"></div>
+      <div class="tour-footer"><button type="button" class="outline" id="tour-back">Anterior</button><button type="button" class="primary" id="tour-next">Continuar</button></div>
+      <button type="button" id="tour-skip" class="tour-skip">Saltar guía</button>
+    </div>
+  </dialog>
+</body>
+</html>

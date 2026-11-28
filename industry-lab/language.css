@@ -1,0 +1,7 @@
+.language-entry{color:#15332e;background:#fff;border:1px solid #c7d8d1;border-radius:12px;width:min(92vw,440px);padding:clamp(22px,5vw,36px);box-sizing:border-box}
+.language-entry::backdrop{background:#0d1b2acc}
+.language-entry h2{font:600 1.7rem/1.2 Georgia,serif;margin:0}
+.language-entry p{font:1rem/1.55 system-ui;margin:14px 0 22px;color:#405951}
+.language-entry form div{display:flex;gap:8px;flex-wrap:wrap}
+.language-entry button{min-height:44px;padding:8px 14px;background:white;color:#163c32;border:1px solid #59766b;border-radius:5px;font:600 1rem system-ui;cursor:pointer}
+.language-entry button:hover,.language-entry button:focus-visible{background:#deeee7;outline:2px solid #215c48;outline-offset:2px}

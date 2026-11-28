@@ -102,6 +102,13 @@ def main():
         page.goto(base+"sc01/",wait_until="networkidle")
         page.locator(".navcase").first.wait_for()
         assert page.locator(".navcase").count()==16
+        assert page.locator("#agent-dock").is_visible()
+        top=page.locator("#agent-dock").bounding_box()["y"]
+        page.evaluate("window.scrollTo(0, 800)")
+        assert abs(page.locator("#agent-dock").bounding_box()["y"]-top)<2
+        page.locator("#agent-close").click()
+        assert page.locator("#agent-launch").is_visible()
+        page.locator("#agent-launch").click()
         assert page.locator(".navcase .num").all_text_contents()==[f"{i:02d}" for i in range(1,17)]
         titles=[]
         for button in page.locator(".navcase").all():
@@ -146,6 +153,12 @@ def main():
         page.locator("[data-question=explain]").click()
         page.locator(".assistant-reply").wait_for()
         assert page.locator(".assistant-metric").count()>=2
+        page.locator("[data-question=visual]").click()
+        page.locator("#apply-proposal").wait_for()
+        page.locator("#apply-proposal").click()
+        assert page.locator("#view-panel").is_visible()
+        assert page.locator("#view-metric").count()==1
+        page.locator("#agent-close").click()
         page.locator("#role-picker").select_option("all")
         page.locator("[data-case=demanda]").click()
         for width in [1920,1366,768,390,320]:

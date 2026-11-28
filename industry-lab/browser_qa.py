@@ -158,6 +158,15 @@ def main():
         page.locator("#apply-proposal").click()
         assert page.locator("#view-panel").is_visible()
         assert page.locator("#view-metric").count()==1
+        assert page.locator("#custom-chart").inner_text().strip()
+        page.locator("#assistant-input").fill("Pon 2 vehículos")
+        page.locator("#ask-process").click()
+        page.locator("#apply-proposal").wait_for()
+        assert "Vehículos disponibles" in page.locator("#assistant-answer").inner_text()
+        page.locator("#apply-proposal").click()
+        page.locator("#execution-status.done").wait_for()
+        assert page.locator(\'[data-input="1"]\').input_value()=="2"
+        assert "Cambio aplicado" in page.locator("#assistant-answer").inner_text()
         page.locator("#agent-close").click()
         page.locator("#role-picker").select_option("all")
         page.locator("[data-case=demanda]").click()

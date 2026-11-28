@@ -26,3 +26,5 @@ main{width:100%;min-width:0}.top{padding-inline:max(var(--gutter),calc((100% - v
 @media(min-width:1750px){.agent-dock{width:390px}body.agent-open main,body.agent-open .top,body.agent-open footer{width:calc(100% - 425px)}body.agent-open .workspace{grid-template-columns:minmax(205px,250px) minmax(0,1fr)}}
 @media(max-width:1249px){.agent-dock{top:auto;bottom:14px;right:14px;height:min(700px,calc(100dvh - 28px));width:min(360px,calc(100vw - 28px))}}
 @media(max-width:600px){.agent-dock{right:8px;bottom:8px;width:calc(100vw - 16px);height:min(74dvh,680px);border-radius:12px}.agent-launch{right:12px;bottom:12px}.agent-body{padding:12px}}
+
+.agent-dock .tablewrap{overflow:auto;max-width:100%}.agent-dock td,.agent-dock th{padding:7px 5px;font-size:11px;white-space:normal}.agent-dock .agent-nav{margin:4px 4px 0 0}.agent-dock .agent-history>div{max-height:280px;overflow:auto}.agent-dock button:focus-visible,.view-builder button:focus-visible{outline:3px solid #e0a45e;outline-offset:2px}

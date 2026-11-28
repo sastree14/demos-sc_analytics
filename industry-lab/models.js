@@ -1,3 +1,4 @@
+import {EXTRA_MODELS,EXTRA_RUNNERS,EXTRA_METRICS} from "./sector-expanded.js";
 /* SC-Analytics Industry Lab — synthetic, transparent quantitative scenario models.
  * All results illustrate mathematical mechanisms only. No calibrated predictions,
  * observed customer savings, regulated decisions, or production recommendations.
@@ -160,10 +161,10 @@ cash:L("Caja al final del horizonte","Caixa al final de l'horitzó","Cash at end
 minimum:L("Caja mínima prevista","Caixa mínima prevista","Minimum projected cash"),
 selected:L("Iniciativas seleccionadas","Iniciatives seleccionades","Selected initiatives")
 };
-export const metricLabel=(key,language="es")=>(metricTitles[key]||L(key,key,key))[language]||key;
+export const metricLabel=(key,language="es")=>(EXTRA_METRICS[key]||metricTitles[key]||L(key,key,key))[language]||key;
 const series=(key,values)=>({key,values:values.map(x=>rnd(x,2))});
 const minPrice=1;
-const models={...logisticsModels,...wholesaleModels,...manufacturingModels,...foodModels,...pharmaModels,...restaurantModels,...hotelModels,...retailModels,...clinicModels,...constructionModels,...realEstateModels,...financeInsuranceModels,...consultingModels,...fieldServiceModels,...saasModels,...educationModels,...energyIndustrialModels,...eventsModels,
+const models={...EXTRA_MODELS,...logisticsModels,...wholesaleModels,...manufacturingModels,...foodModels,...pharmaModels,...restaurantModels,...hotelModels,...retailModels,...clinicModels,...constructionModels,...realEstateModels,...financeInsuranceModels,...consultingModels,...fieldServiceModels,...saasModels,...educationModels,...energyIndustrialModels,...eventsModels,
 fleet:{
 title:L("Planificación de recursos y demanda","Planificació de recursos i demanda","Resource and demand planning"),
 inputs:[
@@ -635,7 +636,7 @@ function portfolio(p){
  [["Presupuesto comprometido",rnd(best.money,0)],["Capacidad usada",best.hours],["Combinaciones evaluadas",64]]
  );
 }
-const runners={...logisticsCalculators,...wholesaleCalculators,...manufacturingCalculators,...foodCalculators,...pharmaCalculators,...restaurantCalculators,...hotelCalculators,...retailCalculators,...clinicCalculators,...constructionCalculators,...realEstateCalculators,...financeInsuranceCalculators,...consultingCalculators,...fieldServiceCalculators,...saasCalculators,...educationCalculators,...energyIndustrialCalculators,...eventsCalculators,fleet,forecast,pricing,inventory,queue,production,maintenance,quality,energy,reconcile,capacity,risk,cohort,cost,cash,portfolio};
+const runners={...EXTRA_RUNNERS,...logisticsCalculators,...wholesaleCalculators,...manufacturingCalculators,...foodCalculators,...pharmaCalculators,...restaurantCalculators,...hotelCalculators,...retailCalculators,...clinicCalculators,...constructionCalculators,...realEstateCalculators,...financeInsuranceCalculators,...consultingCalculators,...fieldServiceCalculators,...saasCalculators,...educationCalculators,...energyIndustrialCalculators,...eventsCalculators,fleet,forecast,pricing,inventory,queue,production,maintenance,quality,energy,reconcile,capacity,risk,cohort,cost,cash,portfolio};
 export function calculate(kind,values={}){
  const definition=getDefinition(kind),p={};
  for(const x of definition.inputs){

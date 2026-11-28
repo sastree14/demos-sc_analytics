@@ -1,3 +1,4 @@
+import {EXTRA_CASES,EXTRA_COPY} from "./sector-expanded.js";
 import {installExecutive} from "./sector-executive.js";
 import {scenarioBoard} from "./scenarios.js";
 import {routeStudio} from "./route.js";
@@ -16,6 +17,7 @@ language=["es","ca","en"].includes(language)?language:(navigator.language?.toLow
 const requested=(query.get("sector")||query.get("industry")||document.body.dataset.initialSector||"SC01").toUpperCase();
 const sectors=INDUSTRY_CATALOG.sectors;
 let sector=sectors.find(x=>x.code===requested)||sectors[0];
+if(document.body.dataset.executive==="true"&&EXTRA_CASES[sector.code])sector={...sector,pain_points:[...sector.pain_points,...EXTRA_CASES[sector.code]]};
 let problem=sector.pain_points.find(x=>x.id===query.get("case"))||(sector.code==="SC01"?sector.pain_points[2]:sector.pain_points[0]);
 let values={},lastValues={},result=null,snapshots={A:null,B:null};
 let tutorialStep=0,metricIndex=0;const enhanced=document.body.dataset.executive==="true";let executive=null;
@@ -27,7 +29,7 @@ const t=key=>UI[language][key]??UI.es[key]??key;
 const tr=ob=>(typeof ob==="string"?ob:(ob?.[language]||ob?.es||""));
 const stateLocale=(str,key)=>language==="es"?str:(sectorText[sector.code]?.problems?.[key]?.[language]||str);
 function sectorName(){return language==="es"?sector.name:(sectorText[sector.code]?.[language]||sector.name);}
-function caseName(p){if(p.id==="SC01-P03")return ({es:"Optimización de rutas y asignación de flota",ca:"Optimització de rutes i assignació de flota",en:"Route optimisation and fleet allocation"})[language];return stateLocale(p.title,sector.pain_points.findIndex(x=>x.id===p.id));}
+function caseName(p){if(EXTRA_COPY[p.model])return tr(EXTRA_COPY[p.model].title);if(p.id==="SC01-P03")return ({es:"Optimización de rutas y asignación de flota",ca:"Optimització de rutes i assignació de flota",en:"Route optimisation and fleet allocation"})[language];return stateLocale(p.title,sector.pain_points.findIndex(x=>x.id===p.id));}
 function format(v,unit="number"){
  if(!Number.isFinite(v))return "—";
  const digits=unit==="eur4"?3:unit==="minutes"?1:Math.abs(v)<10&&unit!=="number"?1:Math.abs(v)<1?2:Math.abs(v)<100?1:0;
@@ -58,7 +60,7 @@ function applyLanguage(next){
  $("sector-code").textContent=sector.code;
  $("industry-name").textContent=sectorName();
  $("industry-context").textContent=language==="es"?sector.first_screen_hypothesis:(SECTOR_CONTEXT[sector.code]?.[language]||(language==="ca"?"Explora sis decisions habituals de "+sectorName().toLowerCase()+".":"Explore six illustrative decisions in "+sectorName().toLowerCase()+"."));
- document.title=sectorName()+" · SC-Analytics Industry Decision Lab";
+ document.title=sectorName()+" · SC-Analytics · Demostraciones";
  buildNav();
  renderCase(true);
  renderTour();
@@ -86,7 +88,7 @@ function chooseProblem(caseId){
 }
 function renderCase(rebuildControls=true){
  $("case-title").textContent=caseName(problem);
- $("case-count").textContent=String(sector.pain_points.indexOf(problem)+1).padStart(2,"0")+" / 06";
+ $("case-count").textContent=String(sector.pain_points.indexOf(problem)+1).padStart(2,"0")+" / "+String(sector.pain_points.length).padStart(2,"0");
  const question=BUSINESS_QUESTIONS[sector.code]?.[sector.pain_points.indexOf(problem)];
  const description=question?(question[language==="es"?0:language==="ca"?1:2]):(language==="es"?problem.example_controls:(language==="ca"?"Analitza aquest repte amb paràmetres simulats i compara escenaris de "+tr(MODELS[problem.model].title).toLowerCase()+".":"Explore this challenge with synthetic inputs and compare "+tr(MODELS[problem.model].title).toLowerCase()+" scenarios."));
  $("case-description").textContent=description;
@@ -152,9 +154,9 @@ function renderResults(){
   const alert=document.createElement("div");alert.className="warning";alert.textContent=language==="es"?warning:(WARNING_TRANSLATIONS[warning]?.[language==="ca"?0:1]||warning);$("warnings").append(alert);
  }
  $("chart-unit").textContent=result.visual.unit==="eur"?"EUR":result.visual.unit==="minutes"?t("wait"):result.visual.unit==="number"?"":result.visual.unit;
- $("explanation").textContent=(language==="es"?"Para «"+caseName(problem)+"», este resultado se ha calculado con las condiciones que acabas de ejecutar. ":language==="ca"?"Per a «"+caseName(problem)+"», el resultat s'ha calculat amb els supòsits que has executat. ":"For “"+caseName(problem)+"”, this outcome uses the assumptions you just ran. ")+EXPLANATIONS[problem.model][language==="es"?0:language==="ca"?1:2];
- $("formula").textContent=EXPLANATIONS[problem.model][language==="es"?0:language==="ca"?1:2];
- $("limitations").textContent=CONSTRAINTS[problem.model][language==="es"?0:language==="ca"?1:2];
+ $("explanation").textContent=(language==="es"?"Para «"+caseName(problem)+"», este resultado se ha calculado con las condiciones que acabas de ejecutar. ":language==="ca"?"Per a «"+caseName(problem)+"», el resultat s'ha calculat amb els supòsits que has executat. ":"For “"+caseName(problem)+"”, this outcome uses the assumptions you just ran. ")+(EXTRA_COPY[problem.model]?.method||EXPLANATIONS[problem.model])[language==="es"?0:language==="ca"?1:2];
+ $("formula").textContent=(EXTRA_COPY[problem.model]?.method||EXPLANATIONS[problem.model])[language==="es"?0:language==="ca"?1:2];
+ $("limitations").textContent=(EXTRA_COPY[problem.model]?.limits||CONSTRAINTS[problem.model])[language==="es"?0:language==="ca"?1:2];
  const tbody=$("detail-rows");tbody.replaceChildren();
  for(const [name,value] of result.table){
   const row=document.createElement("tr");
@@ -528,7 +530,25 @@ if(type==="waterfall"){
  return false;
 }
 
+
+function renderForecastFan(v){
+ const svg=$("chart");svg.replaceChildren();const w=760,h=300,l=61,r=22,t=24,b=42,n=v.labels.length;
+ const all=v.series.flatMap(s=>s.values).filter(Number.isFinite),max=Math.max(1,Math.ceil(Math.max(...all)*1.08/10)*10),x=i=>l+i*(w-l-r)/(n-1),y=a=>h-b-a/max*(h-t-b);
+ const cs={historical:"#667f95",p10:"#8298ba",p50:palette[0],p80:"#b3843b",p90:"#5679b0",capacity:"#ac5148"},S=Object.fromEntries(v.series.map(s=>[s.key,s.values])),pts=(a)=>a.map((v,i)=>v===null?null:[x(i),y(v)]).filter(Boolean).map(p=>p.join(",")).join(" ");
+ svg.append(svgEl("title",{},caseName(problem)+" · P10–P90"));
+ const cut=S.p50.findIndex(Number.isFinite);
+ svg.append(svgEl("rect",{x:x(cut)-6,y:t,width:w-r-x(cut)+6,height:h-b-t,fill:"#edf4f1"}));
+ for(let i=0;i<=4;i++){const val=max*i/4;svg.append(svgEl("line",{x1:l,x2:w-r,y1:y(val),y2:y(val),class:"grid-line"}));svg.append(svgEl("text",{x:l-7,y:y(val)+4,"text-anchor":"end"},format(val)));}
+ const band=S.p90.map((v,i)=>v===null?null:[x(i),y(v)]).filter(Boolean).concat(S.p10.map((v,i)=>v===null?null:[x(i),y(v)]).filter(Boolean).reverse()).map(p=>p.join(",")).join(" ");
+ svg.append(svgEl("polygon",{points:band,fill:"#95b0d1","fill-opacity":.36}));
+ for(const k of ["historical","p10","p50","p80","p90","capacity"]){svg.append(svgEl("polyline",{points:pts(S[k]),fill:"none",stroke:cs[k],"stroke-width":k==="p50"?3:2,"stroke-dasharray":["p10","p80","p90","capacity"].includes(k)?"5 4":""}));}
+ for(const i of [0,7,14,21,28,34,41])if(i<n)svg.append(svgEl("text",{x:x(i),y:h-20,"text-anchor":"middle"},v.labels[i]));
+ const legends=[["historical",word("Histórico","Històric","History")],["p10","P10"],["p50","P50"],["p80","P80"],["p90","P90"],["capacity",word("Capacidad","Capacitat","Capacity")]];
+ setChartLegend(legends.map(([k,name])=>[name,cs[k],null]));
+}
+
 function renderChart(visual){
+ if(visual.fan){renderForecastFan(visual);return;}
  if(visual.plan){allocationPlot($("chart"),$("legend"),visual.plan,language);return;}
  if(renderSpecialChart(visual))return;
  const svg=$("chart");svg.replaceChildren();

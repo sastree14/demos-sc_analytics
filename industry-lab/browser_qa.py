@@ -41,9 +41,9 @@ def main():
             assert page.locator("html").get_attribute("lang")=="en"
             if page.locator("#guide-dialog").evaluate("el => el.open"):
                 page.locator("#guide-skip").click()
-            assert page.locator("#case-nav button").count()==6,sector
+            assert page.locator("#case-nav button").count()==(6 if sector=="SC01" else 16),sector
             assert page.locator("#sector-code").inner_text()==sector
-            for idx in range(6):
+            for idx in range(6 if sector=="SC01" else 16):
                 page.locator("#case-nav button").nth(idx).click()
                 for language in ("es","ca","en"):
                     page.locator("[data-locale="+language+"]").click()
@@ -103,7 +103,7 @@ def main():
                 assert page.locator("#chart").is_visible()
                 page.screenshot(path="qa-evidence/industry-lab-sc01-mobile.png",full_page=True)
                 page.set_viewport_size({"width":1366,"height":850})
-            print("PASS",sector,"6 cases",flush=True)
+            print("PASS",sector,"6 legacy cases" if sector=="SC01" else "16 cases",flush=True)
         page.goto(base+"sc01/",wait_until="networkidle")
         page.locator(".navcase").first.wait_for()
         assert page.locator(".navcase").count()==16

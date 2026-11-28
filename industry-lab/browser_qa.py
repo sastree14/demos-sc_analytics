@@ -55,6 +55,7 @@ def main():
                 if sector!="SC01":
                     assert page.locator("#sx-decisions .sx-options article").count()==3
                     assert page.locator("#sx-series").count()==1
+                    assert page.locator(".sx-heat-cell").count()>=1
                     assert page.locator("#sx-agent").count()==1
                 if sector=="SC01" and idx==2:
                     page.get_by_role("button",name="Optimise route",exact=True).click()

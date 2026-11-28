@@ -52,6 +52,10 @@ def main():
                     assert page.locator("#contact-link").get_attribute("href").endswith("case="+sector+"-P"+str(idx+1).zfill(2))
                 assert page.locator("#plan-board .plan-row").count()==3
                 page.locator("#plan-board select").select_option("1")
+                if sector!="SC01":
+                    assert page.locator("#sx-decisions .sx-options article").count()==3
+                    assert page.locator("#sx-series").count()==1
+                    assert page.locator("#sx-agent").count()==1
                 if sector=="SC01" and idx==2:
                     page.get_by_role("button",name="Optimise route",exact=True).click()
                     page.get_by_text("Route recalculated",exact=True).wait_for()
@@ -72,7 +76,7 @@ def main():
                 slider.evaluate("(el) => { el.value = el.value !== el.min ? el.min : el.max; el.dispatchEvent(new Event('input', {bubbles:true})); }")
                 assert page.locator("#unsaved").is_visible(),(sector,idx)
                 page.locator("#run").click()
-                assert page.locator("#unsaved").is_hidden()
+                page.locator("#unsaved").wait_for(state="hidden")
                 after=page.locator("#metrics .metric-value").all_text_contents()
                 assert len(after)==4
                 assert "NaN" not in " ".join(after) and "undefined" not in " ".join(after)

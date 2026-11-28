@@ -1,3 +1,4 @@
+import {installExecutive} from "./sector-executive.js";
 import {scenarioBoard} from "./scenarios.js";
 import {routeStudio} from "./route.js";
 import {allocationPlot,stockGroups} from "./decision-plots.js";
@@ -17,7 +18,7 @@ const sectors=INDUSTRY_CATALOG.sectors;
 let sector=sectors.find(x=>x.code===requested)||sectors[0];
 let problem=sector.pain_points.find(x=>x.id===query.get("case"))||(sector.code==="SC01"?sector.pain_points[2]:sector.pain_points[0]);
 let values={},lastValues={},result=null,snapshots={A:null,B:null};
-let tutorialStep=0,metricIndex=0;
+let tutorialStep=0,metricIndex=0;const enhanced=document.body.dataset.executive==="true";let executive=null;
 const word=(es,ca,en)=>({es,ca,en})[language];
 function board(){scenarioBoard($("plan-board"),problem.model,lastValues,language,format,snapshots,metricIndex,i=>{metricIndex=i;board();});}
 const formatters={};
@@ -65,7 +66,7 @@ function applyLanguage(next){
 }
 function buildNav(){
  const nav=$("case-nav"),select=$("mobile-case");nav.replaceChildren();select.replaceChildren();
- sector.pain_points.forEach((p,i)=>{
+ (executive?executive.visibleProblems():sector.pain_points).forEach((p,i)=>{
   const b=document.createElement("button");b.type="button";b.className="case-nav-button";
   b.setAttribute("aria-current",String(p.id===problem.id));
   const number=document.createElement("span");number.className="number";number.textContent=String(i+1).padStart(2,"0");
@@ -74,7 +75,7 @@ function buildNav(){
   nav.append(b);
   const opt=document.createElement("option");opt.value=p.id;opt.textContent=String(i+1)+". "+caseName(p);select.append(opt);
  });
- select.value=problem.id;
+ select.value=problem.id;if(executive)executive.syncProfile();
 }
 function chooseProblem(caseId){
  const next=sector.pain_points.find(x=>x.id===caseId);if(!next)return;
@@ -105,6 +106,7 @@ function renderCase(rebuildControls=true){
  if(rebuildControls)renderInputs();
  renderResults();renderComparison();
  $("unsaved").hidden=true;
+ if(executive)executive.update();
  const contact=new URL("https://www.sc-analytics.io/contact");
  contact.searchParams.set("intent","problem");
  contact.searchParams.set("sector",sector.code);
@@ -191,6 +193,7 @@ function renderResults(){
  const grouping=$("stock-groups");
  grouping.hidden=problem.id!=="SC02-P06";
  if(!grouping.hidden)stockGroups(grouping,language);
+ if(executive)executive.results();
 }
 const seriesExtras = {
   "capacity": [
@@ -651,7 +654,7 @@ function configure(){
  colorInit();
  document.querySelectorAll("[data-locale]").forEach(btn=>btn.addEventListener("click",()=>applyLanguage(btn.dataset.locale)));
  $("mobile-case").addEventListener("change",e=>chooseProblem(e.target.value));
- $("run").addEventListener("click",execute);
+ $("run").addEventListener("click",()=>executive?executive.run():execute());
  $("reset").addEventListener("click",()=>{values=defaultInputs(problem.model,problem.scenario_seed);result=calculate(problem.model,values);lastValues={...values};renderInputs();renderResults();renderComparison();$("unsaved").hidden=true;});
  $("save-a").addEventListener("click",()=>save("A"));$("save-b").addEventListener("click",()=>save("B"));
  $("save-c").addEventListener("click",()=>save("C"));
@@ -663,6 +666,7 @@ function configure(){
  $("guide-back").addEventListener("click",()=>{tutorialStep=Math.max(0,tutorialStep-1);renderTour();});
  $("guide-next").addEventListener("click",()=>{if(tutorialStep===4){closeTour();$("input-grid").scrollIntoView({block:"center",behavior:"smooth"});}else{tutorialStep++;renderTour();}});
  dialog.addEventListener("close",()=>{try{sessionStorage.setItem("scIndustryTourSeen","yes");}catch(_){}});
+ if(enhanced)executive=installExecutive({get:()=>({sector,problem,values,lastValues,result,language,snapshots}),MODELS,calculate,defaultInputs,metricLabel,format,tr,word,caseName,sectorName,labelFor,seriesName,chooseProblem,buildNav,renderInputs,execute,renderChart,apply:(next)=>{values={...next};renderInputs();execute();},palette});
  applyLanguage(language);
  chooseLanguage(language,applyLanguage);
 }

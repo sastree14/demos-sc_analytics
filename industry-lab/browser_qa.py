@@ -103,8 +103,17 @@ def main():
         page.locator(".navcase").first.wait_for()
         assert page.locator(".navcase").count()==16
         assert page.locator("#agent-dock").is_visible()
+        page.evaluate("window.scrollTo({top:0,behavior:'instant'})")
+        page.wait_for_timeout(150)
+        assert page.locator(".top").bounding_box()["width"] >= page.viewport_size["width"]-2
+        assert page.locator("#agent-dock").bounding_box()["y"] >= page.locator(".intro").bounding_box()["y"] + page.locator(".intro").bounding_box()["height"]
+        assert page.locator(".intro h1").evaluate("(el) => getComputedStyle(el).textAlign")=="center"
+        page.evaluate("window.scrollTo({top:800,behavior:'instant'})")
+        page.wait_for_timeout(150)
         top=page.locator("#agent-dock").bounding_box()["y"]
-        page.evaluate("window.scrollTo(0, 800)")
+        assert abs(top-(page.locator(".top").bounding_box()["height"]+14))<3
+        page.evaluate("window.scrollTo({top:1100,behavior:'instant'})")
+        page.wait_for_timeout(100)
         assert abs(page.locator("#agent-dock").bounding_box()["y"]-top)<2
         page.locator("#agent-close").click()
         assert page.locator("#agent-launch").is_visible()

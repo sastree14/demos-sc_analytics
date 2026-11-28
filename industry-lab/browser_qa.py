@@ -118,6 +118,9 @@ def main():
             assert page.locator("#try-preset").is_visible()
             assert page.locator("#decision-center").is_visible()
             assert page.locator("[data-decision-option]").count()==3
+            assert page.locator(".decision-reading .reading-line").count()==3
+            assert page.locator(".decision-condition").count()==3
+            assert page.locator(".viz").first.evaluate("(el) => el.nextElementSibling.id")=="decision-center"
             assert page.locator("#try-manual").is_visible()
             assert "NaN" not in page.locator("#results").inner_text()
         assert len(set(titles))==16

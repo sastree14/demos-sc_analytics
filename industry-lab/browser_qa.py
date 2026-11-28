@@ -116,12 +116,15 @@ def main():
             titles.append(page.locator(".case-head h2").inner_text())
             assert page.locator("#results .metric").count()>=2
             assert page.locator("#try-preset").is_visible()
+            assert page.locator("#decision-center").is_visible()
+            assert page.locator("[data-decision-option]").count()==3
             assert page.locator("#try-manual").is_visible()
             assert "NaN" not in page.locator("#results").inner_text()
         assert len(set(titles))==16
         page.locator("[data-case=rutas]").click()
         assert page.locator("#map-canvas svg").count()==1
         assert page.locator("#results table").count()==3
+        assert page.locator(".decision-priority").count()==1
         page.locator("[data-case=demanda]").click()
         assert page.locator("#results svg").count()==1
         assert page.locator(".quantile").count()==4
@@ -131,6 +134,7 @@ def main():
         page.locator('[data-policy="2"]').click()
         assert page.locator("#forecast-day-label").inner_text()=="D+7"
         assert "P90" in page.locator("#forecast-capacity").inner_text()
+        assert "P90" in page.locator(".decision-summary").inner_text()
         assert page.locator('[data-policy="2"]').get_attribute("aria-pressed")=="true"
         page.locator("#try-preset").click()
         assert "Prueba aplicada" in page.locator("#try-feedback").inner_text()
@@ -165,7 +169,7 @@ def main():
         assert "Vehículos disponibles" in page.locator("#assistant-answer").inner_text()
         page.locator("#apply-proposal").click()
         page.locator("#execution-status.done").wait_for()
-        assert page.locator(\'[data-input="1"]\').input_value()=="2"
+        assert page.locator('[data-input="1"]').input_value()=="2"
         assert "Cambio aplicado" in page.locator("#assistant-answer").inner_text()
         page.locator("#agent-close").click()
         page.locator("#role-picker").select_option("all")
